@@ -1,312 +1,223 @@
-# Milestone 2: HTML and DOM Basics
+## Milestone 2
 
-## Table of Contents
+### Table of Contents
 
-1. [HTML Basics](#html-basics)
+### Case Sensitivity
 
-   - [What is HTML?](#what-is-html)
-   - [What is XHTML?](#what-is-xhtml)
-   - [Elements and Attributes](#elements-and-attributes)
-     - [Self Closing Tags](#self-closing-tags)
-     - [Opening and Closing Tags](#opening-and-closing-tags)
-     - [Semantic and Non-Semantic Elements](#semantic-and-non-semantic-elements)
-   - [Formatting and Styling](#formatting-and-styling)
-   - [Comments](#comments)
+- JavaScript is case-sensitive. This means that variables, function names, and other identifiers must always be typed with a consistent capitalization of letters.
 
-2. [Document Object Model](#document-object-model)
-
-   - [DOM Structure](#dom-structure)
-   - [DOM Manipulation Methods](#dom-manipulation-methods)
-   - [DOM Event Listeners](#dom-event-listeners)
-
-3. [CSS Layouts](#css-layouts)
-
-   - [Float Layout](#float-layout)
-   - [Flexbox Layout](#flexbox-layout)
-   - [Grid Layout](#grid-layout)
-   - [Box Model](#box-model)
-
-4. [Classes and IDs](#classes-and-ids)
-
-5. [Charsets](#charsets)
-   - [ASCII Charset](#ascii-charset)
-   - [UTF-8 Charset](#utf-8-charset)
-
-## HTML Basics
-
-### What is HTML?
-
-HTML (HyperText Markup Language) is used for creating web pages. It defines the structure and content of a web page.
-
-### What is XHTML?
-
-XHTML (Extensible HyperText Markup Language) is a stricter and cleaner version of HTML. It follows the XML syntax rules.
-
-```
-- All tags must be closed.
-- All tags must be lowercase.
-- All attributes must be in quotes.
+```javascript
+let a = 5;
+let A = 10;
+// These are two different variables
 ```
 
-### Elements and Attributes
+### Identifiers
 
-HTML elements are the building blocks of web pages. Elements are created using tags and some tags are self-closing, while others have opening and closing tags:
+- Identifiers are names given to variables, functions, classes, etc. in JavaScript. They can contain letters, digits, underscores, and dollar signs. Identifiers must begin with a letter, an underscore, or a dollar sign. They cannot begin with a digit.
 
-#### Self Closing Tags
+```javascript
 
-Some self closing tags include `<img/>`, `<br/>`, `<input/>` and `<hr/>`
+// Valid identifiers
 
-#### Opening and Closing Tags
+let name = "Antony Jude Shaman";
 
-Opening tags are like `<p>` and closing tags are like `</p>`. The content goes between the opening and closing tags.
+let _name = "Antony Jude Shaman";
 
-```html
-<p>This is a paragraph</p>
-<img src="" alt="Image" />
-```
+let $name = "Antony Jude Shaman";
 
-#### Semantic and Non-Semantic Elements
+// Invalid identifiers
 
-Semantic elements describe the content they contain, while non-semantic elements do not. Examples of semantic elements include `<header>`, `<footer>`, `<article>`, and `<section>`
+let 1name = "Antony Jude Shaman";
 
-```html
-<header>This is a header</header>
-<footer>This is a footer</footer>
-<article>This is an article</article>
-<section>This is a section</section>
-```
+let name-1 = "Antony Jude Shaman";
 
-### Formatting and Styling
+let name@ = "Antony Jude Shaman";
 
-You can format text using tags like `<strong>`, `<em>`, `<u>`, etc. For styling, you can use inline CSS or an external stylesheet:
-
-```html
-<p style="color: blue;">This is a blue paragraph.</p>
-<link rel="stylesheet" href="styles.css" />
-<!-- import external stylesheet-->
 ```
 
 ### Comments
 
-HTML comments are useful for leaving notes in your code
-
-```html
-<!-- This is a comment -->
-```
-
-## Document Object Model
-
-The DOM is a programming interface for HTML documents. The DOM can be accessed and manipulated using JavaScript. The DOM is a tree-like structure where each node represents part of the document
-
-### DOM Structure
-
-The DOM represents a document as a tree structure:
-
-```
-document
- └── html
-     ├── head
-     │   ├── title
-     │   └── meta
-     └── body
-         ├── h1
-         ├── p
-         └── div
-             ├── p
-             └── img
-```
-
-### DOM Manipulation Methods
-
-Some common methods for DOM manipulation:
+- Comments are used to explain the code and make it more readable. JavaScript supports single-line and multi-line comments.
 
 ```javascript
-// Creating a new element
-let newDiv = document.createElement("div");
-let newP = document.createElement("p");
+// This is a single-line comment
 
-// Accessing an element
-let element = document.getElementById("id");
-
-// Modifying an element
-element.innerHTML = "content";
-
-// Adding a child element
-newDiv.appendChild(newP);
-
-// Removing an element
-element.remove();
-
-// Adding an event listener
-element.addEventListener("click", myFunction);
-
-// Changing styles
-element.style.color = "red";
-
-// Querying elements
-let elements = document.querySelectorAll(".class");
-let element = document.querySelector("#id");
-
-// Traversing the DOM
-element.parentNode;
-element.childNodes;
-element.firstChild;
-element.lastChild;
-
-// Modifying attributes
-element.setAttribute("src", "image.jpg");
-element.getAttribute("src");
-
-// Modifying classes
-element.classList.add("new");
-element.classList.remove("old");
-
-// Modifying text content
-element.textContent = "new text";
-
-// Modifying HTML content
-element.innerHTML = "text";
-
-// Modifying value
-element.value = "Hello";
+/* 
+  This is a multi-line comment.
+  All the text between the opening and closing tags is commented out.
+*/
 ```
 
-### DOM Event Listeners
+### Strict Mode
 
-Event listeners are used to trigger functions when an event occurs
+- Strict mode is a way to opt into a restricted variant of JavaScript. It eliminates some JavaScript silent errors by changing them to throw errors. It also fixes mistakes that make it difficult for JavaScript engines to perform optimizations.
 
 ```javascript
-// single click event
-document.getElementByTagName("button").addEventListener("click", function () {
-  alert("Button was clicked!");
-});
+"use strict";
 
-// double click event
-document
-  .getElementByTagName("button")
-  .addEventListener("dblclick", function (e) {
-    alert(`Button was double clicked at ${e.clientX}, ${e.clientY}`);
-  });
-
-// mouse over event
-document.getElementById("id").addEventListener("mouseover", function () {
-  alert("Mouse over the button!");
-});
-
-// mouse move event
-document
-  .getElementByClassName("container")
-  .addEventListener("mousemove", function (e) {
-    alert(`Mouse is at ${e.clientX}, ${e.clientY}`);
-  });
-
-// scroll event
-document.addEventListener("scroll", function () {
-  alert("Scrolling!");
-});
-
-// submit event
-document.getElementByTagName("form").addEventListener("submit", function (e) {
-  alert(`Hi ${e.target.value.name} your email is ${e.target.value.email}`);
-});
+let a = 10;
 ```
 
-## CSS Layouts
+### Keywords and Reserved Words
 
-### Float Layout
+- JavaScript has a set of reserved words that cannot be used as identifiers. These words are used by the language itself and have special meanings.
 
-Float is used for positioning and formatting content
+> [!NOTE]  
+> _Some of the reserved words in JavaScript are_  
+> `let`, `const`, `function`, `if`, `else`, `while`, `for`, `return`, `break`, `continue` `switch`, `case`, `default`, `try`, `catch`, `finally`, `throw`, `new`, `delete`, `typeof`, `this`, `null`, `undefined`, `true`, `false`, `NaN`, `Infinity`, `super`, `class`, `extends`, `export`, `import`, `async`, `await`, `static`, `public`, `private`, `protected`, `interface`, `implements`, `let`, `const`, `var`, `void`
 
-```css
-.float-left {
-  float: left;
+### Statements
+
+- JavaScript statements are composed of expressions. They are executed from top to bottom, one after the other.
+
+- Semi-colons are used to separate statements in JavaScript.
+
+```javascript
+let a = 10; // Variable declaration
+
+if (a > 5) {
+  // Conditional statement
+  console.log("a is greater than 5");
+}
+
+for (let i = 0; i < 5; i++) {
+  // Loop
+  console.log(i);
 }
 ```
 
-### Flexbox Layout
+### Variables
 
-Flexbox is a one-dimensional layout method for displaying items in rows or columns
+- Variables are used to store data values in JavaScript. They are declared using the `let`, `const`, or `var` keyword.
 
-```css
-.container {
-  display: flex; /* defaults to row */
-  flex-direction: col;
-  justify-content: space-between;
+```javascript
+let x = 10; // Number
+
+const name = "Antony Jude Shaman"; // String
+
+var y = true; // Boolean
+```
+
+#### Scope
+
+- The let and const keywords are block-scoped, which means they are only accessible within the block they are declared in.
+
+- The var keyword is function-scoped, which means it is accessible throughout the function it is declared in.
+
+  ```javascript
+  if (true) {
+    let a = 10;
+    var b = 20;
+  }
+
+  console.log(a); // ReferenceError: a is not defined
+
+  console.log(b); // 20
+  ```
+
+### typeof Operator
+
+- The typeof operator is used to determine the data type of a variable.
+
+```javascript
+let a = 10;
+
+console.log(typeof a); // number
+
+const name = "Antony Jude Shaman";
+
+console.log(typeof name); // string
+```
+
+### Data Types
+
+- JavaScript has several data types, including primitive and non-primitive types. Primitive data types include numbers, strings, booleans, null and undefined. Non-primitive data types include objects and functions.
+
+```javascript
+// Primitive data types
+
+let num = 10; // Number
+
+let str = "Hello"; // String
+
+let bool = true; // Boolean
+
+let n = null; // Null
+
+let u = undefined; // Undefined
+
+// Non-primitive data types
+
+let obj = { name: "Antony Jude Shaman" }; // Object
+
+const hello = () =>  "Hello"; // Arrow Function
+
+const hello() {
+  return "Hello";
+}; // Normal Function
+```
+
+### Object types
+
+- Objects are used to store collections of data and more complex entities. They are created using the object literal syntax `{}` or the `new Object()` constructor.
+
+```javascript
+// Object literal syntax
+
+let person = {
+  name: "Antony Jude Shaman",
+  age: 25,
+
+  greet() {
+    console.log("Hello");
+  },
+};
+
+// Object constructor
+
+class Car {
+  constructor(model, year) {
+    this.model = model;
+    this.year = year;
+  }
 }
+
+let car = new Car("Koenigsegg", 2024);
+
+car.model = "Koenigsegg";
+
+car.year = 2024;
 ```
 
-### Grid Layout
+### Arrays
 
-Grid is a two-dimensional layout system
+- Arrays are used to store multiple values in a single variable. They are created using square brackets `[]`.
 
-```css
-.container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+```javascript
+const names = ["Antony", true, 10, { name: "Antony Jude Shaman" }];
+
+console.log(names[0]); // Antony
+
+console.log(names[3].name); // Antony Jude Shaman
+```
+
+> [!NOTE]
+> Arrays can store values of different data types. In the example above, the array `names` contains a string, a boolean, a number, and an object.
+
+### JSON
+
+- JSON (JavaScript Object Notation) is a lightweight data interchange format. It is easy for humans to read and write and easy for machines to parse and generate.
+
+```json
+const person = {
+  "name": "Antony Jude Shaman",
+  "age": 21,
+  "city": "Chennai",
+  "country": "India"
 }
-```
 
-### Box Model
+console.log(person.name); // Antony Jude Shaman
 
-Container for all HTML elements, it consists of: margin, border, padding, and the actual content
-
-```css
-.box {
-  width: 300px;
-  border: 15px solid green;
-  padding: 50px;
-  margin: 20px;
-}
-```
-
-## Classes and IDs
-
-Classes and IDs are used to identify elements for styling and manipulation. IDs are unique, while classes can be used multiple times. A class starts with a period `.` and an ID starts with a hash `#`.
-
-```html
-<div id="id" class="new">This element has an ID and two classes.</div>
-```
-
-## Charsets
-
-### ASCII Charset
-
-ASCII (American Standard Code for Information Interchange) is a character encoding standard for electronic communication. It represents text in computers, telecommunications equipment, and other devices.
-
-- Dollar Sign $: 36
-- A: 65
-- a: 97
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="ASCII" />
-    <title>Hello</title>
-  </head>
-  <body>
-    <h1>Hello, World!</h1>
-  </body>
-</html>
-```
-
-### UTF-8 Charset
-
-UTF-8 is a character encoding capable of encoding all possible characters (Unicode). It is the most widely used character encoding on
-the web.
-
-- Dollar Sign $: U+0024
-- Rupee Sign ₹: U+20B9
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hello</title>
-  </head>
-  <body>
-    <h1>Hello, World!</h1>
-  </body>
-</html>
+console.log(person.age); // 21
 ```
