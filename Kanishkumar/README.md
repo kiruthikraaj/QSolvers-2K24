@@ -36,6 +36,48 @@
 
 ---
 
+## Document Object Model (DOM)
+
+The DOM (Document Object Model) is an interface that represents the entire document as a tree of nodes, allowing manipulation of the document's structure, content, and style.
+
+## DOM Representation
+
+- **Window object**: Automatically created in the browser window.
+- **Document object**: Represents the HTML document loaded in the browser.
+- **Form / Link / Anchor objects**: Represent specific elements in the document.
+- **Form control elements**: Represent interactive controls like input fields.
+
+## HTML DOM Methods
+
+### Finding Elements
+
+1. **document.getElementById(id)**:
+   Returns the element with the specified ID attribute.
+
+   ```javascript
+   var element = document.getElementById('myElementId');
+
+2. document.getElementsByTagName():
+   Returns a live HTMLCollection of elements with the specified tag name.
+
+     ```javascript
+    var elements = document.getElementsByTagName('div');
+
+3. document.querySelectorAll():
+   Returns a static NodeList of all elements that match a specified CSS selector.
+   
+     ```javascript
+   var elements = document.querySelectorAll('div.container');
+     
+4. document.querySelector():
+  Returns the first element that matches a specified CSS selector.
+
+     ```javascript
+   var element = document.querySelector('div#main');
+
+
+--- 
+
 ## Browser Object Model
 
 ## 1. Window Object
