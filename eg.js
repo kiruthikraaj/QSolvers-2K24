@@ -1,10 +1,4 @@
-const person = {
-  name: "Antony Jude Shaman",
-  age: 21,
-  city: "Chennai",
-  country: "India",
-};
-
-console.log(person.name); // Antony Jude Shaman
-
-console.log(person.age); // 21
+a = 10;
+b = 2;
+c = a * b;
+console.log(~c);
