@@ -1,28 +1,103 @@
-const person = {
-  name: "Antony",
-  age: 21,
-  address: {
-    city: "Chennai",
-    state: "TamilNadu",
-  },
+// curring fn
+function add(a) {
+  return function add(b) {
+    return function add(c) {
+      return a + b + c;
+    };
+  };
+}
+
+console.log(add(5)(2)(3));
+
+console.log(myFunction(5));
+
+function myFunction(y) {
+  return y * y;
+}
+
+// const HelloWorld = function (arg) {
+//   console.log(arg);
+// };
+// HelloWorld("print");
+
+// (function HelloWorld(arg) {
+//   console.log(arg);
+// })("print");
+
+// (() => {
+//   console.log("print");
+// })();
+
+function HelloWorld(prop) {
+  console.log(prop + " Jude Shaman");
+}
+
+const callback = (arg) => {
+  HelloWorld(arg);
 };
 
-for (let key in person) {
-  if (typeof person[key] === "object") {
-    for (let key1 in person[key]) {
-      console.log(key1, person[key][key1]);
-    }
-  } else {
-    console.log(key, person[key]);
+callback("I am Antony");
+
+function a(arg) {
+  console.log(arg);
+}
+
+function b(arg) {
+  arg("Hello World");
+}
+
+b(a);
+
+const noOfArgs = () => {
+  console.log(arguments.length);
+};
+
+noOfArgs(1, 2, 3, 4, 5); // Output: 5
+
+(function (...args) {
+  console.log(args);
+})(1, 2, 3, 4, 5); // Output: [1, 2, 3, 4, 5]
+
+const reducer = (...args) => {
+  return args.reduce((acc, val) => acc + val, 0);
+};
+
+console.log(reducer(1, 2, 3, 4, 5)); // Output: 15
+
+class Person {
+  constructor(name) {
+    this.name = name;
+    this.printName = () => {
+      console.log(this.name); // Output: Antony
+    };
   }
 }
 
-const person2 = [{ name: "Antony" }, { age: 21 }];
+const person = new Person("Antony");
+person.printName();
 
-for (let item of person2) {
-  if (typeof item === "object") {
-    for (let key1 in item) {
-      console.log(key1[0].toUpperCase() + key1.substring(1), item[key1]);
-    }
+// function fnOverloading(arg) {
+//   console.log(arg);
+// }
+
+// function fnOverloading(arg1, arg2) {
+//   console.log(arg1, arg2);
+// }
+
+// fnOverloading("First"); // Output: First undefined
+// fnOverloading("First", "Second"); // Output: First Second
+
+function fnOverloading() {
+  if (arguments.length === 1) {
+    console.log(arguments[0]);
+  } else if (arguments.length === 2) {
+    console.log(arguments[0], arguments[1]);
   }
 }
+
+fnOverloading("First"); // Output: First
+fnOverloading("First", "Second"); // Output: First Second
+
+const add = (a) => (b) => (c) => a + b + c;
+
+console.log(add(1)(2)(3)); // Output: 6
