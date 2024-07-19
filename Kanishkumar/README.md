@@ -1,356 +1,610 @@
-# Javascript
+## JavaScript Case sensitivity
 
-## History of JS 
+- Javascript is a case sensitive language.
 
+- This means that language keywords, variables, function names, and any other identifiers are treated differently based on case.
 
-- JavaScript is a lightweight, interpreted programming language. 
-- It is commonly used to create dynamic elements in web applications
-- JavaScript was submitted to the ECMA for standardization.
-- This led to the creation of the ECMAScript specification.
+- Example: variables firstname and Firstname are treated differently.
 
+**Camelcase**
 
-**Initial Release and naming:**
-  ```
-  Mocha -> LiveScript -> JavaScript
-  ```
----
+- CamelCase is a naming convention in JavaScript where the first letter of a variable, function, or method name is lowercase, and the first letter of each subsequent concatenated word is capitalized. 
 
-## ECMAScript
-
-```
-  ES1 -It supports primitive data types, arrays, objects, looping.
-
-  ES2 - No new features. Only editoral changes.
-
-  ES3 - Regex, Exception handling and switching.
-
-  ES5 - Strict Mode, JSON, Map/ Filter, forEach array.
-
-  ES6 - Introduction of Classes, Spread operator, Arrow functions. let and const keyword, async functions.
+``` 
+Example: lastName 
 ```
 
+## Identifiers:
 
+- Identifiers are name given to a variable, function or a class.
 
-- ECMAScript is  a core language specification
-- Javascript has features beyond ECMAScript.
+Rules:
+- Identifier names must start with either a letter, an underscore _, or the dollar sign $.
+- It may contain numbers (0-9)
+- Identifier names cannot start with numbers. 
 
----
+```
+Valid : firstName
+Invalid : 1name
+```
 
-## Document Object Model (DOM)
+## Comments
 
-The DOM (Document Object Model) is an interface that represents the entire document as a tree of nodes, allowing manipulation of the document's structure, content, and style.
+ 1. Single line comments start with //.
 
-## DOM Representation
+ 2. Multi line comments /* ... */
 
-- **Window object**: Automatically created in the browser window.
-- **Document object**: Represents the HTML document loaded in the browser.
-- **Form / Link / Anchor objects**: Represent specific elements in the document.
-- **Form control elements**: Represent interactive controls like input fields.
-
-## HTML DOM Methods
-
-### Finding Elements
-
-1. **document.getElementById(id)**:
-   Returns the element with the specified ID attribute.
-
-   ```javascript
-   var element = document.getElementById('myElementId');
-
-2. document.getElementsByTagName():
-   Returns a live HTMLCollection of elements with the specified tag name.
-
-     ```javascript
-    var elements = document.getElementsByTagName('div');
-
-3. document.querySelectorAll():
-   Returns a static NodeList of all elements that match a specified CSS selector.
-   
-     ```javascript
-   var elements = document.querySelectorAll('div.container');
-     
-4. document.querySelector():
-  Returns the first element that matches a specified CSS selector.
-
-     ```javascript
-   var element = document.querySelector('div#main');
-
-
---- 
-
-## Browser Object Model
-
-## 1. Window Object
-
-- Window Object represents the browser's window.
-
-### Window size properties
-
-- 1. Window Width
-        It determines the inner width of the browser window 
-
-- 2. Window Height
-        It determines the inner height of the browser window
-     
-
-
-
-![Screenshot 2024-07-17 154136](https://github.com/user-attachments/assets/13a1a8a6-ce84-4ec0-80d9-5b0dc2ff7d92)
-
-
-- 3. Open()
-        - Opens a new window
-
-- 4. Close()
-        - Closes the current window
-
-      
-![Screenshot 2024-07-17 160224](https://github.com/user-attachments/assets/980a1e50-1e8b-4c90-b368-bad062c2afa2)
-
----
-
-## 2. Window Location
-- It is used to get the current location (URL) and redirects to new location.
-  
-**window.location.href**
- - Returns the href (URL) of the current page
+ Example:
 
  ```
-  <p id = "value"> </p>  
-  <script>  
-  document.getElementById("value").innerHTML = window.location.href;  
-  </script>  
+// This is an inline comment
+
+
+/ *
+Commented code
+*/
  ```
-   
-**window.location.hostname** 
- - Returns the domain name of the web host
-   
-```
-<p id = "value"> </p>  
-<script>  
-document.getElementById("value").innerHTML = window.location.hostname;  
-</script>  
-```
 
-**window.location.pathname**
- - Returns the pathname of the current page
+## Strict mode
+
+- It defines that JavaScript code should be executed in "strict mode".
+
+- Strict mode makes it easier to write "secure" JavaScript.
 
 ```
-<p id = "value"> </p>  
-<script>  
-document.getElementById("value").innerHTML = window.location.pathname;  
-</script>  
+    "use strict";
+```
+
+In strict mode,
+
+1. Error, if the variable isnt declared.
+2. Error, if we use an object without declaring it.
+3. Deleting a function is not allowed.
+4. Duplicating a parameter name is not allowed
+5. Octal numeric literals are not allowed
+6. Octal escape characters are not allowed
+7. Writing to a read-only property is not allowed
+8. The word eval, arguments cannot be used as a variable
+9. Future reserved keywords are not allowed
+
+        ```
+            - implements
+            - interface
+            - package
+            - private
+            - protected
+            - public
+            - static
+            
+        ```
+10. this keyword behaves differently in strict mode.
+
+```
+"use strict";
+x = 110  // Error
+
+"use strict";
+function x(p1, p1) {}; // Error
+
+"use strict";
+let x = 010;       // Error   
+let x = "\010"     // Error
 
 ```
 
-**window.location.protocol**
- - Returns the web protocol used ( Example: http, https )
 
-```
-<p id = "value"> </p>  
-<script>  
-document.getElementById("value").innerHTML = window.location.protocol;  
-</script>  
-```
 ---
 
-## 3. Window Screen
-  - Tells information about user screen
+## Statements
 
-**screen.width**
-  - Returns the users screen width
+- JavaScript statements are made of: Values, Operators, Keywords, Expressions, and Comments. 
+- JavaScript statements are executed in the same order as they are written, line by line.
 
-**screen.height** 
-  - Returns the users screen height
+- A semicolon marks the end of a statement in JavaScript. 
 
-**screen.availWidth**
-  - Returns the users screen width excluding interface feautures like taskbar.
+  Multiple statements are allowed if they are seperated by semicolon.
+
+    ```
+    a = 2; b = 3; z = a + b;
+    ```
+
+## Code Blocks
+
+- JavaScript statements can be grouped together inside curly brackets. Such groups are known as code blocks.
+
+``` 
+    func name(){
+        ...
+        ...
+        ...
+    }
+```
+
+## White Space
+
+JavaScript ignores multiple white spaces.
+
+```
+    a = 2 + 3
+    a = 2+3
+```
+
+## Keywords
+
+ - Keywords are reserved words which cannot be used for variables, labels, or function names.
+
+ Example
+
+ ```
+ var, let, const, for, while
+ ```
+
+
+## Variables:
+
+- Variables are Containers for Storing Data
+- Declared using var, let, const.
+
+
+Redeclared : 
+
+```
+var x =  10;
+var x = 20;  // redeclared
+```
+
+Reassigned:
+
+```
+var x = 10;
+x = 20; // reassigned
+```
+
+### Ways to declare a variables
+```
+var :
+    - Fuctional or global scope
+    - Redeclared and reassigned
+    - Initialization not required
     
-**screen.availHeight** 
-  - Returns the users screen height excluding interface feautures like taskbar.
+            var x = 10;
+            {  
+            var x = 6;
+            }
+            document.getElementById("demo").innerHTML = x;     // 6
     
-**screen.pixelDepth**
-  -  It returns the pixel depth of the screen.
+
+let :
+    - Block scope
+    - Redeclared not allowed
+    - Can be reassigned
+    - Initialization not required
+            
+            let x = 10;
+            {  
+            let x = 6;  // cannot redeclared
+            }
+            document.getElementById("demo").innerHTML = x;     // 10
+            
+
+const:
+    -Block scope
+    - Redeclared not allowed
+    - Cannot be reassigned
+    - Initialization required
+
+            const x = 10;
+            {  
+            x = 3;
+            }
+            document.getElementById("demo").innerHTML = x;     // None
+ ```               
+---
+
+**Hoisting a variable**:
+
+- Hoisting is a behavior in which a variable can be used before declaration.
+
+
+
+    Using var:
+
+        <p id="demo"></p>
+        <script>
+
+        Name = "Kanish";                 // using a variable before declaring
+        var Name = "Kanishkumar";   
+
+        document.getElementById('demo').innerHTML = Name;  // Kanishkumar
+        </script>
+    
+    Using let:
+
+    This will result in Reference Error.
+
+        <script>
+        try{
+        Name = "Kanish";                 
+        let Name = "Kanishkumar";   
+        }
+        catch(err)
+        {
+            document.getElementById('demo').innerHTML = err;  
+            
+            // ReferenceError: Cannot access 'Name' before initialization
+        }
+        </script>
+
+    Using const:
+            This wont produce any output when a variable is hoisted.
+
+## Typeof operator
+
+- The typeof operator returns the type of a variable or an expression.
+
+    ```
+    typeof "Kanish"         // Returns string
+    typeof 3.14           // Returns number
+    typeof true           // Returns boolean
+    typeof 1234n          // Returns bigint
+    typeof x              // Returns undefined
+    ```
+
+## Undefined
+
+- When a variable is declared and not initialized or not assigned with any value.
 
 
 ```
-  <p id = "value1"> </p>  
-  <p id = "value2"> </p>  
-  <p id = "value3"> </p>  
-  <p id = "value4"> </p>  
-  <p id = "value5"> </p>  
-  <p id = "value6"> </p>  
-  <script>  
-  document.getElementById("value1").innerHTML = window.screen;  
-  document.getElementById("value2").innerHTML = window.screen.width;  
-  document.getElementById("value3").innerHTML = window.screen.height;  
-  document.getElementById("value4").innerHTML = window.screen.availWidth;  
-  document.getElementById("value5").innerHTML = window.screen.availHeight;  
-  document.getElementById("value6").innerHTML = window.screen.pixelDepth;  
-  </script>  
+        let x
+        console.log(x)
+```
+
+## Null
+
+In JavaScript, null is a special value that is set intentionally that represents an empty value.
+
 
 ```
+    let number = null;
+```
+
+- In javascript, null and undefined are treated as false values.
+
+<br />
+<br />
+
+**Comparison:**
+
+```
+undefined == null    // true
+undefined === null   // false
+```
+
+---
+
+## Boolean 
+
+In javascript, boolean can have either two values
+- True
+- False
+
+1. Boolean of undefined is false.
+2. Boolean of empty string is false.
+3. Boolean of null is false.
+4. Boolean of NaN is false.
+5. Comparing two JavaScript objects always return false.
+
+        Boolean b=new Boolean(value);  
+
+
+---
+
+## Number
+
+Number() converts value to a Number.
+
+- JavaScript numbers are always stored in double-precision 64-bit binary format IEEE 754. 
+- This format stores numbers in 64 bits:
+
+        0-51 bits store the value
+        52-62 bits store the exponent
+        63rd bit is the sign bit
+    
+- When you add a string and a number in JavaScript, the result will be a string concatenation.
+
+- Constant with 0x are hexadecimal numbers
+
+        ```
+        let num1 = 5                  // 5
+        let num2 = 9.2                // 9.2
+
+        let num3 = 3 - "kanish"  
+        console.log(num3)             // undefined
+
+        let num4 = 2 /0 
+        console.log(num4)             // infinity
+
+        let num5 = -2 /0
+        console.log(num5)             // -infinity
+
+    Scientific  Notation:
+
+        let num6 = 5e4
+        console.log(num6)             // 50000
+
+    
+
+--- 
+<br >
+Number Precision 
+<br />
+
+
+     Integer Precision:
+
+        - Integers are precise upto 15 digits.
+
+    Floating Precision:
+        - They are not 100% accurate always.
+
+
+    - To get accurate value, multiply and divide. 
+
+
+**Numerical Strings**:
+- JavaScript automatically converts the numeric strings to numbers in most operations like.
+
+        let x  = "100" / "10";           // 10
+
+
+**Number Properties**:
+
+    - toString()	
+        Returns a number as a string
+
+    - toExponential()	
+        Returns a number written in exponential notation
+
+    - toFixed()	
+        Returns a number written with a number of decimals
+
+    - toPrecision()	
+        Returns a number written with a specified length
+
+    - valueOf()	
+        Returns a number as a number
+
+Example,
+        let x = 123.09;
+
+        document.getElementById("demo").innerHTML = x.toString();  // 123.09
+
+        document.getElementById("demo1").innerHTML = x.toExponential(); // 1.2309 e+2
+
+        // fixed upto certain float value
+        document.getElementById("demo2").innerHTML = x.toFixed(4);  // 123. 0900
+
+        // precise to given digits
+        document.getElementById("demo3").innerHTML = x.toPrecision(4); // 123.1
 
 --- 
 
-## 4. Window Navigator 
-  -  Window  navigator contains information of visitors browser.
+## JavaScript Strings
 
-**cookieEnabled()**
-  - Check whether cookie enabled or not.
+-   Strings are used to store text.
+-   Strings are surrounded with either single quotes or double quotes.
+-   It can be zero or more characters.
 
-**appName()**
-  - Returns the application name.
 
-**product()**
-  - Returns the product name of the browser engine.
-
-**platforrm()**
-  - It returns the operating system name.
-
-**langauge()**
-  - It returns the language of the browser.
-
-**javaEnabled()**
-  - Check whether java enabled or not.
-
+**Template Strings**
+- Templates are strings enclosed in backticks.
+- Template String provide a way to interpolate variables and expressions into strings.
+- Template Strings are also called Template Literals.
+- Templates allow multi lines.
 
 ```
-  <p id = "value1"> </p>  
-  <p id = "value2"> </p>  
-  <p id = "value3"> </p>  
-  <p id = "value4"> </p>  
-  <p id = "value5"> </p>  
-  <p id = "value6"> </p>  
-
-  <script>  
-  document.getElementById("value1").innerHTML = navigator.cookieEnabled;  
-  document.getElementById("value2").innerHTML = navigator.javaEnabled;  
-  document.getElementById("value3").innerHTML = navigator.appName;  
-  document.getElementById("value4").innerHTML = navigator.product;  
-  document.getElementById("value5").innerHTML = navigator.platform;  
-  document.getElementById("value6").innerHTML = navigator.language; 
-  </script>  
+`This is a template string`
 ```
 
+Created using 2 ways
+1. String literal
+2. Object (new keyword)
+
+```
+let name = 'kanish';  // String literal
+
+var stringname = new String("kanish");   // String Object
+
+```
 
 ---
 
-## 5. Popup Alert
-  - It is used to display alert message to the user.
+## String Interpolation
 
-**alert()**
-  - Show popup to display something. Click OK to proceed.
+Method to inject a variable or expression intto a string.
 
-  ```
-    <script type="text/javascript">  
-    function msg(){  
-     alert("Hello Alert Box");  
-    }  
-    </script>  
-    <input type="button" value="click" onclick="msg()"/>  
-  ```
-
-**confirm()**
-  - Show popup to get user confirmation. Click OK or cancel to proceed.
-
-  ```
-  <script type="text/javascript">  
-    function msg(){  
-     confirm("Do you want to continue?");  
-    }  
-    </script>  
-    <input type="button" value="click" onclick="msg()"/>  
-  ```
-
-**prompt()**
-  - Show popup to get user input. Click OK to proceed.
-
-- It returns the value entered by the user.
-
-  ```
-  <script type="text/javascript">  
-    function msg(){  
-     prompt("Enter your name:");  
-    }  
-    </script>  
-    <input type="button" value="click" onclick="msg()"/>  
-  ```
----
-
-## 6. Timing Events
-  - Timing events are used to execute a function after a specified time interval.
+    const text = "Morning";
+    const greeting = `Good, ${text}!`;
+    console.log(greeting);
 
 
-**setTimeout()**
 
-  setTimeout(function, milliseconds)
-  - Executes a function, after waiting a specified number of milliseconds.
+## String Methods
 
-  - clearTimeout() is used to clear the execution
+        var text = "Kanishkumar";
 
+        document.getElementById("demo").innerHTML = text.length;   // 11
 
-  ```
-  <script>  
-  function msg()
-  {  
-      setTimeout(  
-        function(){  
-          alert("Welcome after 2 seconds")},2000);  
-    }  
-  </script>      
-  <input type="button" value="click" onclick="msg()"/>  
-  ```
+        document.getElementById("demo1").innerHTML = text.charAt(0);    // K
 
+        document.getElementById("demo2").innerHTML = text.charCodeAt(1);  // 97
 
-**setInterval()**
+        document.getElementById("demo3").innerHTML = text[0];   // K
 
-  setInterval(function, milliseconds)
-  - Same as setTimeout(), but repeats the execution of the function continuously.
+        document.getElementById("demo4").innerHTML = text.at(1);  // a
 
-  - clearInterval() is used to clear the execution
+        document.getElementById("demo5").innerHTML = text.slice(0,6);   // Kanish
 
+        document.getElementById("demo6").innerHTML = text.slice(-4, -1);  // uma
 
-  ```
-  <p id="demo"></p>
+        document.getElementById("demo7").innerHTML = text.substr(5,3); // (start, start+3)
 
-  <script>
-  const element = document.getElementById("demo");
+        document.getElementById("demo8").innerHTML = text.toUpperCase();  // toLowerCase()
 
-  setInterval(function() {element.innerHTML += "1"}, 1000);
-  </script>
-  ```
+        document.getElementById("demo9").innerHTML = text.concat(" ", "K");
 
---- 
+        document.getElementById("demo10").innerHTML = text.trim(); // trimStart(), trimEnd()
 
-## 7. Cookie 
+        document.getElementById("demo11").innerHTML = text.padStart(15, "-"); // pads upto given length  ----Kanishkumar
 
- - Cookies are used to store data on the client side.
+        document.getElementById("demo12").innerHTML = text.repeat(2); 
+
+        document.getElementById("demo13").innerHTML = text.replace("a", "-"); // replaceAll for all replacements
+
+        document.getElementById("demo14").innerHTML = text.split(""); // array of chars
+
+        document.getElementById("demo15").innerHTML = text.indexOf("a"); // indexOf(), lastIndexOf()
+        
+        document.getElementById("demo16").innerHTML = text.search("n");  
 
 
-**Cookie properties:**
+## Arrays
 
-  - Cookies are saved in name-value pairs.
+An array is a special variable, which can hold more than one value:
 
-  A cookie consists of the following components:
-  - Name
-  - Value
-  - Zero or more attributes (name/value pairs). 
-   
-   Attributes store information such as the cookie's expiration, domain, and flags (such as Secure and HttpOnly).
+        const array = [item1, item2, ... itemn];   
+
+- Declared using
+
+1. Direct creation
+
+        const language = ["html", "css"];
+
+2. Empty Arry
+
+        const language = [];
+        language[0] = "html";
+        language[1] = "css";
+
+3. Using new Array()
+        
+        const language = new Array("html", "css");
+
+- Access array elements using index
+- Access full array using array name
+- Use toString() to convert array to string
+- typeOf returns arrays as objects
 
 
-**Creation:** - 
+Array Methods:
 
-   ```js
-    document.cookie = "username = Kanish; path=/admin";
-  ```
+        const lang = ["html","css", "js"];
 
-**Deletion**
+        document.getElementById("demo").innerHTML = Array.isArray(lang);  // true
 
-  ```js
-    document.cookie = "username=;  path=/";
-  ```
+        document.getElementById("demo1").innerHTML = lang.length;  // 3
+
+        document.getElementById("demo2").innerHTML = lang.toString(); // html,css,js
+
+        document.getElementById("demo3").innerHTML = lang.at(2); // js
+
+        document.getElementById("demo4").innerHTML = lang.join(" - "); // connector
+
+        document.getElementById("demo5").innerHTML = lang.push("mongodb");
+
+        document.getElementById("demo6").innerHTML = lang.pop(); // removes last element
+
+        document.getElementById("demo7").innerHTML = lang.shift(); // removes first element and shifts all other elements to left
+
+        document.getElementById("demo8").innerHTML = lang.unshift("react"); // adds new element at beginning and shift other elements to right
+
+        document.getElementById("demo9").innerHTML = lang.sort(); // ascending
+
+        document.getElementById("demo10").innerHTML = lang.reverse(); // descending
+
+
+sort()  // modify the existing array itself
+toSorted()  // craetes new array and sort it
 
 ---
 
+## Object Types:
+
+- Object literal is a list of property names:values inside curly braces {}.
+
+1. Empty object:
+
+        const person = {};
+
+        person.firstName = "Kanish";
+        person.lastName = "Kumar";
+ 
+ 2. Using new object()
+
+        const person = new Object();
+        person.firstName = "Kanish";
+        person.lastName = "Kumar";
+
+3. Object Constructor:
+
+        const person (first, last){
+            this.firstName = first;
+            this.lastName = last;
+        }
+
+        const s1 = new person("Kanish", "Kumar");        
+        const s2 = new person("Ajay", "Saran");
+
+Properties:
+
+1. Add a new property:
+
+        Object.defineProperty(person, "age", {value:"21"})
+
+2. getOwnPropertyNames()
+    
+    Returns all the property names
+
+            Object.getOwnPropertyNames(person);
+
+3. Functions inside object 
+
+        var person = {
+            firstName: "Kanish",
+            lastName: "Kumar",
+            age: 30,
+            fullName: function(){
+                return this.firstName + " " + this.lastName		
+            }
+        }
+
+        person["fullName"]() ; // Kanish Kumar
+
+3. Delete an object property
+
+        delete person.age  // returns true
+
+---
+
+## JSON
+
+- Java Script Object Notation
+
+- JSON can be easily converted to JS objects
+
+        converting JSON strings into JavaScript objects:  JSON.parse()
+
+        converting an object into a JSON string:  JSON.stringify() 
+
+JSON object
+
+        myObj = {"name":"Kanish", "age":21 }
+
+        myObj = `{"name":"Kanish", "age":21 }`  // json string
+
+        myObj = JSON.parse(myJSON);  // to convert as js object
+
+
+
+    
