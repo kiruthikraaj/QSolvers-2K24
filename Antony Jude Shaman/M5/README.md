@@ -25,7 +25,16 @@
 - [this keyword](#this-keyword)
 - [Arguments vs Parameters](#arguments-vs-parameters)
 - [Overloading functions](#overloading-functions)
+
   - [Solution for function overloading](#solution-for-function-overloading)
+
+- [JS Linting](#js-linting)
+
+  - [What is Linting?](#what-is-linting)
+  - [ESLint](#eslint)
+  - [Setting up ESLint](#setting-up-eslint)
+
+- [Currying in JavaScript](#currying-in-javascript)
 
 ### JS Functions
 
