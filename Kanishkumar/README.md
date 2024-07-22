@@ -1,347 +1,392 @@
-## Operators:
+# Conditional Statements
 
-## 1. Unary Operator:
+Conditional statements are used to handle the statements based on the conditions.
 
-- Unary operator is an operator that takes only one operand. It can be prefix or postfix.
+`If statement`:
+  
+If statement is used to execute a condition.
 
+```
+    var age = 29;
 
-    `Unary Plus`:
-    
-    Unary plus operator is used to convert an operand to a number data type. 
-
-    
-        let a = '7';
-        document.getElementById("demo1").innerHTML = typeof a;   // string
-        document.getElementById("demo2").innerHTML = typeof +a;  // number
-
-    `Unary Minus`:
-
-    The operator converts a value into a number and negates it
-
-        let x = '7'
-        let y = -x                 // -7 
-
-
-    `Increment operator (prefix)`:
-
-    - The operator uses to inserts one value before the incremental value by one
-
-            var x =  2;
-            document.getElementById("demo").innerHTML = ++x;   // 3
-
-
-    `Decrement operator (prefix)`:
-
-    - The operator uses to subtracts one value before the incremental value by one
- 
-            var x = 2;
-            document.getElementById("demo").innerHTML = --x;   // 1
-
-    `Increment operator (postfix)`:
-
-    - The operator uses to inserts one value after the incremental value by one
-
-            var x = 2;
-            document.getElementById("demo").innerHTML = x++;   // 2
-
-   `Decrement operator (postfix)`:
-
-    - The operator uses to subtracts one value after the incremental value by one
-
-            var x = 2;
-            document.getElementById("demo").innerHTML = x--;   // 2
-
----
-
-
-## 2. Bitwise Operator:
-
-`& Operator (AND)`:
-
-    - Only if both bits are 1, set resultant as 1.
-
-    let a = 5; // 0101
-    let b = 3; // 0011
-    let result = a & b; // 0001 (1)
-    console.log(result); // Output: 1
-
-
-`| operator (OR)`:
-    
-    - If any 1 bits is 1, set resultant as 1.
-
-`~ operator (NOT)`:
-    
-    - Invert all the bits.
-
-`^ operator (XOR)`:
-
-    - If both bits are same, resultant is 0.
-
-`<< Left shift operator`:
-
-    - Shifts the operands left by n bits.
-
-      Example: 3<<2 
-
-            3 = 0000 0011  (shift towards left by 2 bits)
-            -------------
-            12 = 0000 1100
-
-`>> Right shift operator`:
-
-    - Shifts the operands right by n bits.
-
-      Example: 5>>2 
-      
-            5 = 0000 0101 (shift towards right by 2 bits)
-            -------------
-            1 = 0000 0001
-
-`>>> Unsigned right shift operator`:
-
-Zero-fill right shift - The bits are shifted to the right and those excess bits are discarded, while 0 bit is added from the left.
-
-
-    const a = 5; //  00000101
-    const b = 2; //  00000010
-
-    console.log(a >>> b); //  00000001   // 1
-
----
-
-## 3. Boolean Operators:
-
-`AND (&&)`:
-
-Returns only if both condition satisfies.
-
-        let hour = 12;
-        let minute = 30;
-
-        if (hour == 12 && minute == 30) {
-        alert( 'The time is 12:30' );
-        }
-
-`OR (||)`:
-
-Returns if one of the condition satisfies.
-
-        let hour = 11;
-
-        if (hour== 12 || hour == 11){
-            alert("The time is either 12 or 11);
-        }
-
-`NOT (!)`:
-
-Returns the opposite of the condition.
-
-    let name = "kanish";
-
-    if(name!=""){
-        alert("Name is not empty");
+    if (age >= 18){
+        console.log("You are eligible to vote");
     }
 
----
+```
 
-## 4. Arithmetic operators:
+`If else statement`:
+   
+If statement is used to execute a condition.
 
-`Addition`:
+```
+    var age = 29;
 
-Produces the sum of two operators.
+    if (age >= 18){
+        console.log("You are eligible to vote");
+    }
+    else{
+        console.log("You are not eligible to vote");
+    }
 
-        Number + Number -> addition
-                1 + 2            // 3
+```
 
-        Boolean + Number -> addition
-                true + 1        // 2
-
-        Boolean + Boolean -> addition
-                false + false   // 0
-
-        Number + String -> concatenation
-                5 + "demo"     // "5demo"
-
-        String + Boolean -> concatenation
-                "k" + false    // "kfalse"
-
-        String + String -> concatenation
-                "kan" + "ish"  // "kanish"
-
-`Subtraction`:
-
-The subtraction operator subtracts the two operands, producing their difference.
-
-        5 - 3                 //  2
-        3 - 5                 // -2
-        "kanish" - 3             // NaN
-
-
-`Multiplication`:
-
-The multiplication (*) operator produces the product of the operands.
-
-        console.log(3 * 4);    // 12
-
-        console.log(-3 * 4);   // -12
-
-        console.log('3' * 2);  // 6
-
-        console.log('foo' * 2);   //Nan
-
-`Division`:
-
-Divides two operands.
-
-        1 / 2                  // returns 0.5
-        1.0 / 2.0              // returns 0.5
-        2.0 / 0                // returns Infinity
-        2.0 / -0.0             // returns -Infinity
-
----
-
-## 5. Relational Operators:
-
-A relational operator compares its operands and returns a Boolean value based on comparison.
-
-`in operator`:
-
-The in operator returns true if the specified property is in the specified object.
-
-        propNameOrNumber in objectName
-
-
-    Example:
-
-        const letter = ["A", "B", "C"];
-        0 in letter; // returns true
-        6 in letter; // returns false
-
-`instanceOf operator`:
-
-The instanceof operator returns true if the specified object is of the specified object type. The syntax is:
-
-        objectName instanceof objectType
-
-    Example:
-
-        <p id="demo"></p>
- 
-        const letter = ["A", "B", "C"];
-
-        document.getElementById("demo").innerHTML =
-            (letter instanceof Array)                      // True 
-
----
-
-## 6. Equality Operator:
-
-The equality (==) operator checks whether its two operands are equal, returning a Boolean result.
-
-            console.log(1 == 1);
-            //true
-
-            console.log('hello' == 'hello');
-            //true
-
-            console.log('1' == 1);
-            //true
-
-            console.log(0 == false);
-            //true
-
- `Strict Equality ====`:
+`else if statement`:
     
-    The strict equality operator always considers values and the types.
+Else if statement is used to execute multiple alternate conditions.    
 
-            console.log(1 === 1);
-            //true
+```
 
-            console.log('hello' === 'hello');
-            //true
+    if (condition1)
+    statement1
+    else if (condition2)
+    statement2
+    else if (condition3)
+    statement3
+    .
+    .
+    .
+    else
+    statementN
 
-            console.log('1' === 1);
-            //false
+```
 
-            console.log(0 === false);
-            //false
+# Looping Statements:
 
----
+1. `for loop`:
 
-## 7. `Conditional Operator`:
+    For loop repeats until a specific condition is satisfied.
 
-A ternary operator evaluates a condition and executes a block of code based on the condition.
-    
-            condition ? expression1 : expression2.
-
-        Example:
-
-        function Voting(age) {
-            return age >= 18 ? 'yes' : 'no';
+        for (initialization; condition; increment)
+        {
+        // statement
         }
 
+Example:
+
+        var sum=0;
+        for(i=0; i<=10; i++)
+        {
+            sum = sum+i;
+        }
+        console.log(sum); // 55
+
+        ---
+
+        var i = 2; 
+        for(; i<4; i++){   // initialize outside for loop
+            console.log(i);
+        }
+
+        ---
+
+        var i = 2;
+        for(; ;){           // infinite loop
+            console.log(i);
+        }
+
+
+Printing array elements in for loop:
+
+        // print array elements
+        const courses = ['html', 'css' , 'js'];
+        for(let i=0; i<courses.length; i++)
+        {
+            console.log(courses[i]);
+        }
+
+
+`Nested for loop:`
+
+It contains a for loop inside another for loop.
+
+
+
+        for (let i = 0; i < 5; i++) {
+            let line = ''
+            for (let j = 0; j <=i; j++) 
+                {
+                    line += i + "\t";
+                }
+                console.log(line);
+        }
+
+
 ---
 
-## 8. `Assignment Operator`:
 
-The assignment (=) operator is used to assign a value to a variable or property.
+2. `while loop`:
 
+- The while statement creates a loop that executes a specified statement as long as the test condition evaluates to true.
+- It is also called as entry controlled loop.
 
-        | **Operation**              | **Syntax** |
-        |----------------------------|------------|
-        | Addition Assignment        | `a += b`   |
-        | Subtraction Assignment     | `a -= b`   |
-        | Multiplication Assignment  | `a *= b`   |
-        | Division Assignment        | `a /= b`   |
-        | Remainder Assignment       | `a %= b`   |
-        | Exponentiation Assignment  | `a **= b`  |
+Syntax:
+    
+    while (condition){
+        statement
+    }
 
 
 Example:
 
-            let x = 2;
-            const y = 3;
+        var sum = 0
+        var num = 12345
+        while(num!=0){
+            rem = num%10;
+            sum = sum * 10 + rem; 
+            num = Math.floor(num / 10);
 
-            console.log(x);
-            //  2
+        }
+        console.log(sum); // 54321
 
-            console.log((x = y + 1)); 
-            //  4
+3. `do while loop`:
 
-`Left Shift Assignment` (<<=):
-
-Shifts the operands left by n bits and assign the value to left operand.
-
-        let x = 5; // 0000 0101
-        x <<= 1;  // 0000 1010, x is now 10
+    - Do while loop will execute the statements atleast once. 
+    - It is called Exit controlled loop.
 
 
-`Right Shift Assignment` (>>=):
+Syntax:
 
-Shifts the operands right by n bits and assign the value to left operand.
+        do {
+            // Statements
+        }
+        while(conditions)
 
-        let x = 10; // 0000 1010
-        x >>= 1;   // 0000 0101, x is now 5
+Example:
+
+        let i = 1;
+        do {
+        console.log(i);
+        i++;
+        } while (i <= 5);  // while loop at end ensures stmt runs atleast once.
+
+
+Getting User Input using do while:
+
+        let input;
+        do {
+        input = prompt("Enter a number between 1 and 10:");
+        } while (input < 1 || input > 10);
+        console.log("You entered: " + input);
 
 ---
 
-## 9.`Comma operator`:
+`For in loop`:
+    
+    The JavaScript for in statement loops through the properties of an Object:
 
-The comma (,) operator evaluates each of its operands (from left to right) and returns the value of the last operand.
+Syntax:
 
-    expr1, expr2 ...
+            for (key in object) {
+            // code block
+            }
 
-Example: 
-            
-        const a = 1, b = 2;
+
+Example:
+
+        const student = {fname:"Kanish", lname:"Kumar", age:22}; 
+
+        let txt = "";
+        for (let x in student) {
+        txt += student[x] + " ";
+        }
+
+
+For in loop can also used to access array elements.
+
+      
+        const numbers = [1,2,3,4,5];
+
+        let txt = "";
+        for (let x in numbers) {
+        txt += numbers[x];
+        }
 
 ---
 
-## 10. `Spread Operator`:
+`For of loop`:
 
-Spread (...) : Allows an iterable to expand in places where 0+ arguments are expected
+For of is used to iterate over an iterable. 
+- It can be strings as well as with arrays, set and maps.
 
-        const values = [3,6,9];
 
-        console.log(...values); // 3,6,9
+Syntax:
+
+        for variable of iterable{
+            //code block
+        }
+
+
+Example (using arrays):
+
+        const numbers = ["One", "Two", "Three"];
+
+        let text = "";
+        for (let x of numbers) {
+        text += x;
+        }
+
+
+Example (using strings):
+
+        const name = "Kanishkumar";
+
+        let text = "";
+        for (let x of name) {
+        text += x;
+        }
+
+---
+
+
+# Jump Statements:
+
+- The break statement breaks the loop.
+
+- The continue statement skip current iteration and moves to next in a loop.
+
+
+`Break`:
+
+        let text = "";
+        for (let i = 0; i < 10; i++) {
+        if (i === 3) 
+        { 
+            break; 
+        }
+        text += "The number is " + i + "<br>";   // 0 1 2
+
+        }
+
+
+`Continue`:
+
+        let text = "";
+        for (let i = 0; i < 10; i++) {
+        if (i === 3) 
+        { 
+            continue; 
+        }
+        text += "The number is " + i + "<br>";   // 0 1 2 4 5 6 7 8 9
+
+        }
+
+---
+
+`Return Statement`:
+The return statement stops the execution of a function and returns a value.
+
+
+        return value;
+
+
+Example:
+
+    function Hello(){
+            return "Hello";
+    }
+
+
+---
+# Other Statements:
+
+`Switch case statement`
+
+It is used to execute block of codes depending on various cases.
+
+- It is associated with break statements. Or else it will print all the cases.
+- It has a default case value.
+
+
+Syntax:
+
+        switch (num) {
+        case value1:
+            statement1;
+            break;
+        case value2:
+            statement2;
+            break;
+        ...
+        default:
+            defaultStatement;
+            break;
+        }
+
+Example:
+
+        let score = 85;
+        let grade; 
+
+        switch (true) {
+        case score >= 90:
+            grade = "A";
+            break;
+        case score >= 80:
+            grade = "B";
+            break;
+        case score >= 70:
+            grade = "C";
+            break;
+        case score >= 60:
+            grade = "D";
+            break;
+        default:
+            grade = "F";
+        }
+
+        console.log(grade);   // Grade is B
+
+
+
+Multiple cases with identical output:
+
+
+        let result = "";
+        switch (val) {
+        case 1:
+        case 2:
+        case 3:
+            result = "1, 2, or 3";
+            break;
+        case 4:
+            result = "4 alone";
+        }
+
+Here 1,2,3 will give same o/p.
+
+
+---
+
+
+`With statement`: (Not recommeded)
+
+With keyword is used as a kind of shorthand for referencing an object's properties or methods
+
+        with (expression)
+            statement
+
+
+Example:
+
+        let car = {color: 'red'}
+        with(car){
+        console.log(color)  // red
+        }
+
+    But, if a variable already defined in parent scope, it will overridden.
+
+        let color = 'blue'
+        let car = {color: 'red'}
+        with(car){
+        console.log(color)  // red
+        }
+
+
+Why with statement depreciated?
+
+- Poor readability
+- Scope leak
+- Performance challenges
+
+One Alternative method for with statement is to use `destructuring assignment` 
