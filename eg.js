@@ -43,3 +43,17 @@ function outer() {
     console.log(this);
   };
 }
+
+// function hello() {
+//   world();
+//   // return "Hello";
+//   console.log("Hello");
+// }
+
+// function world() {
+//   hello();
+//   // return "World";
+//   console.log("World");
+// }
+
+// console.log(hello() + " " + world());

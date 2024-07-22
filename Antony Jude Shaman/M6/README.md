@@ -249,8 +249,7 @@ copy.age = 22;
 console.log(person); // { name: "Antony", age: 22 }
 ```
 
-> [!IMPORTANT]
-
+> [!IMPORTANT]  
 > When we copy a reference data type, we are copying the reference to the object, not the object itself. So, any changes made to the copy will affect the original object.
 > To avoid this, we can use `Object.assign()` or the spread operator (`...`).
 >
@@ -381,7 +380,7 @@ console.log(
 ```
 
 > [!WARNING]
-
+>
 > - The `typeof` operator returns `"object"` for `array` and `null`.
 > - To check if a variable is an array, we can use `Array.isArray()`.
 >
@@ -427,15 +426,11 @@ Global context end
 
 - The call stack for the above code will be:
 
-```javascript
-|---------------------------|
-| Second Execution Context  |
-|---------------------------|
-| First Execution Context   |
-|---------------------------|
-| Global Execution Context  |
-|---------------------------|
-```
+| `Call Stack`             |
+| ------------------------ |
+| Second Execution Context |
+| First Execution Context  |
+| Global Execution Context |
 
 ### Scope Chain Augmentation
 
@@ -475,4 +470,4 @@ console.log(c); // ReferenceError: c is not defined
 
 > [!WARNING]
 >
-> - Variables declared with `var` are hoisted to the top of the function, while variables declared with `let` and `const` are not hoisted.
+> Variables declared with `var` are hoisted to the top of the function, while variables declared with `let` and `const` are not hoisted.
