@@ -8,7 +8,7 @@ If statement is used to execute a condition.
 
 ```
     var age = 29;
-
+`
     if (age >= 18){
         console.log("You are eligible to vote");
     }
