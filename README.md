@@ -1,4 +1,4 @@
-# Milelstone 3 : Operators.
+# Milestone 3 : Operators.
 ## Unary Operator:
 - Unary operator works only on a single operand.
 - `Unary Plus (+)` :It converts a operand into a number.
