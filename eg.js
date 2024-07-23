@@ -1,59 +1,45 @@
-function change(person) {
-  person = { ...person, name: "Jude" };
-  console.log(person); // { name: 'Jude', age: 21 }
-}
-
-let person = { name: "Antony", age: 21 };
-
-change(person);
-
-console.log(person); // { name: 'Antony', age: 21 }
-
-let num = 10;
-
-let str = "Hello";
-
-let bool = true;
-
-let arr = [1, 2, 3];
-
-// let a;
-
-let b = null;
-
-// console.log(
-//   typeof num,
-//   typeof str,
-//   typeof bool,
-//   typeof arr,
-//   typeof person,
-//   typeof a,
-//   typeof b
-// ); // number string boolean object object undefined object
-
-let a = 10;
-
-function outer() {
-  let b = 20;
-
-  this.inner = function () {
-    let c = 30;
-
-    console.log(a, b, c);
-    console.log(this);
-  };
-}
-
-// function hello() {
-//   world();
-//   // return "Hello";
-//   console.log("Hello");
+// function getSize(obj) {
+//   return new TextEncoder().encode(JSON.stringify(obj)).length;
 // }
 
-// function world() {
-//   hello();
-//   // return "World";
-//   console.log("World");
-// }
+// const name = "abc";
+// console.log(getSize(name)); // 5
 
-// console.log(hello() + " " + world());
+// const num = 123;
+// console.log(getSize(num)); // 3
+
+// const bool = true;
+// console.log(getSize(bool)); // 4
+
+// const obj = { name: "abc" };
+// console.log(getSize(obj)); // 14
+
+// const arr = [1, 2, 3];
+// console.log(getSize(arr)); // 7
+
+// const func = function () {
+//   return "abc";
+// };
+
+// console.log(getSize(func)); // 0
+
+// const n = null;
+// console.log(getSize(n)); // 4
+
+// const u = undefined;
+// console.log(getSize(u)); // 0
+
+// Constructor function
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+let person = { name: "Antony" };
+
+let person2 = person;
+
+// if the person is set to null, even though the reference of person is lost, the object is still referenced by person2
+person = null;
+
+console.log(person2); // Output: { name: 'Antony' }
