@@ -1,392 +1,640 @@
-# Conditional Statements
+# JS Functions:
 
-Conditional statements are used to handle the statements based on the conditions.
+A Function is a block of code that performs a specific task.
+- It can be used as  reusable components
 
-`If statement`:
-  
-If statement is used to execute a condition.
+`Function declaration`:
 
-```
-    var age = 29;
-`
-    if (age >= 18){
-        console.log("You are eligible to vote");
-    }
+Function declaratin (also called as function definition or function statement)
+- It contains
+- Function keyword
+- Function name (user defined)
+- Function parameters
+- Function body inside {}
 
-```
 
-`If else statement`:
-   
-If statement is used to execute a condition.
-
-```
-    var age = 29;
-
-    if (age >= 18){
-        console.log("You are eligible to vote");
-    }
-    else{
-        console.log("You are not eligible to vote");
-    }
-
-```
-
-`else if statement`:
-    
-Else if statement is used to execute multiple alternate conditions.    
-
-```
-
-    if (condition1)
-    statement1
-    else if (condition2)
-    statement2
-    else if (condition3)
-    statement3
-    .
-    .
-    .
-    else
-    statementN
-
-```
-
-# Looping Statements:
-
-1. `for loop`:
-
-    For loop repeats until a specific condition is satisfied.
-
-        for (initialization; condition; increment)
-        {
-        // statement
+        function Addition(number1, number2) { 
+            return number1 + number2; 
         }
 
-Example:
+`Function Expression`
 
-        var sum=0;
-        for(i=0; i<=10; i++)
-        {
-            sum = sum+i;
-        }
-        console.log(sum); // 55
+Function expression is same as function declaration except the function name is written as a variable.
 
-        ---
-
-        var i = 2; 
-        for(; i<4; i++){   // initialize outside for loop
-            console.log(i);
-        }
-
-        ---
-
-        var i = 2;
-        for(; ;){           // infinite loop
-            console.log(i);
-        }
-
-
-Printing array elements in for loop:
-
-        // print array elements
-        const courses = ['html', 'css' , 'js'];
-        for(let i=0; i<courses.length; i++)
-        {
-            console.log(courses[i]);
-        }
-
-
-`Nested for loop:`
-
-It contains a for loop inside another for loop.
-
-
-
-        for (let i = 0; i < 5; i++) {
-            let line = ''
-            for (let j = 0; j <=i; j++) 
-                {
-                    line += i + "\t";
+        let Addition = function(number1, number2) { 
+                    return number1 + number2; 
                 }
-                console.log(line);
-        }
 
+`Functin Invocation`:
 
----
+It can be invoked when
+- Any event occurs
+- Called from JS code
+- Automatically invoked
 
-
-2. `while loop`:
-
-- The while statement creates a loop that executes a specified statement as long as the test condition evaluates to true.
-- It is also called as entry controlled loop.
-
-Syntax:
-    
-    while (condition){
-        statement
-    }
-
-
-Example:
-
-        var sum = 0
-        var num = 12345
-        while(num!=0){
-            rem = num%10;
-            sum = sum * 10 + rem; 
-            num = Math.floor(num / 10);
-
-        }
-        console.log(sum); // 54321
-
-3. `do while loop`:
-
-    - Do while loop will execute the statements atleast once. 
-    - It is called Exit controlled loop.
-
-
-Syntax:
-
-        do {
-            // Statements
-        }
-        while(conditions)
-
-Example:
-
-        let i = 1;
-        do {
-        console.log(i);
-        i++;
-        } while (i <= 5);  // while loop at end ensures stmt runs atleast once.
-
-
-Getting User Input using do while:
-
-        let input;
-        do {
-        input = prompt("Enter a number between 1 and 10:");
-        } while (input < 1 || input > 10);
-        console.log("You entered: " + input);
-
----
-
-`For in loop`:
-    
-    The JavaScript for in statement loops through the properties of an Object:
-
-Syntax:
-
-            for (key in object) {
-            // code block
-            }
-
-
-Example:
-
-        const student = {fname:"Kanish", lname:"Kumar", age:22}; 
-
-        let txt = "";
-        for (let x in student) {
-        txt += student[x] + " ";
-        }
-
-
-For in loop can also used to access array elements.
-
-      
-        const numbers = [1,2,3,4,5];
-
-        let txt = "";
-        for (let x in numbers) {
-        txt += numbers[x];
-        }
-
----
-
-`For of loop`:
-
-For of is used to iterate over an iterable. 
-- It can be strings as well as with arrays, set and maps.
-
-
-Syntax:
-
-        for variable of iterable{
-            //code block
-        }
-
-
-Example (using arrays):
-
-        const numbers = ["One", "Two", "Three"];
-
-        let text = "";
-        for (let x of numbers) {
-        text += x;
-        }
-
-
-Example (using strings):
-
-        const name = "Kanishkumar";
-
-        let text = "";
-        for (let x of name) {
-        text += x;
-        }
-
----
-
-
-# Jump Statements:
-
-- The break statement breaks the loop.
-
-- The continue statement skip current iteration and moves to next in a loop.
-
-
-`Break`:
-
-        let text = "";
-        for (let i = 0; i < 10; i++) {
-        if (i === 3) 
-        { 
-            break; 
-        }
-        text += "The number is " + i + "<br>";   // 0 1 2
-
-        }
-
-
-`Continue`:
-
-        let text = "";
-        for (let i = 0; i < 10; i++) {
-        if (i === 3) 
-        { 
-            continue; 
-        }
-        text += "The number is " + i + "<br>";   // 0 1 2 4 5 6 7 8 9
-
-        }
-
----
 
 `Return Statement`:
-The return statement stops the execution of a function and returns a value.
+
+When JavaScript reaches a return statement, the function will stop executing.
 
 
-        return value;
+        function myFunction(a, b) {
+            return a * b;
+        }
+
+`() Operator`:
 
 
-Example:
+        function MulBy100(x) {
+        return x * 100;
+        }
 
-    function Hello(){
-            return "Hello";
+        let value = MulBy100(10);  // function call
+
+---
+
+`Parameters`:
+
+Parameters are the variables passed into a function.
+
+        const Student = {
+        name : "kanish",
+        age: 22,
+        email : "kanish@gmail.com"
+        }
+
+        function printName(name){  // name is the parameter
+        console.log(name);
+        }
+
+        printName(Student.name);  // kanish 
+
+
+`Argument`:
+
+Arguments are the values passed inside the function's parameter.
+
+        const Student = {
+        name : "kanish",
+        age: 22,
+        email : "kanish@gmail.com"
+        }
+
+        function printName(name){ 
+        console.log(name);
+        }
+
+        printName(Student.name);  // Student.name is the argument
+
+
+`Passing Multiple Parameters`:
+
+Passing more than 1 parameters into a function
+
+const Student = {
+    name : "kanish",
+    age: 22,
+    email : "kanish@gmail.com"
     }
+
+    function printData(name, age, email){ 
+        console.log(name);
+        console.log(age);
+        console.log(email);
+    }
+
+    printData(Student.name, Student.age , Student.email);  
 
 
 ---
-# Other Statements:
 
-`Switch case statement`
 
-It is used to execute block of codes depending on various cases.
+`Passing an entire Object as parameter`:
 
-- It is associated with break statements. Or else it will print all the cases.
-- It has a default case value.
+Instead of passing an object property, passing an entire object as parameter
 
+        const Student = {
+        name : "kanish",
+        age: 22,
+        email : "kanish@gmail.com"
+        }
+
+        function printData(obj){ 
+                console.log(obj);
+        }
+
+        printData(Student);  
+
+        // { name: 'kanish', age: 22, email: 'kanish@gmail.com' }
+
+---
+
+
+`Default Parameters`:
+
+When no arguments is passed, default value will get executed.
+        const Student = {
+        name : "kanish",
+        age: 22,
+        }
+
+        function printData(obj = { name :"default", age : 5  }){ 
+                console.log(obj);
+        }
+
+        printData(Student);  //     { name: 'kanish', age: 22 }
+        
+        printData();   //     { name: 'default', age: 5 }
+
+
+---
+
+
+`Rest parameters`:
+
+We can use spread operator to handle indefinite number of parameters to be passed.
+
+
+        function printData(...list){ 
+                console.log(list);
+        }
+
+        printData('kanish', 'kumar', 'ajay', 'antony');
+
+        // [ 'kanish', 'kumar', 'ajay', 'antony' ]
+
+        printData() // []
+
+
+
+---
+
+`Passing function within another function`:
+
+We can create a function inside another function in Nested style.
+
+        function getFullName(first, last){
+        
+        function join(first, last){
+                const name = first + ' ' + last;
+        return name;
+        }
+
+        return join(first, last);
+
+        }
+
+
+        let name = getFullName('Kanish', 'kumar');
+        console.log(name);
+
+`Arrow function`:
+
+Array Function simplifies the syntax of creating a function.
+- function keyword is removed
+- It uses => operator.
+
+                const FullName = (first, last) => {
+                return first + ' '+last;
+                }
+
+                console.log(FullName('Kanish', 'Kumar'));
+
+
+---
+
+`Destructuring Assignment`:
+
+It is used to unpack the values from an array or from an object.
+
+        const person = {
+        name: 'Kanish',
+        age: 22,
+        gender: 'male'    
+        }
+
+        // destructuring assignment
+        let { name, age, gender } = person;
+
+        console.log(name); // Kanish
+        console.log(age); // 22
+        console.log(gender); // male
+
+
+Using Normal method:
+
+        const name = ['one', 'two', 'three', 'four']
+        console.log(name[0], name[1]);
+
+By destructuring array:
+
+        let [a, b] = ['one', 'two', 'three', 'four'] 
+        console.log(a, b);
+
+
+---
+
+To access 1 and 3 only (skipping 2nd elemnt)
+
+        const name = ['one', 'two', 'three', 'four']
+        console.log(name[0], name[2]);
+
+Using Array Destructuring
+
+        let [a, , c] = ['one', 'two', 'three', 'four'] // skips element 2
+        console.log(a, c);
+
+---
+
+`Using Spread Operator`:
+
+Using Spread Operator to destructure the entire array
+
+        let [...a] = ['one', 'two', 'three', 'four'] 
+
+        console.log(a);
+
+        // [ 'one', 'two', 'three', 'four' ]
+
+
+---
+
+`Destructuring assignment in an Object`:
+
+Like arrays, we can also destructure an object in javscript.
+
+
+        let marks = { x: 89, y: 94, z: 97 };
+        const { x, y, z } = marks; // destructuring object
+
+        console.log(x);
+        console.log(y);
+        console.log(z); 
+
+---
+
+`Self Inoking Function`:
+
+A self-invoking function is a nameless (anonymous) function that is invoked immediately after its definition.
+
+- It is not called. Invoked automatically.
 
 Syntax:
 
-        switch (num) {
-        case value1:
-            statement1;
-            break;
-        case value2:
-            statement2;
-            break;
-        ...
-        default:
-            defaultStatement;
-            break;
-        }
+                (function () {
+                // body
+                })();
 
 Example:
 
-        let score = 85;
-        let grade; 
 
-        switch (true) {
-        case score >= 90:
-            grade = "A";
-            break;
-        case score >= 80:
-            grade = "B";
-            break;
-        case score >= 70:
-            grade = "C";
-            break;
-        case score >= 60:
-            grade = "D";
-            break;
-        default:
-            grade = "F";
-        }
+Without Paraemters:
 
-        console.log(grade);   // Grade is B
+        (function() {
+                console.log("Hello I am Kanishkumar");
+        }) ();
 
+With Parameters:
 
-
-Multiple cases with identical output:
-
-
-        let result = "";
-        switch (val) {
-        case 1:
-        case 2:
-        case 3:
-            result = "1, 2, or 3";
-            break;
-        case 4:
-            result = "4 alone";
-        }
-
-Here 1,2,3 will give same o/p.
+        (function(a, b) {
+                console.log(a + b);
+        })(2, 3);
 
 
 ---
 
+`Function Overloading`:
 
-`With statement`: (Not recommeded)
+Unlike other programming languages, JavaScript Does not support Function Overloading.
 
-With keyword is used as a kind of shorthand for referencing an object's properties or methods
+Overloading is about the same function having different signatures. It is compiler time polymorphism.
 
-        with (expression)
-            statement
-
+JavaScript does not have compile-time polymorphism in the same way as statically typed languages like C++ or Java.
 
 Example:
 
-        let car = {color: 'red'}
-        with(car){
-        console.log(color)  // red
+        function print(){
+        return "Hi";
         }
 
-    But, if a variable already defined in parent scope, it will overridden.
+        function print(name){
+        return "Hi"+ name;
+        }
 
-        let color = 'blue'
-        let car = {color: 'red'}
-        with(car){
-        console.log(color)  // red
+        function print(name, age){
+        return "Hi "+name +  " "+ age;
         }
 
 
-Why with statement depreciated?
+        console.log(print());  // Hi undefined undefined
 
-- Poor readability
-- Scope leak
-- Performance challenges
 
-One Alternative method for with statement is to use `destructuring assignment` 
+In the above example, if we try to overload a method, it will get overriden by the latest one, hence by default it will consider only the 3rd case in above example. Hence method overloading is not directly possible. 
+
+Way to achieve Method overloading,
+
+1. Default Parameters and Type checking:
+
+        function print(name = "", age) {
+        if (name && age !== undefined) {
+                return "Hi " + name + " " + age;
+        } else if (name) {
+                return "Hi " + name;
+        } else {
+                return "Hi";
+        }
+        }
+
+        console.log(print()); // Hi
+        console.log(print("Kanish")); // Hi Kanish
+        console.log(print("Kanish", 22)); // Hi Kanish 22
+
+
+     Now based n the number of arguments, the function execution differs.
+
+
+---
+
+2. Arguments object:
+
+We can also use arguments object and based on its length, we can exhibit different behaviours.
+
+        function print() {
+        if (arguments.length === 0) {
+                return "Hi";
+        } else if (arguments.length === 1) {
+                return "Hi " + arguments[0];
+        } else if (arguments.length === 2) {
+                return "Hi " + arguments[0] + " " + arguments[1]";
+        }
+        }
+
+        console.log(print()); // Hi
+        console.log(print("Kanish")); // Hi Kanish
+        console.log(print("Kanish", 22)); // Hi Kanish 22
+
+
+---
+
+`Function Borrowing`:
+
+1. Call()
+
+
+The call() method in JavaScript allows you to invoke a function with a specific this value and arguments.
+
+
+
+        let name ={
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+        var printName = function(){
+        console.log(this.first + " "+ this.last);
+        }
+
+        printName.call(name);  //call
+
+`Multiple Objects`:
+
+        let name1 ={
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+        let name2 ={
+        first: 'Kumar',
+        last: 'Kanish'
+        }
+
+        var printName = function(){
+        console.log(this.first + " "+ this.last);
+        }
+
+        printName.call(name1);
+        printName.call(name2);
+
+
+`Passing Additional Parameters`:
+
+        Arguments can be passed directly into the function
+
+        let name ={
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+
+        var printName = function(city){
+        console.log(this.first + " "+ this.last + " "+ city);
+        }
+
+        printName.call(name, "Chennai");    // adding argumnet list
+        
+        // Kanish Kumar Chennai
+
+// The first argument is reference to this variable.
+// Second argument is the argument for function parameters.
+
+
+---
+
+2. apply() method:
+
+The apply() method is very handy if you want to use an array instead of an argument list.
+If we have more than 1 argument to be passed, this comes handy.
+
+Consider the previous example,
+
+If i want to add parameters, state and country also, then,
+
+       let name ={
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+        var printName = function(city, state, country){
+        console.log(this.first + " "+ this.last + " "+ city + " "+ state+" "+ country);
+        }
+
+        printName.apply(name, ['Chennai', 'TamilNadu', 'India']);  // array of values 
+
+        // Kanish Kumar Chennai TamilNadu India
+
+
+---
+
+3. Bind Method:
+
+- Used to bind and keep a copy of the method.
+- The bind() function creates a new bound function.
+- The bind() method creates a new function from an existing one.
+
+        let name = {
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+        var printName = function(city, state, country) {
+        console.log(this.first + " " + this.last + " " + city + " " + state + " " + country);
+        }
+
+        let newFunc = printName.bind(name, 'Chennai', 'TamilNadu', 'India'); 
+
+
+        newFunc(); 
+        // Output: Kanish Kumar Chennai TamilNadu India
+
+---
+
+
+`Curring Function`:
+
+- Currying in JavaScript is a process in which you can transform a function with multiple arguments into a sequence of nesting functions.
+
+- Currying is a transformation of functions that translates a function from callable as f(a, b, c) into callable as f(a)(b)(c).
+
+Example:
+
+
+        function Demo(a){
+            return function(b){
+                return function(c){
+                    if (a === b){
+                        if (b === c){
+                        return "Three values are equal";
+                        }
+                    }
+                    else{
+                        return "Three values are not equal";
+                    }
+                }
+            }
+        }
+
+        console.log(Demo(2)(3)(2));  // Three values are not equal
+        console.log(Demo(2)(2)(2));  // Three values are equal
+
+---
+
+`Why Curring function ?`:
+
+- It makes the function pure and less prone to errors and side effects.
+
+- It is used in functional programming to create a higher-order function.
+
+---
+
+
+`JS Linting`:
+
+- Linting is a process of analyzing code to identify and fix potential errors, enforce coding standards, and ensure consistency.
+
+`Linter`:
+
+- A linter is a tool that scans code for  errors and deviations from coding standards.
+
+`Different Linters`
+
+#### ESLint: 
+
+- Most widely used. 
+- It is highly configurable and supports plugins for various frameworks and libraries.
+
+- In ESLint we can configure our own rules as follows,
+
+        {
+            "rules": {
+                "semi": ["error", "always"],
+                "quotes": ["error", "double"]
+            }
+        }
+
+        This rule enforces the usage of semicolon and ensures it always has double quotes  for strings.
+
+
+        export default [
+            {
+                rules: {
+                    semi: ["error", "never"]
+                }
+            },
+            {
+                rules: {
+                    semi: ["warn", "always"]
+                }
+            }
+        ];
+
+- Defining a single role many time will overwrite the latest rule and get updated.
+
+
+#### JSHint: 
+
+It provides similar functionality but with different configuration options.
+
+#### JSLint: 
+
+It has fewer configuration options compared to ESLint and JSHint.
+
+
+---
+
+`Ignoring certain rules in ESLint`:
+
+        /* eslint-disable */       (block of rules)
+
+        // eslint-disable-next-line  (specific rule)
+
+We can comment the specific rule from the ESLint configuration. 
+
+
+---
+
+`ESLint Setup`:
+
+
+Install eslint:
+
+        npm install eslint --save-dev
+
+Initialize eslint:
+
+        npx eslint --init
+
+
+Define set of rules inside a file called `eslint.js`
+
+        module.exports = {
+        env: {
+            browser: true,
+        },
+        extends: [
+            'eslint:recommended',
+        ],
+
+        parserOptions: {
+        },
+
+        plugins: [
+        ],
+
+        rules: {
+            'quotes': ['error', 'single'],
+            'semi': ['error', 'always'],
+        },
+        };
+
+Include eslint in package.json:
+
+        "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
+        }
+
+Run the file:
+        
+        npm run lint
+
+---
