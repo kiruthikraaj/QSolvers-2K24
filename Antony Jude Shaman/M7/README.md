@@ -13,6 +13,15 @@
   - [Two Reference](#two-reference)
   - [Circular Reference Problem](#circular-reference-problem)
   - [Mark and Sweep](#mark-and-sweep)
+  - [Generational Garbage Collection](#generational-garbage-collection)
+  - [Why Functions in Heap and Function Calls in Stack?](#why-functions-in-heap-and-function-calls-in-stack)
+    - [Functions in Heap](#functions-in-heap)
+    - [Function Calls in Stack](#function-calls-in-stack)
+  - [Memory Life Cycle](#memory-life-cycle)
+  - [Performance](#performance)
+    - [Memory Leaks](#memory-leaks)
+    - [GC Pause](#gc-pause)
+  - [Steps for Efficient Memory Management](#steps-for-efficient-memory-management)
 
 ## Garbage Collection
 
