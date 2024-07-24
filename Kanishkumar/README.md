@@ -8,6 +8,7 @@
 
 <br >
 <br >
+
 1. Number: 
 
 Represents both integer and floating-point numbers.
@@ -105,6 +106,26 @@ Primitive value vs Reference value:
 
 
 <br >
+
+
+#### Javascript Storage Engine:
+<br >
+JavaScript engines store their data in two places; the Stack Memory and the Heap Memory.
+<br >
+<br >
+
+1. Stack Memory:
+- Executes during compile time
+- Stores primitive values and stores the reference to object/array values.
+
+<br >
+
+2. Heap Memory:
+
+- Executes during runtine.
+- Stores the objects and arrays.
+<br ><br >
+
 Primitive value:
 
 <br >
@@ -293,7 +314,7 @@ JavaScript objects allow you to add or modify properties dynamically.
 
             let person = { name: "Kanish" };
 
-            Object.assign(person, { age: 22, city: 'Chennai' });
+            Object.assign( person, { age: 22, city: 'Chennai' });
 
             console.log(person);
 
@@ -342,3 +363,161 @@ In JavaScript, arguments are passed by value for primitive data types and by ref
         let myObj = { key: "hello" };
         modifyObject(myObj);
         console.log(myObj.key); // "world"
+
+
+---
+
+### Copying values
+
+#### Shallow Copy:
+
+- In Shallow copy, a copy of the object will be created and it does not affect the original object. 
+- Shallow copy is done by using the spread operator (...) or Object.assign() method.
+- But it copies only top level properties.
+
+
+        let person ={
+        name : 'Kanish',
+        age : 22,
+        }
+
+        console.log(person);
+
+        let copy = {...person}
+
+        copy.age = 23;
+
+        copy.address.city = 'bangalore';
+
+        console.log(copy);    // copy object is created
+        console.log(person);  // copy object  does not affect real object if it does not have nested properties
+
+
+With nested properties,
+
+`Using ... operator:`
+
+        let person ={
+        name : 'Kanish',
+        age : 22,
+        address : {city: 'chennai', state :'tamilnadu'}
+        }
+
+        let copy = {...person}
+
+        copy.age = 23;
+        copy.address.city = 'bangalore';
+
+        console.log(copy);    // copy object is created
+        console.log(person);  // copy object affects the value of nested properties but not the direct properties.
+
+
+        Output of person object :
+
+        {
+        name: 'Kanish',
+        age: 23,
+        address: { city: 'chennai', state: 'tamilnadu' }
+        }
+
+        Output of copy object:
+
+        {
+        name: 'Kanish',
+        age: 22,
+        address: { city: 'chennai', state: 'tamilnadu' }
+        }
+
+
+`Using Object.assign():`
+
+        let person ={
+        name : 'Kanish',
+        age : 22,
+        address : {city: 'chennai', state :'tamilnadu'}
+        }
+
+        let copy = Object.assign({}, person)
+
+        copy.age = 23;
+        copy.address.city = 'bangalore';
+
+        console.log(copy);    // copy object is created
+        console.log(person);  // copy object affects the value of nested properties but not the direct properties.
+
+
+----
+
+#### Deep Copy:
+
+Deep copy creates a copy of all the properties including the nested properties.
+
+To create a deep copy, we have following methods.
+
+
+1. Using JSON parse() and JSON stringify():
+
+        const person ={
+        name: 'Kanish',
+        age :22,
+        address : {city: 'chennai', state: 'tamilnadu'}
+        }
+
+        console.log(person);
+
+        let copy = JSON.parse(JSON.stringify(person))
+
+        copy.address.city= 'madurai';
+        console.log(copy);
+        console.log(person);  // original unaffected 
+
+
+2. Using Lodash library  [ cloneDeep() ]
+
+
+        const a = require('lodash')
+
+        const person ={
+        name: 'Kanish',
+        age :22,
+        address : {city: 'chennai', state: 'tamilnadu'}
+        }
+
+        const copy = a.cloneDeep(person);
+        copy.address.city = 'madurai';
+
+        console.log(copy);
+        console.log(person);
+
+---
+
+### Execution Context:
+<br >
+
+- It is an environment where javascript code gets executed.
+
+- It has two phases 
+
+1. Creation phase
+
+It is responsible for creating the variables, objects, functions available in the code to get executed.
+
+1. Variable object (Contains all variables, functions in current scope)
+2. Scope chain (List of variables, objects accessible in current scope)
+3. this keyword 
+
+
+<br >
+2. Execution phase
+
+<br>
+
+It is responsible for assigning values to variables, execution of the functions and managing call stack.
+
+1. Assigning values to variables
+2. Executing function calls
+3. Managing the call stack (push and pop)
+
+<br >
+
+
