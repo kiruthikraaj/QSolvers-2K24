@@ -521,3 +521,124 @@ It is responsible for assigning values to variables, execution of the functions 
 <br >
 
 
+### JavaScript Execution Context
+
+| Creation Phase           | Execution Phase  |
+|--------------------------|------------------|
+| Variable Objects (VO)     |Assignment           |
+| Scope Chain              | Execution        |
+| "this" keyword           | Manage Callstack   |
+
+
+
+1. Variable Object:
+
+- Variable object considers all the variables, functions, arguments available in the current scope.
+        
+        function outer() {
+        var a = 1;
+
+        function inner() {
+                var b = 2;
+                console.log(a); // Variable a is found in the outer scope
+                }
+
+                inner();
+        }
+
+        outer();
+
+
+Outer Scope:
+
+- Variable object: a, inner()
+
+Inner Scope:
+
+- Variable object: b
+
+Hence, variable Object is
+
+                {
+                "outer": {
+                "a": undefined,
+                "inner": function
+                },
+                "inner": {
+                "b": undefined
+                }
+                }
+
+### Scope Chain:
+
+- Scope chain is a list of all the variable objects in the current scope and all the parent scopes.
+
+Scope chain execution order:
+
+
+        Global Execution Context
+        |
+        |-- outer Execution Context
+                |
+                |-- inner Execution Context
+
+
+When inner scope is executed,
+VO of inner -> VO of outer -> Global Environment
+
+During inner scope, 
+
+- b is assigned 2.
+- console.log(a) searches for a in the current scope.
+- a is not found in inner's scope, so it looks up the Scope Chain.
+- a is found in outer's scope, so 1 is logged to the console.
+
+
+---
+
+### Components in Execution context
+
+1. Memory Component
+
+- Refers the memory space needed for a code component.
+
+2. Code component
+
+- Represents the actual code this is being executed for that context.
+
+
+### Call Stack:
+
+- The Call Stack is a mechanism for keeping track of function calls in a program. 
+- It follows a Last In, First Out (LIFO) structure.
+
+Initially it is empty
+
+When javascript code starts to run, GEC (Global Execution Context) is added to stack.
+It represents global scope.
+
+When a function call is executed, the function execution context is popped and new context is created.
+
+
+                1. function greetings() {
+                2.         console.log("Welcome to the JS world!");
+                3. }
+
+                4. greetings();
+
+- In above code,
+
+When the code starts to run,
+
+
+- GEC is added to call stack
+- When line 4 is executed, function greetings is called.
+- Function execution context is created and pushed to call stack.
+- Function execution context is popped from call stack when the function returns.
+- GEC is popped from call stack when the code execution is finished.
+
+
+[!Reference] 
+
+
+https://dev.to/jahid6597/javascript-execution-context-a-deep-dive-4kno
