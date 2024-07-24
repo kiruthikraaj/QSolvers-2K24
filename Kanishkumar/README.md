@@ -114,16 +114,19 @@ JavaScript engines store their data in two places; the Stack Memory and the Heap
 <br >
 <br >
 
-1. Stack Memory:
-- Executes during compile time
-- Stores primitive values and stores the reference to object/array values.
+>Stack Memory:
+> <br>
+> - Executes during compile time
+><br>
+> <br>
+> - Stores primitive values and stores the reference to object/array values.
 
 <br >
 
-2. Heap Memory:
-
-- Executes during runtine.
-- Stores the objects and arrays.
+>Heap Memory:
+> <br>
+> - Executes during runtine.
+> - Stores the objects and arrays.
 <br ><br >
 
 Primitive value:
@@ -529,7 +532,8 @@ It is responsible for assigning values to variables, execution of the functions 
 | Scope Chain              | Execution        |
 | "this" keyword           | Manage Callstack   |
 
-
+<br>
+<br>
 
 1. Variable Object:
 
@@ -637,6 +641,7 @@ When the code starts to run,
 - Function execution context is popped from call stack when the function returns.
 - GEC is popped from call stack when the code execution is finished.
 
+<br>
 
 >Reference
 > <br>
