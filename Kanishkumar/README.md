@@ -642,3 +642,78 @@ When the code starts to run,
 > <br>
 > <br>
 >https://dev.to/jahid6597/javascript-execution-context-a-deep-dive-4kno
+
+
+---
+### Scope Chain Augmentation
+
+Scope Types: 
+
+JavaScript has three main types of scope: Global, Function, and Block scope.
+
+1. Global Scope: 
+
+        Variables declared globally are accessible everywhere.
+
+2. Function Scope: 
+
+        Variables declared within a function are only accessible within that function.
+
+3. Block Scope:
+
+        Using let and const allows for variables to be confined to the block they are declared in.
+
+4. Lexical Scope: 
+
+        Inner functions have access to the variables of their outer functions.
+
+
+        const x = 10;
+
+        function one(){
+                const y = 20;
+
+                function two(){
+                        console.log(x); // searches for x in current scope -> parent scope -> global scope
+                        console.log(y); // finds y in parent scope
+                }
+
+                two();
+        }
+
+        one();
+
+For 'x' the scope chain is `current scope -> parent scope -> global scope`
+
+---
+
+### No Block level Scope:
+
+- Var does not have Block scope
+- Const and let has block scope
+
+Var: 
+
+        {
+        var x =10;
+        }
+
+        console.log(x); // 10
+
+Let:
+
+        {
+        let y =20;
+        }
+        console.log(y);  // ReferenceError: y is not defined
+
+
+Const:
+
+        {
+        const z = 10;
+        }
+        console.log(z); // ReferenceError: z is not defined
+
+
+---
