@@ -638,7 +638,7 @@ When the code starts to run,
 - GEC is popped from call stack when the code execution is finished.
 
 
-[!Reference] 
+[!NOTE] 
 
 
 https://dev.to/jahid6597/javascript-execution-context-a-deep-dive-4kno
