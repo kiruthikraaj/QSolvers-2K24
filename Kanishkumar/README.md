@@ -66,6 +66,7 @@ Garbage Collection in JavaScript works by tracking references to objects in memo
 
 ---
 
+
 ## 1. Reference Counting Algorithm
 
 - In this method, the program keeps track of the number of references to each object or variable. 
