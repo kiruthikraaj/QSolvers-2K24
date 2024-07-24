@@ -1,250 +1,706 @@
-## Milestone - 7
+## Milestone - 8
 
-## Table of Contents
+## Table of contents
 
-- [Memory Management](#memory-management)
-  - [Garbage Collection](#garbage-collection)
-  - [Memory Allocation](#memory-allocation)
-  - [Memory Size](#memory-size)
-  - [Memory Management](#memory-management-1)
-  - [Reference Counting](#reference-counting)
-  - [How it works?](#how-it-works)
-  - [Reference Counting Example](#reference-counting-example)
-  - [Two Reference](#two-reference)
-  - [Circular Reference Problem](#circular-reference-problem)
-  - [Mark and Sweep](#mark-and-sweep)
-  - [Generational Garbage Collection](#generational-garbage-collection)
-  - [Why Functions in Heap and Function Calls in Stack?](#why-functions-in-heap-and-function-calls-in-stack)
-    - [Functions in Heap](#functions-in-heap)
-    - [Function Calls in Stack](#function-calls-in-stack)
-  - [Memory Life Cycle](#memory-life-cycle)
-  - [Performance](#performance)
-    - [Memory Leaks](#memory-leaks)
-    - [GC Pause](#gc-pause)
-  - [Steps for Efficient Memory Management](#steps-for-efficient-memory-management)
+- [Function Expressions](#function-expressions)
+- [Recursion](#recursion)
+- [Closure](#closure)
+- [call(), apply(), bind()](#call-apply-bind)
+- [this object](#this-object)
+- [Memory Leaks](#memory-leaks)
+- [Mimicking Block Scope](#mimicking-block-scope)
+- [Synchronous and Asynchronous Programming](#synchronous-and-asynchronous-programming)
+  - [Synchronous Programming](#synchronous-programming)
+  - [Asynchronous Programming](#asynchronous-programming)
+- [Callback Functions](#callback-functions)
+  - [Callback Hell](#callback-hell)
+- [Promises](#promises)
+  - [Converting Callbacks to Promises](#converting-callbacks-to-promises)
+- [Async/ Await](#async-await)
+  - [Converting Promises to Async/Await](#converting-promises-to-asyncawait)
+  - [Try Catch in Async/Await](#try-catch-in-asyncawait)
 
-## Garbage Collection
+### Function Expressions
 
-- Garbage collection is the process of automatically reclaiming memory that is no longer in use by the program.
-- In JavaScript, garbage collection is done by the JavaScript engine, which automatically frees up memory that is no longer needed by the program.
-
-### Memory Allocation
-
-- Memory is allocated to a program when it is loaded into the memory.
-- The memory is allocated in the form of stack and heap. The stack is used for static memory allocation and heap is used for dynamic memory allocation.
-- The stack is used for storing local variables and function calls. The heap is used for storing dynamic memory allocation.
-
-> [!NOTE]  
-> Primitive data types are stored in the stack. Stacks are faster than heaps but limited in size.
-> Non-primitive data types are stored in the heap. Heaps are slower than stacks but have no size limit.
-
-### Memory Size
-
-- The sizes of various data types in Javascript
-
-| Data Type | Size (in bytes)     |
-| --------- | ------------------- |
-| Number    | Varies by JS Engine |
-| String    | Varies by JS Engine |
-| Boolean   | Varies by JS Engine |
-| Object    | Varies by JS Engine |
-| Array     | Varies by JS Engine |
-| Function  | Varies by JS Engine |
-| Null      | Varies by JS Engine |
-| Undefined | Varies by JS Engine |
+- Function expressions are the way to define functions in JavaScript. They can be named or anonymous. They can be assigned to variables, passed as arguments to other functions, and returned from other functions. They are defined using the function keyword.
 
 ```javascript
-function getSize(obj) {
-  console.log(new TextEncoder().encode(JSON.stringify(obj)).length);
-  return new TextEncoder().encode(JSON.stringify(obj)).length;
-}
+// Named function expression
 
-const name = "abc";
-console.log(getSize(name)); // 5
-
-const num = 123;
-console.log(getSize(num)); // 3
-
-const bool = true;
-console.log(getSize(bool)); // 4
-
-const obj = { name: "abc" };
-console.log(getSize(obj)); // 14
-
-const arr = [1, 2, 3];
-console.log(getSize(arr)); // 7
-
-const func = function () {
-  return "abc";
+const add = function add(a, b) {
+  return a + b;
 };
 
-console.log(getSize(func)); // 0
+// Anonymous function expression
 
-const n = null;
-console.log(getSize(n)); // 4
+const add = function (a, b) {
+  return a + b;
+};
 
-const u = undefined;
-console.log(getSize(u)); // 0
+// both are same
+console.log(add(1, 2)); // 3
 ```
 
-### Memory Management
+> [!IMPORTANT]
+>
+> Function expressions are not hoisted, so they cannot be called before they are defined.
+>
+> ```javascript
+> const add = function add(a, b) {
+>   return a + b;
+> };
+> ```
+>
+> The above is the function expression and the const add is the reference to the anonymous function.
 
-### Reference Counting
+### Recursion
 
-- In reference counting, the garbage collector keeps track of the number of references to an object. If an object has zero references, it is considered garbage and is collected by the garbage collector.
-
-### How it works?
-
-    1. When an object is created, the reference count is set to 1.
-    2. When an object is referenced by another object, the reference count is incremented by 1.
-    3. When an object is dereferenced by another object, the reference count is decremented by 1.
-    4. When the reference count reaches 0, the object is considered garbage and is collected by the garbage collector.
-
-> [!IMPORTANT]  
-> `Reachability` is the key concept in garbage collection. If an object is reachable from the root, it is considered `reachable` and is not garbage collected.
-
-### Reference Counting Example
+- A function calling until the base condition is met is called recursion.
 
 ```javascript
-let person = { name: "Antony" };
-// now person has a reference to the object { name: "Antony" }
+// a recursive function for fibonacci numbers
 
-person = null; // if the person is set to null, the reference is lost
+function Fibonacci(n) {
+  console.log(n);
+  if (n === 1) {
+    return 1;
+  }
+  if (n === 0) {
+    return 0;
+  }
+  return Fibonacci(n - 1) + Fibonacci(n - 2);
+}
 
-// Now Antony becomes unreachable and is garbage collected
+// using anonymous funtion expression
+const Fibonacci = function (n) {
+  if (n === 1) {
+    return 1;
+  }
+  if (n === 0) {
+    return 0;
+  }
+  return Fibonacci(n - 1) + Fibonacci(n - 2);
+};
+
+console.log(Fibonacci(5)); // 5
+console.log(Fibonacci(6)); // 8
+console.log(Fibonacci(20)); // 6765
 ```
-
-### Two Reference
-
-```javascript
-let person = { name: "Antony" }; // person only holds a reference to the object not the value
-
-let person2 = person;
-
-// if the person is set to null, even though the reference of person is lost, the object is still referenced by person2
-person = null;
-// only the reference is being set to null but the object is still in the memory
-
-// so the object still stays in the memory becuase it reachable through the person2
-```
-
-### Circular Reference Problem
-
-- In circular reference, two objects that are no longer needed reference each other, creating a cycle. In this case, the reference count of both objects will never reach 0, and they will never be garbage collected.
-
-```javascript
-let person = { name: "Antony" };
-
-let person2 = { name: "Jude" };
-
-person.friend = person2;
-
-person2.friend = person;
-
-// even though person and person2 are not reachable from the root, they are still reachable from each other
-// so they will not be garbage collected in reference counting
-```
-
-### Mark and Sweep
-
-- In mark and sweep, the garbage collector marks all the objects that are reachable from the root and then sweeps through the memory to collect the objects that are not marked.
-
-Let's consider the following example:
-
-![Mark and Sweep graph](image.png)
-
-- As shown in the diagram, the garbage collector starts from the root and marks all the objects that are reachable from the root.
-
-![Mark and Sweep step 2](image-1.png)
-
-- All the reachable objects are marked. Now the garbage collector sweeps through the memory and collects the objects that are not marked.
-
-![Mark and Sweep step 3](image-2.png)
 
 > [!NOTE]  
-> As you can see the objects on the right side forms a cycle which would prevent them from being garbage collected using reference counting.
-> _This problem is solved by mark and sweep algorithm where cyclic references are not a problem._
+> Recursion can take exponential time and space complexity. So, it is not recommended to use recursion for large numbers.
+> Also recursion is a Top-Down approach.
 
-### Generational Garbage Collection
+### Closure
 
-- Generational garbage collection is a technique used by V8 JavaScript engine to improve the performance of garbage collection.
-
-- In generational garbage collection, objects are divided into different generations based on their age.
-
-1. **Young Generation:** Newly created objects are placed in the young generation.
-
-- **New Space:** This is where the young generation objects are stored. It is small in size and is garbage collected frequently.
-
-- **Survivor Space:** This is where the objects that survive the garbage collection in the young generation are moved to. It is also small in size and is garbage collected less frequently.
-
-2. **Old Generation:** Objects that have survived multiple garbage collections are moved to the old generation.
-
-- **Old Space:** This is where the old generation objects are stored. It is large in size and is garbage collected less frequently.
-
-### Why Functions in Heap and Function Calls in Stack?
-
-#### Functions in Heap
-
-- The functions need to exist in memory for the entire duration of the program. This is because functions can be called at any time, and they need to be available in memory when they are called. If functions were stored on the stack, they would be removed from memory as soon as they were called, which would make them unavailable for future calls.
-
-- Complex functions can be large in size and take up a lot of memory. Although heaps are slower to access than stacks, they are better suited for storing large amounts of data.
-
-#### Function Calls in Stack
-
-- When a function is called, a new stack frame is created on the stack. The stack frame is removed from the stack when the function returns. This allows functions to be called recursively without running out of memory.
-
-### Memory Life Cycle
-
-- The memory life cycle of a variable in JavaScript consists of three stages
-
-  - Allocation: The variable is allocated memory when it is declared.
-  - Use: Use the allocated memory to store the value of the variable.
-  - Deallocation: The variable is deallocated when it is not needed anymore.
-
-### Performance
-
-- The performance of a program can be affected by how memory is managed. If memory is not managed efficiently, it can lead to memory leaks, which can slow down the program and cause it to crash.
-
-#### Memory Leaks
-
-- Memory leaks occur when memory is allocated but not deallocated. It means references to objects that are no longer needed are not removed, which prevents the garbage collector from reclaiming the memory.
+- A closure is the combination of a function bundled together with references to its surrounding state (the lexical environment). In other words, a closure gives you access to an outer function’s scope from an inner function.
 
 ```javascript
-let array = [];
-let intervalId;
+function closure() {
+  let a = 0; // let is block scoped, it cannot be accessed by the outer functions but inner functions can access it
 
-function createArray() {
-  intervalId = setInterval(() => {
-    array.push(new Array(100).fill("1")); // The array keeps growing and consumes more memory which leads to memory leak
+  function inner() {
+    var c = 2; // var is a function scope so it cannot be accessed outside the function
+    const b = 1; // const is a block scope so it cannot be accessed outside the block the `{}` represents the block
+    console.log("Inside inner:" + a, b, c); // a, b, c are accessible here
+  }
+
+  console.log("Outside inner:" + a, b, c); // only a is accessible here, b and c are not accessible
+  inner();
+}
+closure();
+
+// Lets see another example to understand closure
+
+let a = 0;
+
+function add() {
+  let a = 0;
+  return ++a;
+}
+
+console.log(a); // the global variable still is 0 but the return value of add() is 1
+```
+
+> [!IMPORTANT]
+>
+> In the above example, the global variable a is not changed but the local variable a is changed. This is because the local variable a is in the closure of the function add().
+
+### call(), apply(), bind()
+
+```javascript
+const person = {
+  name: "Antony",
+  age: 21,
+};
+
+function introduce(city) {
+  console.log(
+    `My name is ${this.name} and I am ${this.age} years old. I am from ${city}`
+  );
+}
+
+// call() method
+introduce.call(person, "Chennai"); // the optional parameters must be passed as arguments
+
+// apply() method
+introduce.apply(person, ["Chennai"]); // the optional parameters must be passed in an array
+
+// bind() method
+const me = introduce.bind(person); // creates a new function with the context of the person object
+me("Chennai");
+// Output of all three methods will be:
+// My name is Antony and I am 21 years old. I am from Chennai
+```
+
+### this object
+
+- The this object refers to the object that is executing the current function. In other words, the this object represents the context of the function.
+
+```javascript
+const person = {
+  name: "Antony",
+  age: 21,
+  introduce: function () {
+    console.log(`My name is ${this.name} and I am ${this.age} years old.`);
+  },
+};
+
+person.introduce(); // My name is Antony and I am 21 years old.
+```
+
+> [!WARNING]
+>
+> - `this` may misbehave in callback functions, arrow functions, and nested functions.
+>
+> ```javascript
+> const person = {
+>   name: "Antony",
+>   age: 21,
+>   introduce: function () {
+>     console.log(`My name is ${this.name} and I am ${this.age} years old.`);
+>   },
+> };
+> const introduce = person.introduce; // this is lost when the function is assigned to a variable
+> introduce(); // My name is undefined and I am undefined years old.
+> ```
+>
+> **NOTE**
+>
+> - bind() method can be used to set the value of this in a function.
+>
+> ```javascript
+> function executeCallback(callback) {
+>   callback();
+> }
+>
+> executeCallback(person.introduce.bind(person));
+> ```
+>
+> The value of `this` is determined by how a function is called. It can't be set by the programmer.
+
+### Memory Leaks
+
+- Memory leaks are a common problem in programming, where the application uses more memory than it should. This can lead to performance issues and crashes. Memory leaks can be caused by a variety of factors, including unused variables, circular references, and long-running processes.
+
+```javascript
+function array() {
+  const arr = new Array(100).fill("1"); // this creates an array of 100 1's
+  return arr;
+}
+
+setInterval(() => {
+  const arr = array(); // an array with 100 elements is created every second and leads to memory leak
+  console.log(arr);
+}, 1000);
+```
+
+### Mimicking Block Scope
+
+- Before ES6, JavaScript does not have block scope, but it can be mimicked using IIFE (Immediately Invoked Function Expression).
+
+```javascript
+(function () {
+  var a = 1;
+  console.log(a); // 1
+})();
+
+console.log(a); // ReferenceError: a is not defined
+// The IIFE acts as a block and the variable a is not accessible outside the block
+```
+
+> [!TIP]  
+> Use let and const to create block-scoped variables in ES6.
+
+### Synchronous and Asynchronous Programming
+
+#### Synchronous Programming
+
+- Synchronous programming is the default mode of execution in JavaScript. In synchronous programming, the code is executed oneby one, one after the other. This means that each line of code is executed in order, and the next line of code is not executed until the current line has finished executing.
+
+> [!IMPORTANT]  
+> This blocking nature of synchronous programming can lead to performance issues.  
+> If a resource intensive task is executed synchronously, it can block the main thread and make the application unresponsive.
+
+```javascript
+// Synchronous programming
+
+function add(a, b) {
+  return a + b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+const sum = add(1, 2);
+
+const product = multiply(3, 4);
+
+console.log(sum); // 3
+
+console.log(product); // 12
+```
+
+_**The above code is executed synchronously, the add() function is executed first and then the multiply() function is executed.**_
+
+#### Asynchronous Programming
+
+- Asynchronous programming allows multiple tasks to be executed concurrently. In asynchronous programming, the code is executed in a non-blocking manner. This means that the next line of code is executed before the current line has finished executing.
+
+> [!IMPORTANT]  
+> Asynchronous programming is used to perform tasks that take a long time to complete, such as network requests, file operations, and database queries.
+
+```javascript
+// Asynchronous programming
+
+function add(a, b) {
+  return a + b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+setTimeout(() => {
+  const sum = add(1, 2);
+  console.log(sum); // 3
+}, 1000);
+
+const product = multiply(3, 4);
+
+console.log(product); // 12
+
+// The multiply() function is executed first and then the add() function is executed after 1 second.
+```
+
+### Callback Functions
+
+- A callback function is a function that is passed as an argument to another function. The callback function is called when a certain event occurs or when a task is completed.
+
+```javascript
+// a callback function is passed as an argument
+function add(a, b, fn) {
+  const c = a + b;
+  fn(c); // the callback function is called with the sum as an argument
+}
+
+function display(result) {
+  console.log(result); // the argument in the add() is passed to the callback function
+}
+
+add(1, 2, display); // 3
+```
+
+> [!NOTE]  
+> Callback functions are commonly used in asynchronous programming to handle the completion of tasks.
+
+### Callback Hell
+
+- Callback hell is a situation where multiple nested callback functions are used in asynchronous programming. This can make the code difficult to read and maintain.
+
+> [!IMPORTANT]  
+> Callback hell can be avoided by using promises, async/await, and other asynchronous programming techniques.  
+> **When a pyramid is created by multiple nested callbacks, it is called callback hell.**
+
+```javascript
+// A Simple Callback hell
+function a(callback) {
+  setTimeout(() => {
+    console.log("a");
+    callback();
   }, 1000);
 }
 
-function clearArray() {
-  clearInterval(intervalId); // Clearing interval to stop the function from running
-  array = null; // Setting the array to null to free up memory
+function b(callback) {
+  setTimeout(() => {
+    console.log("b");
+    callback();
+  }, 1000);
 }
 
-createArray();
+function c(callback) {
+  setTimeout(() => {
+    console.log("c");
+    callback();
+  }, 1000);
+}
 
-setTimeout(clearArray, 10000); // Clearing the array after 10 seconds
+a(() => {
+  b(() => {
+    c(() => {
+      console.log("Callback hell is over");
+    });
+  });
+});
+// Output
+// a
+// b
+// c
+// Callback hell is over
+
+// avoiding callback hell
+// the below code can be used when promises are used
+
+a()
+  .then(() => {
+    return b();
+  })
+  .then(() => {
+    return c();
+  })
+  .then(() => {
+    console.log("Callback hell is over");
+  });
 ```
 
-### GC Pause
+```javascript
+// A more complex Callback hell
+// passing result of one callback to another callback
+function add(a, b, callback) {
+  setTimeout(() => {
+    const c = a + b;
+    callback(c);
+  });
+}
 
-- The garbage collector runs periodically to reclaim memory that is no longer needed. When the garbage collector runs, it pauses the execution of the program, which can cause a delay in the program.
+function sub(a, b, callback) {
+  setTimeout(() => {
+    const c = a - b;
+    callback(c);
+  });
+}
 
-- The duration of the pause depends on the size of the heap and the number of objects that need to be collected. If the heap is large and contains many objects, the garbage collector will take longer to collect the objects, which can lead to a longer pause.
+function mul(a, b, callback) {
+  setTimeout(() => {
+    const c = a * b;
+    callback(c);
+  });
+}
 
-> [!TIP]
+add(1, 2, (sum) => {
+  console.log("Callback 1:", sum); // the result the previous callback is passed to the next callback
+  sub(sum, 1, (diff) => {
+    console.log("Callback 2:", diff);
+    mul(diff, 2, (prod) => {
+      console.log("Callback 3:", prod);
+    });
+  });
+});
+// Output
+// Callback 1: 3
+// Callback 2: 2
+// Callback 3: 4
+```
+
+### Promises
+
+- Promises are used to handle asynchronous operations in JavaScript. A promise is an object that represents the eventual completion or failure of an asynchronous operation. A promise can be in one of three states: pending, fulfilled, or rejected.
+
+```javascript
+function promise() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("Promise is resolved");
+    }, 1000);
+  });
+}
+promise()
+  .then((result) => {
+    console.log(result); // Promise is resolved
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Bluebird Promises
+
+- Bluebird is a popular promise library for JavaScript that provides additional features and performance improvements over the built-in promise implementation.
+
+```bash
+
+pnpm i -g bluebird # install bluebird globally
+
+pnpm init  # creating package.json file
+
+pnpm add bluebird # add the bluebird package to the project
+
+```
+
+```javascript
+const Promise = require("bluebird"); // commonJS module, not using module syntax
+
+function add(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a + b;
+      resolve(c);
+    }, 1000);
+  });
+}
+
+add(1, 2)
+  .then((sum) => {
+    console.log(sum); // 3
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Features of Bluebird
+
+#### Promisify
+
+- The promisify method is used to convert a callback-based function to a promise-based function.
+
+```javascript
+const Promise = require("bluebird");
+
+function add(a, b, callback) {
+  setTimeout(() => {
+    const c = a + b;
+    callback(null, c); // passing null for error and c for result
+  }, 1000);
+}
+
+const promise = Promise.promisify(add);
+
+promise(1, 2)
+  .then((sum) => {
+    console.log(sum); // 3
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+#### Promise.all
+
+- The Promise.all method is used to execute multiple promises concurrently and wait for all of them to complete.
+
+```javascript
+function add(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a + b;
+      resolve(c);
+    }, 1000);
+  });
+}
+
+function sub(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a - b;
+      resolve(c);
+    }, 1000);
+  });
+}
+
+function mul(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a * b;
+      resolve(c);
+    }, 1000);
+  });
+}
+
+Promise.all([add(1, 2), sub(1, 2), mul(1, 2)])
+  .then((results) => {
+    console.log(results); // [3, -1, 2]
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+#### Promise.promisifyAll
+
+- The Promise.promisifyAll method is used to convert an entire module to use promises instead of callbacks.
+
+```javascript
+const fs = Promise.promisifyAll(require("fs"));
+
+fs.readFileAsync("file.txt", "utf8")
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+### Converting Callbacks to Promises
+
+- Callback functions can be converted to promises using the Promise constructor.
+
+```javascript
+function add(a, b) {
+  // the promise constructor is used to create a promise
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a + b;
+      resolve(c);
+    }, 1000);
+  });
+}
+
+add(1, 2)
+  .then((sum) => {
+    console.log(sum); // 3
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+#### Delay in bluebird
+
+- The delay method is used to create a promise that resolves after a specified delay.
+
+```javascript
+const Promise = require("bluebird");
+
+Promise.delay(1000).then(() => {
+  console.log("Delayed by 1 second");
+});
+```
+
+> [!IMPORTANT]
+> The delay method is useful for creating delays in promise chains.
+
+### Async/ Await
+
+- Async/await helps in handling asynchronous operations in a synchronous manner.
+- The async keyword is used to define an asynchronous function, and the await keyword is used to wait for the completion of an asynchronous operation.
+
+> [!IMPORTANT]  
+> `await` can only be used inside an async function.
+
+```javascript
+// Using async/await to avoid callback hell
+
+function add(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a + b;
+      resolve(c);
+    }, 1000);
+  });
+}
+
+function sub(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a - b;
+      resolve(c);
+    }, 1000);
+  });
+}
+
+function mul(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a * b;
+      resolve(c);
+    }, 1000);
+  });
+}
+
+async function calculate() {
+  const sum = await add(1, 2);
+  console.log("Callback 1:", sum);
+  const diff = await sub(sum, 1);
+  console.log("Callback 2:", diff);
+  const prod = await mul(diff, 2);
+  console.log("Callback 3:", prod);
+}
+
+calculate();
+
+// Output
+// Callback 1: 3
+// Callback 2: 2
+// Callback 3: 4
+```
+
+> [!IMPORTANT]  
+> **Why async needed in JS?**
 >
-> Efficient allocation and deallocation of memory reduce the overhead and improves performance.
+> - JavaScript is single-threaded, meaning that it can only execute one task at a time.
+> - Asynchronous programming allows JavaScript to perform multiple tasks concurrently, without blocking the main thread.
+> - Event loop is used to handle asynchronous operations in JavaScript.
 
-### Steps for Efficient Memory Management
+### Converting Promises to Async/Await
 
-- Use `const` by default and only use `let` unless you need to reassign a variable.
+- Promises can be converted to async/await functions by using the async keyword with the function that returns a promise.
 
-- Make use of `scopes` to limit the lifetime of variables.
+```javascript
+function add(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a + b;
+      resolve(c);
+    }, 1000);
+  });
+}
 
-- Remove `event listeners` when they are no longer needed to prevent memory leaks.
+async function result() {
+  const res = await add(1, 2);
+  console.log(res);
+}
+```
 
-- `Object pooling` can be used to reuse objects instead of creating new objects.
+### Try Catch in Async/Await
+
+- The try/catch block can be used to handle errors in async/await functions.
+
+```javascript
+function add(a, b) {
+  return new Promise((resolve, reject) => {
+    if (typeof a !== "number" || typeof b !== "number") {
+      reject(new Error("Invalid Input"));
+    }
+    const c = a + b;
+    resolve(c);
+  });
+}
+
+async function result(a, b) {
+  try {
+    const res = await add(a, b);
+    console.log(res);
+  } catch (error) {
+    console.error("Something went wrong");
+  }
+}
+
+result(1, 2); // 3
+result("1", 2); // Something went wrong
+```
+
+> [!NOTE]  
+> This is similar to the .then() and .catch() methods used with promises. The try block is used to handle the resolved value, and the catch block is used to handle the rejected value.
