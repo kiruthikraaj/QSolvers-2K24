@@ -16,6 +16,11 @@
   - [Callback Hell](#callback-hell)
 - [Promises](#promises)
   - [Converting Callbacks to Promises](#converting-callbacks-to-promises)
+- [Bluebird Promises](#bluebird-promises)
+  - [Promisify](#promisify)
+  - [Promise.all](#promiseall)
+  - [Promise.promisifyAll](#promisepromisifyall)
+  - [Promise.map](#promisemap)
 - [Async/ Await](#async-await)
   - [Converting Promises to Async/Await](#converting-promises-to-asyncawait)
   - [Try Catch in Async/Await](#try-catch-in-asyncawait)
@@ -539,7 +544,7 @@ Promise.all([add(1, 2), sub(1, 2), mul(1, 2)])
 
 #### Promise.promisifyAll
 
-- The Promise.promisifyAll method is used to convert an entire module to use promises instead of callbacks.
+- The Promise.promisifyAll method is used to convert an entire module to use promises.
 
 ```javascript
 const fs = Promise.promisifyAll(require("fs"));
@@ -547,6 +552,33 @@ const fs = Promise.promisifyAll(require("fs"));
 fs.readFileAsync("file.txt", "utf8")
   .then((data) => {
     console.log(data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+#### Promise.map
+
+- The Promise.map method is used to execute an array of promises concurrently and wait for all of them to complete.
+
+```javascript
+const Promise = require("bluebird");
+
+function add(a, b) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const c = a + b;
+      resolve(c);
+    }, 1000);
+  });
+}
+
+const numbers = [1, 2, 3, 4, 5];
+
+Promise.map(numbers, (number) => add(number, 1))
+  .then((results) => {
+    console.log(results); // [2, 3, 4, 5, 6]
   })
   .catch((error) => {
     console.error(error);
@@ -576,21 +608,6 @@ add(1, 2)
     console.error(error);
   });
 ```
-
-#### Delay in bluebird
-
-- The delay method is used to create a promise that resolves after a specified delay.
-
-```javascript
-const Promise = require("bluebird");
-
-Promise.delay(1000).then(() => {
-  console.log("Delayed by 1 second");
-});
-```
-
-> [!IMPORTANT]
-> The delay method is useful for creating delays in promise chains.
 
 ### Async/ Await
 
