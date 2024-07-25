@@ -1,285 +1,232 @@
-// let a = 0;
+// // let date = new Date();
 
-// function add() {
-//   let a = 0;
-//   return ++a;
-// }
+// // console.log(date);
 
-// console.log(a); // the global variable still is 0 but the return value of add() is 1
+// // // Create a new date object with a specific date and time
 
-// const person = {
-//   name: "Antony",
-//   age: 21,
-//   introduce: function () {
-//     console.log(`My name is ${this.name} and I am ${this.age} years old.`);
-//   },
-// };
-// function executeCallback(callback) {
-//   callback();
-// }
+// // console.log(new Date("7"));
 
-// executeCallback(person.introduce.bind(person));
+// // // Create a new date object with milliseconds
 
-// function array() {
-//   const arr = new Array(100).fill("1");
-//   return arr;
-// }
+// // console.log(new Date(0));
 
-// setInterval(() => {
-//   const arr = array();
-//   console.log(arr);
-// }, 1000);
+// // // Create a new date object with a date string
 
-// (function () {
-//   var a = 1;
-//   console.log(a); // 1
-// })();
+// // console.log(new Date("2024-07-24T03:15:30Z"));
 
-// console.log(a);
+// // console.log(date.getDate());
 
-// function add(a, b) {
-//   return a + b;
-// }
+// // console.log(date.getDay());
 
-// function multiply(a, b) {
-//   return a * b;
-// }
+// // console.log(date.getFullYear());
 
-// setTimeout(() => {
-//   const sum = add(1, 2);
-//   console.log(sum); // 3
-// }, 1000);
+// // console.log(date.getHours());
 
-// const product = multiply(3, 4);
+// // console.log(date.getMilliseconds());
 
-// console.log(product); // 12
+// // console.log(date.getMinutes());
 
-// a callback function is passed as an argument
-// function add(a, b, fn) {
-//   const sum = a + b;
-//   fn(sum); // the callback function is called with the sum as an argument
-// }
+// // console.log(date.getMonth());
 
-// function display(result) {
-//   console.log(result); // the argument in the add() is passed to the callback function
-// }
+// // console.log(date.getSeconds());
 
-// add(1, 2, display); // 3
+// // console.log(date.getTime());
 
-// fetch("https://jsonplaceholder.typicode.com/posts/100")
-//   .then((response) => response.json())
-//   .then((data) => console.log(data))
-//   .catch((error) => console.error("Error:", error));
+// // console.log(date.toString());
+
+// let date = new Date("2024-07-24T10:18:11Z");
+
+// console.log(date.toDateString());
+
+// console.log(date.toISOString());
+
+// console.log(date.toLocaleDateString());
+
+// console.log(date.toLocaleTimeString());
+
+// console.log(date.toTimeString());
+
+// console.log(date.toUTCString());
+
+// console.log(new Date().getTimezoneOffset());
+
+// let date = new Date();
+
+// console.log(date.toLocaleString());
 
 // console.log(
-//   "This is after the fetch request. But it's executed first because fetch is asynchronous"
+//   date.toLocaleString("en-US", { dateStyle: "full", timeStyle: "long" })
 // );
 
-// function a(callback) {
-//   setTimeout(() => {
-//     console.log("a");
-//     callback();
-//   }, 1000);
-// }
+// console.log(
+//   date.toLocaleString("en-GB", { dateStyle: "long", timeStyle: "medium" })
+// );
 
-// function b(callback) {
-//   setTimeout(() => {
-//     console.log("b");
-//     callback();
-//   }, 1000);
-// }
+// console.log(
+//   date.toLocaleString("en-IN", { dateStyle: "short", timeStyle: "full" })
+// );
 
-// function c(callback) {
-//   setTimeout(() => {
-//     console.log("c");
-//     callback();
-//   }, 1000);
-// }
+// console.log(
+//   date.toLocaleString("en-IN", {
+//     weekday: "short",
+//   })
+// );
 
-// a(() => {
-//   b(() => {
-//     c(() => {
-//       console.log("Callback hell is over");
-//     });
-//   });
+// console.log(
+//   date.toLocaleString("ta-IN", { dateStyle: "long", timeStyle: "short" }) // t
+// );
+
+// const formatter = new Intl.DateTimeFormat("en-IN", {
+//   day: "2-digit",
+//   month: "2-digit",
+//   year: "numeric",
+//   hour: "2-digit",
+//   minute: "2-digit",
+//   second: "2-digit",
+//   weekday: "long",
+//   timeZone: "IST",
 // });
 
-// function add(a, b, callback) {
-//   setTimeout(() => {
-//     const c = a + b;
-//     callback(c);
-//   });
-// }
+// console.log(formatter.format(date));
 
-// function sub(a, b, callback) {
-//   setTimeout(() => {
-//     const c = a - b;
-//     callback(c);
-//   });
-// }
+// console.log(
+//   new Date().toLocaleDateString("en-us", {
+//     weekday: "long",
+//     year: "numeric",
+//     month: "short",
+//     day: "numeric",
+//     hour: "numeric",
+//     minute: "numeric",
+//     second: "numeric",
+//     timeZone: "IST",
+//   })
+// );
 
-// function mul(a, b, callback) {
-//   setTimeout(() => {
-//     const c = a * b;
-//     callback(c);
-//   });
-// }
-
-// add(1, 2, (sum) => {
-//   console.log("Callback 1:", sum);
-//   sub(sum, 1, (diff) => {
-//     console.log("Callback 2:", diff);
-//     mul(diff, 2, (prod) => {
-//       console.log("Callback 3:", prod);
-//     });
-//   });
+// const formatter = new Intl.DateTimeFormat("en-IN", {
+//   dateStyle: "full",
+//   timeStyle: "long",
 // });
 
-// function add(a, b) {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       const c = a + b;
-//       resolve(c);
-//     }, 1000);
-//   });
+// const formatter2 = new Intl.DateTimeFormat("en-IN", {
+//   dateStyle: "short",
+//   timeStyle: "short",
+// });
+
+// console.log(formatter.format(date));
+
+// console.log(formatter2.format(date));
+
+// const date = new Date();
+
+// console.log(-date.getTimezoneOffset() / 1000);
+
+// import {
+//   format,
+//   addDays,
+//   subDays,
+//   isToday,
+//   isTomorrow,
+//   isYesterday,
+//   parseISO,
+//   parse,
+//   compareAsc,
+// } from "date-fns";
+
+// const dates = [
+//   new Date(2005, 6, 2),
+//   new Date(2018, 1, 11),
+//   new Date(2023, 6, 10),
+// ];
+// dates.sort(compareAsc);
+
+// console.log(dates);
+
+// console.log(format(date, "yyyy-MM-dd"));
+
+// console.log(format(date, "yyyy-MM-dd HH:mm:ss"));
+
+// console.log(format(parseISO(date.toISOString()), "dd/MM/yyyy"));
+
+// console.log(format(addDays(date, 5), "dd/MM/yyyy"));
+
+// console.log(format(subDays(date, 2), "MM dd yyyy"));
+
+// console.log(isToday(date));
+
+// console.log(isTomorrow(date));
+
+// console.log(isYesterday(date));
+
+// console.log(parse("2024-07-24", "yyyy-MM-dd", new Date()));
+
+// function subtractDays(date, days) {
+//   const subDate = new Date(date);
+//   subDate.setDate(subDate.getDate() - days); // subtracting days
+//   return subDate;
 // }
 
-// function sub(a, b) {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       const c = a - b;
-//       resolve(c);
-//     }, 1000);
-//   });
+// function addDays(date, days) {
+//   const addDate = new Date(date);
+//   addDate.setDate(addDate.getDate() + days); // adding days
+//   return addDate;
 // }
 
-// function mul(a, b) {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       const c = a * b;
-//       resolve(c);
-//     }, 1000);
-//   });
+// function isToday(date) {
+//   const today = new Date();
+//   return (
+//     date.getDate() === today.getDate() &&
+//     date.getMonth() === today.getMonth() &&
+//     date.getFullYear() === today.getFullYear()
+//   );
 // }
 
-// async function calculate() {
-//   const sum = await add(1, 2);
-//   console.log("Callback 1:", sum);
-//   const diff = await sub(sum, 1);
-//   console.log("Callback 2:", diff);
-//   const prod = await mul(diff, 2);
-//   console.log("Callback 3:", prod);
+// function isYesterday(date) {
+//   const yesterday = subtractDays(new Date(), 1);
+//   return (
+//     date.getDate() === yesterday.getDate() &&
+//     date.getMonth() === yesterday.getMonth() &&
+//     date.getFullYear() === yesterday.getFullYear()
+//   );
 // }
 
-// calculate();
-
-// function add(a, b) {
-//   return new Promise((resolve, reject) => {
-//     if (typeof a !== "number" || typeof b !== "number") {
-//       reject(new Error("Invalid"));
-//     }
-//     const c = a + b;
-//     resolve(c);
-//   });
-// }
-
-// async function result() {
-//   try {
-//     const res = await add(1, 2);
-//     console.log(res);
-//   } catch (error) {
-//     console.error("Something went wrong");
+// function compareAsc(date1, date2) {
+//   if (date1 > date2) {
+//     return 1;
+//   } else if (date1 < date2) {
+//     return -1;
+//   } else {
+//     return 0;
 //   }
 // }
 
-// result();
-
-// function promise() {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       resolve("Promise is resolved");
-//     }, 1000);
-//   });
-// }
-// promise()
-//   .then((result) => {
-//     console.log(result); // Promise is resolved
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
-
-// converting promise to async/await
-
-// var Promise = require("bluebird");
-
-// function add(a, b) {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       const c = a + b;
-//       resolve(c);
-//     }, 1000);
-//   });
+// function isTomorrow(date) {
+//   const tomorrow = addDays(new Date(), 1);
+//   return (
+//     date.getDate() === tomorrow.getDate() &&
+//     date.getMonth() === tomorrow.getMonth() &&
+//     date.getFullYear() === tomorrow.getFullYear()
+//   );
 // }
 
-// add(1, 2)
-//   .then((sum) => {
-//     console.log(sum); // 3
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
+// // function to format a date as "MM dd yyyy"
+// function formatDate(date) {
+//   const month = ("0" + (date.getMonth() + 1)).slice(-2);
+//   const day = ("0" + date.getDate()).slice(-2);
+//   const year = date.getFullYear();
 
-var Promise = require("bluebird");
-
-// function add(a, b, callback) {
-//   setTimeout(() => {
-//     const c = a + b;
-//     callback(null, c);
-//   }, 1000);
+//   return `${month} ${day} ${year}`;
 // }
 
-// const promise = Promise.promisify(add);
+// const date = new Date();
+// console.log(formatDate(subtractDays(date, 2)));
+// console.log(formatDate(addDays(date, 2)));
+// console.log(isToday(date));
+// console.log(isYesterday(subtractDays(date, 2)));
+// console.log(isTomorrow(addDays(date, 1)));
 
-// promise(1, 2)
-//   .then((sum) => {
-//     console.log(sum); // 3
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
-
-function add(a, b) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const c = a + b;
-      resolve(c);
-    }, 1000);
-  });
-}
-
-function sub(a, b) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const c = a - b;
-      resolve(c);
-    }, 1000);
-  });
-}
-
-function mul(a, b) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const c = a * b;
-      resolve(c);
-    }, 1000);
-  });
-}
-
-Promise.r([add(1, 2), sub(1, 2), mul(1, 2)])
-  .then((results) => {
-    console.log(results); // [3, -1, 2]
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+const date = new Date(); // Current date and time
+console.log(
+  "Local Time:",
+  date.toLocaleString("en-US", { dateStyle: "full", timeStyle: "full" })
+); // Local time with time zone info
+console.log("UTC Time:", date.toUTCString()); // UTC time
