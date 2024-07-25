@@ -150,7 +150,7 @@ Weak Reference:
 
 >WeakMap and WeakSet:
 >
->WeakMap and WeakSet are special data structures in JavaScript that allow >objects to be weakly referenced.
+>WeakMap and WeakSet are special data structures in JavaScript that allow objects to be weakly referenced.
 
 ## 2. Mark and Sweep Algorithm:
 
