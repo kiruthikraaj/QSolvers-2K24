@@ -273,7 +273,7 @@ Like arrays, we can also destructure an object in javscript.
 
 ---
 
-`Self Inoking Function`:
+`Self Invoking Function`:
 
 A self-invoking function is a nameless (anonymous) function that is invoked immediately after its definition.
 
