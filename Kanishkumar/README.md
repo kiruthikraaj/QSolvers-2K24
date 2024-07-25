@@ -374,3 +374,27 @@ Once the allocated memory is released, it is used for other purposes. It is hand
 
 
 ---
+
+## Memory Management in Modern JavaScript Frameworks
+
+- Modern JavaScript frameworks like Angular and Vue.js and libraries like react play a significant role in shaping the future of heap memory management. 
+
+- For example, react `use virtual DOMs to limit direct interactions with the actual DOM`, which can be expensive in terms of memory usage. 
+
+- Others provide tools and techniques for tracking and managing memory usage, such as `memory profiling tools` and techniques for preventing memory leaks.
+
+---
+
+### Improving Performance:
+
+1. Minimize HTTP request
+2. Use a CDN 
+3. Minification
+4. Optimize loops and conditions
+5. Avoid Global variables
+6. Reduce DOM access
+7. Use a cache
+8. Use Efficient Event handlers (use event delegation)
+
+---
+
