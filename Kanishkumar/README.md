@@ -116,21 +116,6 @@ Example:
 
         console.log(fibonacciSum(10));  // 55
 
-Using arrow  function:
-
-        const fibonacciSum  = num => {
-        if(num <= 1){
-                return num;
-        }
-        else{
-                return fibonacciSum(num-1)+ fibonacciSum(num-2);
-        }
-        }
-
-
-        console.log(fibonacciSum(10));
-
-
 2. Factorial:
 
         function factorial(num){
@@ -158,4 +143,302 @@ Using arrow  function:
         console.log(reverseString('Hello'))
 ---
 
+## Closures:
 
+A closure is a feature in JavaScript where an inner function has access to the outer function’s variables.
+
+The closure has three scope chains:
+
+- it has access to its own scope — variables defined between its curly brackets
+- it has access to the outer function’s variables
+- it has access to the global variables
+
+### Closures and Scope Chain
+
+### Inner Function:
+
+- This is the function defined within another function.
+- It has access to its own scope, the scope of its parent function, and the global scope.
+
+### Parent Function:
+
+- This is the outer function that contains the inner function.
+- The variables defined in this function are accessible to the inner function.
+
+### Global Scope (Root):
+
+- The outermost scope where global variables reside.
+- Both the parent and inner functions have access to this scope.
+
+
+Example:
+
+        let globalScope = "I am global variable";
+
+        function parentFunction(){
+        let parentScope = "I am parent function variable";
+
+        function innerFunction(){
+                let innerScope = "I am inner function variable";
+
+                console.log(innerScope);
+                console.log(parentScope);
+                console.log(globalScope);
+        }
+
+        innerFunction();
+        }
+
+        parentFunction();
+
+---
+
+## Closure Use cases:
+
+- Maintaining State: Keeping track of information over time.
+- Event Handlers: Handling events with context.
+- Setting Timeouts: Preserving variable values over time.
+- Callbacks and Asynchronous Code: Closures are essential for handling callbacks and asynchronous operations.
+- Data encapsulation and private variables
+- Memoization.
+
+
+### Example (Maintaining State, Encapsulation, Private variable)
+
+        function Counter(){
+        let count = 0;  // Private Variable
+
+        return {
+                increment : function(){
+                count++;  // state 
+                },
+
+                decrement : function(){
+                count--;  // state 
+                },
+
+                tot : function(){
+                console.log(count);
+                }
+        }
+        }
+
+        const  x = Counter();
+        x.increment();
+        x.increment();
+        x.tot();  // 2
+
+
+- In the above example, the Counter achieves encapsulation by preventing direct manipulation of the private variable count from outside the function. 
+
+- All interactions with count are done through the provided methods (increment, decrement, and tot), ensuring controlled access to the internal state.
+
+
+---
+
+
+`Function Borrowing`:
+
+1. Call()
+
+
+The call() method in JavaScript allows you to invoke a function with a specific this value and arguments.
+
+
+
+        let name ={
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+        var printName = function(){
+        console.log(this.first + " "+ this.last);
+        }
+
+        printName.call(name);  //call
+
+`Multiple Objects`:
+
+        let name1 ={
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+        let name2 ={
+        first: 'Kumar',
+        last: 'Kanish'
+        }
+
+        var printName = function(){
+        console.log(this.first + " "+ this.last);
+        }
+
+        printName.call(name1);
+        printName.call(name2);
+
+
+`Passing Additional Parameters`:
+
+        Arguments can be passed directly into the function
+
+        let name ={
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+
+        var printName = function(city){
+        console.log(this.first + " "+ this.last + " "+ city);
+        }
+
+        printName.call(name, "Chennai");    // adding argumnet list
+        
+        // Kanish Kumar Chennai
+
+// The first argument is reference to this variable.
+// Second argument is the argument for function parameters.
+
+
+---
+
+2. apply() method:
+
+The apply() method is very handy if you want to use an array instead of an argument list.
+If we have more than 1 argument to be passed, this comes handy.
+
+Consider the previous example,
+
+If i want to add parameters, state and country also, then,
+
+       let name ={
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+        var printName = function(city, state, country){
+        console.log(this.first + " "+ this.last + " "+ city + " "+ state+" "+ country);
+        }
+
+        printName.apply(name, ['Chennai', 'TamilNadu', 'India']);  // array of values 
+
+        // Kanish Kumar Chennai TamilNadu India
+
+
+---
+
+3. Bind Method:
+
+- Used to bind and keep a copy of the method.
+- The bind() function creates a new bound function.
+- The bind() method creates a new function from an existing one.
+
+        let name = {
+        first: 'Kanish',
+        last: 'Kumar'
+        }
+
+        var printName = function(city, state, country) {
+        console.log(this.first + " " + this.last + " " + city + " " + state + " " + country);
+        }
+
+        let newFunc = printName.bind(name, 'Chennai', 'TamilNadu', 'India'); 
+
+
+        newFunc(); 
+        // Output: Kanish Kumar Chennai TamilNadu India
+
+---
+
+## This keyword:
+
+- In JavaScript, this refers to the context in which a function or method is executed. 
+
+- It is a keyword that allows access to the properties and methods of the object that is currently being interacted with.
+
+1. Global context
+
+        console.log(this); // global object in node js
+
+2. Explicitly set the value of this using methods like bind(), call(), and apply().
+
+        const person ={
+        name: 'Kanish',
+        age : 22
+        }
+
+        const x = function(){
+        console.log(this.name);    
+        }
+
+        x.call(person)
+
+3. Constructor functions
+
+In a constructor function (a function used with the new keyword), this refers to the newly created instance of the object.
+
+        function Person(name) {
+        this.name = name;
+        }
+
+        const person = new Person('xyz');
+        console.log(person.name); // Outputs: xyz
+
+4. Object Method
+
+When a function is called as a method of an object, this refers to the object itself.
+
+        const person ={
+        name: 'Kanish',
+        age : 22,
+        demo : function(){
+                return this.name;
+        }
+        }
+
+
+        console.log(person.demo())
+
+5. Event Handlers:
+
+In event handlers, this refers to the element that triggered the event.
+
+        document.getElementById('myButton').addEventListener('click', function() {
+        console.log(this); // 'this' refers to the button element
+        });
+
+> `this` may misbehave in callback functions, arrow functions, and nested functions.
+
+---
+
+## Memory leak
+
+A memory leak occurs when a program unintentionally keeps references to objects that are no longer needed, preventing the computer from freeing up memory, which can lead to performance issues and crashes.
+
+        let leak;
+
+        function createLeak() {
+        let largeData = new Array(1000000).fill('data');
+        leak = largeData; // Keeps a reference to largeData
+        }
+
+        createLeak();
+        // `largeData` is not garbage collected because `leak` still holds a reference.
+
+
+## Mimicking Block Scope with IIFE
+
+- An IIFE is a function that runs as soon as it is defined. 
+
+It creates a new scope, which can be used to simulate block scoping.
+
+        !function(){
+        var name = 'kanish';
+        console.log(name);
+        }();
+
+        console.log(name);
+        // ReferenceError: name is not defined
+
+> Before ES6, JavaScript does not have block scope. Now we can achieve with let and const.
+
+---
