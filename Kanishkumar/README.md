@@ -201,6 +201,22 @@ Here both obj1 and obj2 are reachable even after function execution. Hence they 
         console.log(globalRef);        
         console.log(globalRef.ref);   
 
+Hence,
+
+1. Marking: 
+
+Starts from the root (global object), mark all the reachable object as alive.
+
+2. Sweeping: 
+
+The garbage collector traverses the heap and makes note of the memory address of any object that is not marked alive.
+
+
+3. Compacting: 
+
+After sweeping, if required, all the survived objects will be moved to be together.
+
+---
 
 ### Best Practices:
 
@@ -257,11 +273,24 @@ In general, Mark-and-sweep is considered to be a more robust and flexible techni
 
  - The garbage collector assumes that most objects in this generation are short-lived.
 
+![](image-2.png)
+
+
 `Old Generation:` 
 
 - This consists of objects that have survived several garbage collection cycles in the young generation. 
 
 - These objects are assumed to be long-lived.
+
+<br>
+
+>`GC Run: `
+>
+>A cycle of the garbage collector identifying and reclaiming memory.
+
+>`Nursery -> Intermediate -> Old Gen`:
+>
+> New Object are allocated memory in nursery gen. and objects that survive one >GC run are copied into the intermediate space of the young generation and >those surviving a second run are moved into the old generation.
 
 
 ---
@@ -289,7 +318,9 @@ JavaScript allocates memory to the object created.
 
 Once the allocated memory is released, it is used for other purposes. It is handled by a JavaScript engine.
 
-## Memory Allocation
+<br>
+
+# Memory Allocation
 
 ## Stack vs. Heap
 
