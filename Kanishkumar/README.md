@@ -303,9 +303,9 @@ Memory management refers to the process of allocating, utilizing, and releasing 
 
 The memory life cycle follows the following stages:
 
-<p style="border: 2px solid white; padding: 10px;">
+<p style="border: 2px solid white; padding: 10px; color:black; background-color: white"><b>
 Allocates the memory &rarr; Use the allocated memory &rarr; Release the memory
-</p>
+</b></p>
 
 
 `1. Allocates the memory`: 
