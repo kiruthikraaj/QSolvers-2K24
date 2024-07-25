@@ -126,7 +126,7 @@ But ,
 
 ## Advantages Of Reference Counting:
 
-- It can reclaim memory as soon as it becomes unreachable, without waiting for a garbage collection cycle
+- It can reclaim memory as soon as it becomes unreachable, without waiting for a garbage collection cycle.
 
 - Can be faster than mark-and-sweep for programs that create and destroy numerous small objects frequently. 
 
