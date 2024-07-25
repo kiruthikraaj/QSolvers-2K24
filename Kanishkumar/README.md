@@ -148,7 +148,6 @@ Weak Reference:
 
 ![alt text](image.png)
 
-
 >WeakMap and WeakSet:
 >
 >WeakMap and WeakSet are special data structures in JavaScript that allow >objects to be weakly referenced.
