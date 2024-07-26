@@ -222,47 +222,92 @@
 //     })
 // })
 
-let count = 0
+// let count = 0
 
-let countVar = new Promise(function(resolve, reject){
+// let countVar = new Promise(function(resolve, reject){
     
-    if(count === 0){
-        resolve(count);
-    }
-    else{
-        reject("Error");
-    }
-})
+//     if(count === 0){
+//         resolve(count);
+//     }
+//     else{
+//         reject("Error");
+//     }
+// })
 
-countVar
-.then(function(){
-    setTimeout(() => {
-        console.log(count+1)     
-    }, 1000);
-    return count;
-})
+// countVar
+// .then(function(){
+//     setTimeout(() => {
+//         console.log(count+1)     
+//     }, 1000);
+//     return count;
+// })
 
-.then(function(){
-    setTimeout(() => {
-        console.log(count+2)    
-    }, 2000);
-    return count;
-})
+// .then(function(){
+//     setTimeout(() => {
+//         console.log(count+2)    
+//     }, 2000);
+//     return count;
+// })
 
-.then(function(){
-    setTimeout(() => {
-        console.log(count+3)      
-    }, 3000);
-    return count;
-})
+// .then(function(){
+//     setTimeout(() => {
+//         console.log(count+3)      
+//     }, 3000);
+//     return count;
+// })
 
-.then(function(){
-    setTimeout(() => {
-        console.log(count+4)
-    }, 4000);
-    return count;
-})
+// .then(function(){
+//     setTimeout(() => {
+//         console.log(count+4)
+//     }, 4000);
+//     return count;
+// })
 
-.catch(function(){
-    console.log("Error");
-})
+// .catch(function(){
+//     console.log("Error");
+// })
+
+// function promise() {
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => {
+//         const success = Math.random() > 0.5; // Randomly decide success or failure
+//         if (success) {
+//           resolve("Promise is resolved");
+//         } else {
+//           reject("Promise is rejected");
+//         }
+//       }, 1000);
+//     });
+//   }
+  
+//   promise()
+//     .then((result) => {
+//       console.log(result); // Promise is resolved
+//     })
+//     .catch((error) => {
+//       console.error(error); // Promise is rejected
+//     });
+ 
+
+function promise() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const rand = Math.random();
+  
+        if (rand > 0.5) {
+          resolve("Success");
+        } else {
+          reject("Fail");
+        }
+      }, 1000);
+    });
+  }
+  
+  promise()
+    .then(function(result) {
+      console.log(result); // Success
+    })
+    .catch(function(error) {
+      console.error(error); // Fail
+    });
+  

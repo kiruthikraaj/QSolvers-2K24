@@ -643,3 +643,57 @@ Example:
 
 ---
 
+Callback vs Promise:
+
+Promise:
+
+```js
+        function promise() {
+        return new Promise((resolve, reject) => {
+        setTimeout(() => {
+                const rand = Math.random();
+        
+                if (rand > 0.5) {
+                resolve("Success");
+                } else {
+                reject("Fail");
+                }
+        }, 1000);
+        });
+        }
+        
+        promise()
+        .then(function(result) {
+        console.log(result); // Success
+        })
+        .catch(function(error) {
+        console.error(error); // Fail
+        });
+```
+  
+Callback:
+
+
+```js
+        function executeWithCallback(successCallback, failureCallback) {
+        setTimeout(() => {
+        const rand = Math.random();
+
+        if (rand > 0.5) {
+                successCallback("Success");
+        } 
+        else {
+                failureCallback("Fail");
+        }}, 1000);
+        }
+
+        executeWithCallback(
+                function(result) {
+                console.log(result); // Success
+                },
+                function(error) {
+                console.error(error); // Fail
+        }
+        );
+```
+
