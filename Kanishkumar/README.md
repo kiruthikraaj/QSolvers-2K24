@@ -329,3 +329,267 @@ It creates a new scope, which can be used to simulate block scoping.
 > Before ES6, JavaScript does not have block scope. Now we can achieve with let and const.
 
 ---
+
+## Synchronous Programming
+
+- Every statement of the code gets executed sequencially.
+- Each statement has to wait for the earlier statement to get executed.
+- Synchronous is a single thread and `blocking by nature.`
+
+```javascript
+        function one(){
+                console.log("one");  
+
+        function two(){
+                console.log("two"); 
+        }
+        two();
+        }
+
+        one();
+
+`Blocking nature:`
+
+        console.log("Start");
+        for (let i = 0; i < 100000000000; i++) {} 
+        console.log("End");
+```
+
+The loop will block the execution of the console.log("End") statement until it completes.
+
+## Asynchronous Programming
+
+-  Every statement in a function is not executed sequentially. It can also execute in parallel.  
+- The next instruction can execute while the previous one is still executing.
+- Asynchronous is a multi-threaded and non-blocking by nature.
+
+ ```javascript
+        function one(){
+                setTimeout(() => {
+                        console.log("One");
+                }, 4000);
+                function two(){
+                        console.log("two");
+                }
+                two();
+                }
+        one();
+```
+---
+
+## Callback Function:
+
+ - A callback function is a function that is passed as an argument to another function.
+ 
+ - Callback functions are useful for handling asynchronous events, such as network requests, file operations, or timers.
+
+
+ ```javascript
+        function display(name, callback){   // function
+        callback();
+        console.log(name);
+        }
+
+        function callMe(){    // callback function
+        console.log("Hello");
+        }
+
+        display('Kanish', callMe);  // function call
+```
+
+Example-2
+
+```javascript
+        context = {
+        greet : 'Welcome'
+        }
+
+        function display(name, callback) { // function
+        callback();
+        console.log(name);
+        }
+        
+        function callMe() { // callback function
+        console.log(context.greet);
+        }
+        
+        display('Kanish', callMe); // function call
+```
+
+Usage along with bind function :
+
+```javascript
+        context = {
+        greet : 'Welcome'
+        }
+
+        function display(name, callback) { // function
+        callback();
+        console.log(name);
+        }
+        
+        function callMe() { // callback function
+        console.log(this.greet);
+        }
+
+        const bound = callMe.bind(context)
+        
+        display('Kanish', bound); // function call
+```   
+---
+
+## Callback Hell (Pyramid of doom):
+
+- Callback Hell is essentially nested callbacks stacked below one another forming a pyramid structure.
+
+- It makes the code hard to read and increases complexity and can prone to errors.
+
+```javascript
+
+        function firstFunction(callback){
+        setTimeout(() => {
+                console.log("First function");
+                callback();
+        }, 1000);
+        }
+
+        function secondFunction(callback){
+        setTimeout(() => {
+                console.log("Second Function");
+                callback();
+        }, 1000);
+        }
+
+        function thirdFunction(callback){
+        setTimeout(() => {
+                console.log("Third function");
+                callback();    
+        }, 1000);
+        }
+
+        function fourthFunction(callback){
+        setTimeout(() => {
+                console.log("Fourth Function");
+                callback();
+        }, 1000);
+        }
+
+
+        firstFunction(() =>{
+        secondFunction(() => {
+                thirdFunction(() => {
+                fourthFunction(() => {
+                        setTimeout(() => {
+                        console.log("Done");
+                        }, 1000);
+                })
+                })
+        })
+        })
+```
+
+## Promises
+
+- A Promise is an object representing the eventual completion (or failure) of an asynchronous operation and its resulting value. 
+
+- Promises are used to handle asynchronous operations in a more manageable way compared to callbacks.
+
+A promise may have one of three states.
+
+        - Pending
+        - Fulfilled
+        - Rejected
+
+- It starts in a pending state. That means the process is not complete. 
+- If the operation is successful, the process ends in a fulfilled state. 
+- If an error occurs, the process ends in a rejected state.
+
+---
+
+## Creation of a Promise
+
+This executor function receives two arguments: resolve and reject.
+
+- `resolve(value):` Called when the asynchronous operation completes successfully.
+
+- `reject(reason):` Called when the asynchronous operation fails.
+
+Syntax:
+
+        let promise = new Promise(function(resolve, reject){
+        //do something
+        });
+
+Example:
+
+        let count = 0;
+
+        let countval = new Promise(function(resolve, reject){
+
+        if(count == 0){
+        resolve("Success");
+        }
+        else{
+        reject("Failed");
+        }
+        });
+
+        console.log(countval)
+
+---
+
+## Promise chaining
+
+
+### `then()`:
+
+- The then() method appends the resolved handler callback.
+
+        let count = 0
+
+        let countVar = new Promise(function(resolve, reject){
+        
+        if(count === 0){
+                resolve(count);
+        }
+        else{
+                reject("Error");
+        }
+        })
+
+        countVar
+        .then(function(){
+        setTimeout(() => {
+                console.log(count+1)     
+        }, 1000);
+        return count;
+        })
+
+        .then(function(){
+        setTimeout(() => {
+                console.log(count+2)    
+        }, 2000);
+        return count;
+        })
+
+        .then(function(){
+        setTimeout(() => {
+                console.log(count+3)      
+        }, 3000);
+        return count;
+        })
+
+        .then(function(){
+        setTimeout(() => {
+                console.log(count+4)
+        }, 4000);
+        return count;
+        })
+
+
+
+## catch():
+
+- Catch method appends the rejection handler callback.
+
+
