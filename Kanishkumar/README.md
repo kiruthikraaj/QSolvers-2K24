@@ -673,7 +673,6 @@ Promise:
   
 Callback:
 
-
 ```js
         function executeWithCallback(successCallback, failureCallback) {
         setTimeout(() => {
