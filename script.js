@@ -222,44 +222,47 @@
 //     })
 // })
 
-// let count = 0
+let count = 0
 
-// let countVar = new Promise(function(resolve, reject){
+let countVar = new Promise(function(resolve, reject){
     
-//     if(count === 0){
-//         resolve(count);
-//     }
-//     else{
-//         reject("Error");
-//     }
-// })
+    if(count === 0){
+        resolve(count);
+    }
+    else{
+        reject("Error");
+    }
+})
 
-// countVar
-// .then(function(){
-//     setTimeout(() => {
-//         console.log(count+1)     
-//     }, 1000);
-//     return count;
-// })
+countVar
+.then(function(){
+    setTimeout(() => {
+        console.log(count+1)     
+    }, 1000);
+    return count;
+})
 
-// .then(function(){
-//     setTimeout(() => {
-//         console.log(count+2)    
-//     }, 2000);
-//     return count;
-// })
+.then(function(){
+    setTimeout(() => {
+        console.log(count+2)    
+    }, 2000);
+    return count;
+})
 
-// .then(function(){
-//     setTimeout(() => {
-//         console.log(count+3)      
-//     }, 3000);
-//     return count;
-// })
+.then(function(){
+    setTimeout(() => {
+        console.log(count+3)      
+    }, 3000);
+    return count;
+})
 
-// .then(function(){
-//     setTimeout(() => {
-//         console.log(count+4)
-//     }, 4000);
-//     return count;
-// })
+.then(function(){
+    setTimeout(() => {
+        console.log(count+4)
+    }, 4000);
+    return count;
+})
 
+.catch(function(){
+    console.log("Error");
+})

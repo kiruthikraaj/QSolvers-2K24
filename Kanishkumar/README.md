@@ -522,6 +522,8 @@ Syntax:
 
 Example:
 
+```javascript
+
         let count = 0;
 
         let countval = new Promise(function(resolve, reject){
@@ -535,7 +537,7 @@ Example:
         });
 
         console.log(countval)
-
+```
 ---
 
 ## Promise chaining
@@ -545,6 +547,7 @@ Example:
 
 - The then() method appends the resolved handler callback.
 
+```javascript
         let count = 0
 
         let countVar = new Promise(function(resolve, reject){
@@ -585,11 +588,58 @@ Example:
         }, 4000);
         return count;
         })
+```
 
-
-
-## catch():
+### `catch():`
 
 - Catch method appends the rejection handler callback.
 
+
+```javascript
+
+        let count = 5
+
+        let countVar = new Promise(function(resolve, reject){
+        
+        if(count === 0){
+                resolve(count);
+        }
+        else{
+                reject("Error");
+        }
+        })
+
+        countVar
+        .then(function(){
+        setTimeout(() => {
+                console.log(count+1)     
+        }, 1000);
+        return count;
+        })
+
+        .then(function(){
+        setTimeout(() => {
+                console.log(count+2)    
+        }, 2000);
+        return count;
+        })
+
+        .catch(function(){
+        console.log("Error");  // Catch block
+        })
+```
+---
+
+`Pros of Promises:`
+
+- Avoid callback hell by chaining asynchronous operations in a more readable way.
+- Built-in error handling with .catch method.
+- Can be combined or transformed using higher-order functions such as .then and .map.
+
+`Cons of Promises:`
+
+- Not as widely supported as callbacks, especially in older codebases.
+- Slightly more complex to understand compared to callbacks.
+
+---
 
