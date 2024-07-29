@@ -1,9 +1,6 @@
 ## Function Expression
 
-
 We can define a function inside an expression by using function keyword.
-
-1. Function Name can be omitted
 
         const demo = function(length, breadth){
         let area = length * breadth;
@@ -12,89 +9,21 @@ We can define a function inside an expression by using function keyword.
 
         console.log(demo(12,5));
 
-2. We can even give Function name  
-
-        const demo = function demo(length, breadth){
-        let area = length * breadth;
-        return area;
-        }
-
-        console.log(demo(12,5));
-
-Function Hoisting:
-
-Calling function before its definition leads to reference error.
-
-        console.log(demo())
-
-        const demo = function (){
-        console.log("Hoisted function")
-}
 
 Anonymous Function / IIFE:
 
 Defining a function without name.
 
-Method-1
 
         (function() {
         console.log("Hello");
         })();
 
 
-Method-2
-
         !function() {
         console.log("Hello");
         }();
 
-
-Function generator:
-
-- A generator function uses the yield keyword to generate values.
-- A generator function can pause its execution and later resume from where it left off, allowing for more complex control flows and producing sequences of values.
-- It returns a generator object. Generator objects are used by next().
-
-        // An example of generator function
-        function* gen(){
-        yield 1;
-        yield 2;
-        ...
-        }
-
-
-`Function generator expression`:
-
-- we can define a generator function to a variable.
-
-        const x = function* (){
-        yield 10;
-        yield 20;
-        yield 30; 
-        }
-
-        let z = x();
-
-        console.log(z.next().value)  // 10
-        console.log(z.next().value)  // 20
-        console.log(z.next().value)  // 30
-
----
-
->`Regular Functions: `
->
->To do a simple computation or action that returns a single result.
->
->`Generator Functions: `
->
->To produce a sequence of values, handle asynchronous operations with yield in conjunction with async/await, or manage complex state transitions.
-
-Arrow Function Expression:
-
-        const x = (a,b) => a+b;
-        console.log(x(2,3));
-
---
 
 ## Recursive Function
 
@@ -416,27 +345,6 @@ Example-2
         display('Kanish', callMe); // function call
 ```
 
-Usage along with bind function :
-
-```javascript
-        context = {
-        greet : 'Welcome'
-        }
-
-        function display(name, callback) { // function
-        callback();
-        console.log(name);
-        }
-        
-        function callMe() { // callback function
-        console.log(this.greet);
-        }
-
-        const bound = callMe.bind(context)
-        
-        display('Kanish', bound); // function call
-```   
----
 
 ## Callback Hell (Pyramid of doom):
 
@@ -488,27 +396,32 @@ Usage along with bind function :
         })
 ```
 
-## Promises
+## Promise
 
-- A Promise is an object representing the eventual completion (or failure) of an asynchronous operation and its resulting value. 
+- One way to achieve asynchronous operation in JS.
+- A Promise is an object representing an asynchronous operation and its resulting value. 
 
-- Promises are used to handle asynchronous operations in a more manageable way compared to callbacks.
+- Promises are used to handle asynchronous operations in a more cleaner way compared to callbacks.
 
 A promise may have one of three states.
 
         - Pending
-        - Fulfilled
-        - Rejected
+        - Resolved (successful)
+        - Rejected (handle errors)
 
 - It starts in a pending state. That means the process is not complete. 
-- If the operation is successful, the process ends in a fulfilled state. 
+- If the operation is successful, the process ends in a resolved state. 
 - If an error occurs, the process ends in a rejected state.
 
 ---
 
+Example:
+
+- Getting data from api, it may take some time to load and access the data, hence it can be done using asynchronous operation.
+
 ## Creation of a Promise
 
-This executor function receives two arguments: resolve and reject.
+A Promise will have a function, that receives two arguments: resolve and reject.
 
 - `resolve(value):` Called when the asynchronous operation completes successfully.
 
@@ -517,117 +430,67 @@ This executor function receives two arguments: resolve and reject.
 Syntax:
 
         let promise = new Promise(function(resolve, reject){
-        //do something
+        //logic
         });
 
 Example:
 
-```javascript
+The example illustrates creation of a promise
 
-        let count = 0;
+        const data = new Promise(function(resolve, reject){
+            setTimeout(() => {
+                const name = 'kanish'
 
-        let countval = new Promise(function(resolve, reject){
-
-        if(count == 0){
-        resolve("Success");
-        }
-        else{
-        reject("Failed");
-        }
-        });
-
-        console.log(countval)
-```
----
-
-## Promise chaining
-
-
-### `then()`:
-
-- The then() method appends the resolved handler callback.
-
-```javascript
-        let count = 0
-
-        let countVar = new Promise(function(resolve, reject){
-        
-        if(count === 0){
-                resolve(count);
-        }
-        else{
-                reject("Error");
-        }
+                if(name){
+                    resolve(name);
+                }
+                else{
+                    reject('No data present')
+                }
+            }, 2000);
         })
 
-        countVar
-        .then(function(){
-        setTimeout(() => {
-                console.log(count+1)     
-        }, 1000);
-        return count;
+### Accessing the created promise  / Chaining:
+
+Syntax: 
+
+    Promise_Object().then().catch().finally()
+
+- then() = executes success state
+- catch() = executes error state
+- finally() = executes both success and error state
+
+
+Example:
+
+We can access the above created promise as,
+
+        data
+
+        .then(function(name){
+        console.log(name);
         })
 
-        .then(function(){
-        setTimeout(() => {
-                console.log(count+2)    
-        }, 2000);
-        return count;
+        .catch(function(error){
+            console.log(error);
         })
 
-        .then(function(){
-        setTimeout(() => {
-                console.log(count+3)      
-        }, 3000);
-        return count;
+        .finally(function(){
+            console.log('Finally block executed');
         })
 
-        .then(function(){
-        setTimeout(() => {
-                console.log(count+4)
-        }, 4000);
-        return count;
-        })
-```
 
-### `catch():`
+Here, since the data is known, the promise is resolved and data is printed.
+Incase if data is undefined, error will be catched.
 
-- Catch method appends the rejection handler callback.
+![alt text](image-1.png)
 
+Here the output will throw the error as follows,
 
-```javascript
+![alt text](image-2.png)
 
-        let count = 5
+> Finally block executes irrespective of the result.
 
-        let countVar = new Promise(function(resolve, reject){
-        
-        if(count === 0){
-                resolve(count);
-        }
-        else{
-                reject("Error");
-        }
-        })
-
-        countVar
-        .then(function(){
-        setTimeout(() => {
-                console.log(count+1)     
-        }, 1000);
-        return count;
-        })
-
-        .then(function(){
-        setTimeout(() => {
-                console.log(count+2)    
-        }, 2000);
-        return count;
-        })
-
-        .catch(function(){
-        console.log("Error");  // Catch block
-        })
-```
 ---
 
 `Pros of Promises:`
@@ -643,56 +506,315 @@ Example:
 
 ---
 
-Callback vs Promise:
 
-Promise:
+Callback for the same code:
 
-```js
-        function promise() {
-        return new Promise((resolve, reject) => {
-        setTimeout(() => {
-                const rand = Math.random();
-        
-                if (rand > 0.5) {
-                resolve("Success");
+In the callback pattern, we typically pass a callback function that handles both success and error cases.
+
+        function fetchData(callback) {
+            setTimeout(() => {
+                const name = 'kanish;
+
+                if (name) {
+                    callback(null, name); 
                 } else {
-                reject("Fail");
+                    callback(new Error()); 
                 }
-        }, 1000);
-        });
+            }, 2000);
         }
-        
-        promise()
-        .then(function(result) {
-        console.log(result); // Success
+
+        fetchData(function(error, name) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(name);
+            }
+            console.log('Finally block executed');
+        });
+
+
+----
+
+### Callback vs promise:
+
+
+Callbacks                                                             | Promises                                                                 |
+---------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| Pass a function as an argument to another function                        | Chainable methods (`then`, `catch`, `finally`)                           |
+| Can lead to "callback hell" with nested structures                        | More readable and maintainable chaining syntax                           |
+| Must be done within the callback function                                 | Built-in error handling with `catch`                                     ||
+| Passing intermediate values through nested callbacks can be difficult  | Easier to pass intermediate values through chained `then` handlers       |                                   |
+| Basic asynchronous operations, event handling                             | Complex asynchronous workflows                |
+
+
+----
+### Promise Methods:
+
+1. Promise.all():
+
+**Promise.all**
+- Waits for all promises to resolve or any to reject.
+- Useful for running multiple asynchronous operations in parallel and waiting for all of them to complete.
+
+```javascript
+        Promise.all([promise1, promise2, promise3])
+        .then(results => {
+                // Handle results
         })
-        .catch(function(error) {
-        console.error(error); // Fail
+        .catch(error => {
+                // Handle error
         });
 ```
-  
-Callback:
 
-```js
-        function executeWithCallback(successCallback, failureCallback) {
+Example:
+
+
+        p1 = Promise.resolve(50);
+        p2 = 200
+        p3 = new Promise(function (resolve, reject) {
+                setTimeout(resolve, 100, 'geek');
+        });
+
+        Promise.all([p1, p2, p3]).then(function (values) {
+                console.log(values);
+        });
+
+        // all p1,p2,p3 fulfilles
+
+
+**2. Promise.any**
+
+- Returns the promise value as soon as any one of the promises is fulfilled
+
+        p1 = Promise.reject(50);
+        p2 = 200
+        p3 = new Promise(function (resolve, reject) {
+                setTimeout(reject, 100, 'geek');
+        });
+
+        Promise.any([p1, p2, p3]).then(function (values) {
+                console.log(values);
+        });
+
+        // only p2 is fulfilled
+
+
+**3. Promise.allSettled**
+
+        p1 = Promise.reject(50);
+        p2 = 200
+        p3 = new Promise(function (resolve, reject) {
+                setTimeout(resolve, 100, 'geek');
+        });
+
+        Promise.allSettled([p1, p2, p3]).then(function (values) {
+                console.log(values);
+        });
+
+        // all p1,p2,p3 fulfilles
+
+![](image-3.png)
+
+
+
+
+## Bluebird promise:
+
+Bluebird is a popular library for working with Promises in JavaScript. It offers additional features and performance improvements over native Promises.
+
+### Installation:
+
+        npm install bluebird
+
+Example usage:
+
+        const Promise = require('bluebird');
+
+        const promise = new Promise((resolve, reject) => {
+        setTimeout(() => resolve('Hello from Bluebird!'), 1000);
+        });
+
+        promise.then(result => {
+        console.log(result); 
+        });
+
+
+## Key Features
+
+- Bluebird is optimized for performance, making it suitable for high-performance applications.
+
+- Provides methods like `.map()`, `.reduce()`, and `.all()` for effective handling and aggregation of promises.
+
+- Allows for the cancellation of promises, enabling you to halt execution when necessary.
+
+- Improved error handling with `.catch()` and detailed stack traces for better debugging.
+
+-  Methods like `.isFulfilled()` and `.isRejected()` to inspect the current state of a promise.
+
+- Includes `Promise.promisify()` to convert callback-based functions into promises.
+
+
+### 1. Promise.resolved()
+
+        const Promise = require('bluebird')
+
+        const resolved = Promise.resolve("Resolved")
+
+        resolved .then( value => {
+        console.log(value)
+        })
+
+### 2. Promise.reject()
+
+        const Promise1 = require('bluebird')
+
+        const rejected = Promise1.reject("Rejected")
+
+        rejected .then( value => {
+        console.log(value)
+        })
+
+### 3. Bluebird.delay()
+
+Returns a promise that resolves after a specified delay.
+
+        const Bluebird = require('bluebird');
+
+        Bluebird.delay(2000)
+            .then(() => {
+                console.log('This message appears after a 2-second delay');
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+            });
+
+### 4. Bluebird.map()
+
+Maps over an array and returns a promise that resolves with an array of results.
+
+            const Bluebird = require('bluebird');
+
+            const numbers = [1, 2, 3, 4, 5];
+
+            Bluebird.map(numbers, number => number * 2)
+                .then(results => {
+                    console.log('Doubled numbers:', results);
+                })
+                .catch(error => {
+                    console.error('An error occurred:', error);
+                });
+
+
+5. Bluebird.Promisify:
+
+The promisify method is used to convert a callback-based function to a promise-based function.
+
+        const Promise = require("bluebird");
+
+        function multiply(x, y, callback) {
         setTimeout(() => {
-        const rand = Math.random();
+            const z = x * y; 
+            callback(null, z); 
+        }, 1000); 
+        }
 
-        if (rand > 0.5) {
-                successCallback("Success");
+        const promise = Promise.promisify(multiply);
+
+        promise(3, 4)
+        .then((result) => {
+            console.log(result); 
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+The original multiply function uses a callback, Bluebird.promisify abstracts away the callback handling and allows you to work with the function using promises.
+
+---
+
+### Async / await:
+
+-  Using async and await with promises simplifies asynchronous code and makes it look more like synchronous code.
+- Async/await helps in handling asynchronous operations in a synchronous manner.
+
+Async/await can return only success state.
+Hence, error can be handled using (Exception Handling) try catch finally blocks.
+
+    function add(x, y) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+        const result = x + y;
+        resolve(result); 
+        }, 1000);
+    });
+    }
+
+    async function calculateSum() {
+        try {
+            const sum = await add(3, 4); 
+            console.log(sum); // Output: 7
+            console.log("Hi")
         } 
-        else {
-                failureCallback("Fail");
-        }}, 1000);
+        catch (error) {
+            console.error(error); 
         }
+    }
 
-        executeWithCallback(
-                function(result) {
-                console.log(result); // Success
-                },
-                function(error) {
-                console.error(error); // Fail
-        }
-        );
-```
+        console.log("Bye");
+        calculateSum();
 
+// async keyword is needed when we use await inside a function.
+
+- The await keyword is placed before the call to a function or variable that returns a promise.
+
+Though, entire code asynchronously that function that as await alone will run synchronously.
+
+---
+
+## Callback to Promise
+
+    function subtract(x, y) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+        const difference = x - y;
+        resolve(difference);
+        }, 1000);
+    });
+    }
+
+    subtract(5, 3)
+    .then((result) => {
+        console.log(result); // 2
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+
+## Promise to async /await
+
+    function subtract(x, y) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+        const difference = x - y;
+        resolve(difference);
+        }, 1000);
+    });
+    }
+
+    async function result() {
+        const res = await subtract(5, 3);
+        console.log(res); // Output: 2
+    }
+
+---
+
+Why `async` in js?
+
+- async functions let you write asynchronous code that looks and behaves like synchronous code, making it easier to read and understand.
+
+- With async functions, you can use try/catch blocks to handle errors, similar to synchronous code, making error management simpler.
+
+- async function always returns a promise, allowing you to use await inside it to pause execution until the promise resolves, streamlining asynchronous operations.
+
+---

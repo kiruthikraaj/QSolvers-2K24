@@ -289,25 +289,53 @@
 //     });
  
 
-function promise() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const rand = Math.random();
+// function promise() {
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => {
+//         const rand = Math.random();
   
-        if (rand > 0.5) {
-          resolve("Success");
-        } else {
-          reject("Fail");
-        }
-      }, 1000);
-    });
-  }
+//         if (rand > 0.5) {
+//           resolve("Success");
+//         } else {
+//           reject("Fail");
+//         }
+//       }, 1000);
+//     });
+//   }
   
-  promise()
-    .then(function(result) {
-      console.log(result); // Success
-    })
-    .catch(function(error) {
-      console.error(error); // Fail
-    });
+//   promise()
+//     .then(function(result) {
+//       console.log(result); // Success
+//     })
+//     .catch(function(error) {
+//       console.error(error); // Fail
+//     });
   
+
+
+// p1 = Promise.reject(50);
+// p2 = 200
+// p3 = new Promise(function(resolve, reject) {
+// 	setTimeout(reject, 100, 'geek');
+// });
+
+// Promise.race([p1, p2, p3]).then(function (values) {
+// 	console.log(values);
+// });
+// const Promise = require('bluebird')
+
+// const resolved = Promise.resolve("Resolved")
+
+// resolved .then( value => {
+//     console.log(value)
+// })
+
+// const Promise1 = require('bluebird')
+
+// const rejected = Promise1.reject("Rejected")
+
+// rejected .then( value => {
+//     console.log(value)
+// })
+
+
