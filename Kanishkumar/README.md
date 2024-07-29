@@ -483,11 +483,11 @@ We can access the above created promise as,
 Here, since the data is known, the promise is resolved and data is printed.
 Incase if data is undefined, error will be catched.
 
-![alt text](image-1.png)
+![Screenshot 2024-07-29 194043](https://github.com/user-attachments/assets/b191ea54-845a-4b4b-bd86-b275758e64ba)
 
 Here the output will throw the error as follows,
 
-![alt text](image-2.png)
+![Screenshot 2024-07-29 194105](https://github.com/user-attachments/assets/caf84c3b-3f8b-4039-9627-56b25207bd04)
 
 > Finally block executes irrespective of the result.
 
@@ -613,8 +613,8 @@ Example:
 
         // all p1,p2,p3 fulfilles
 
-![](image-3.png)
 
+![Screenshot 2024-07-29 200308](https://github.com/user-attachments/assets/9850d97e-8d57-4da7-af56-ecab13603be6)
 
 
 
