@@ -240,7 +240,7 @@ This returns diffference between local and UTC timezone (in minutes).
 
 - It’s designed to shift the available daylight to better match our waking hours.
 
-![alt text](image.png)
+![Screenshot 2024-07-30 121744](https://github.com/user-attachments/assets/9a27cbb1-f362-489f-9d9b-b2750e92b4ea)
 
 
 `Examples of DST Usage`
