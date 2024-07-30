@@ -205,3 +205,37 @@ const { months } = require("moment")
 // const dstStatus = isDSTObserved(now, 'America/New_York');
 // console.log('Is DST Observed in New York?', dstStatus);
 
+const obj = {
+    name : 'kanish'
+}
+
+Object.assign(obj, {age : 21})
+
+console.log(obj)
+
+var obj1 = new Object()
+obj1.name = 'kanish'
+obj1.age = 22
+console.log(obj1)
+
+function Person(name, age){
+    this.name = name;
+    this.age = age;
+}
+
+var p1 = new Person("Kanish", 22)
+console.log(p1)
+
+
+class Person1{
+    constructor(name,age){
+        this.name = name,
+        this.age = age
+    }
+}
+
+let x = new Person1("kanish", 22)
+
+console.log(x)
+
+console.log(typeof Person)
