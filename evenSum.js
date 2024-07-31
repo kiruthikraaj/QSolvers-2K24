@@ -26,3 +26,12 @@ let doc = {a: 1,
         }
 
 console.log(evenSum(doc))
+
+/*
+Time Complexity:
+- Each property handled individually only once, either during base case or duirng recursive case. There is no repetition for a single property, hence time complexity is order of n properties.
+Hence, O(n)  
+
+Space Complexity:
+Here the space alloted depends on max depth which is 3, hence O(3). which in turn written as O(m) where m is max depth.
+*/
