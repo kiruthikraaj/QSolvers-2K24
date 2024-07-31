@@ -5,7 +5,6 @@
 `new Date() Constructor`:
 
 Date objects are created with new Date().
-
         - new Date()
         - new Date(date string)
         - new Date(year,month)
