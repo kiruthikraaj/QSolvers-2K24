@@ -211,3 +211,180 @@ super is used within a derived class to call methods or constructors from its ba
 
 ---
 
+## Encapsulation:
+
+Encapsulation is an OOP principle that involves bundling the data (properties) and methods (functions) that operate on the data into a single unit, known as a class in JavaScript.
+
+
+### Private variables:
+
+We cannot access the private variable directly outside the class. But it is acccessible when it is used within a public method.
+It starts with # or _
+
+
+        class Person{
+        #age;
+
+            constructor(name, age){
+                this.name = name;
+                this.#age = age
+            }
+
+
+        }
+
+        var p1 = new Person("Kanish", 22)
+        console.log(p1.#age) 
+
+// Property '#age' is not accessible outside class 'Person' because it has a private identifier.
+
+        class Person{
+        #age;
+
+            constructor(name, age){
+                this.name = name;
+                this.#age = age
+            }
+
+            display(){
+                console.log(this.name+" is "+this.#age + " years old")
+            }
+
+
+        }
+
+        var p1 = new Person("Kanish", 22)
+        p1.display()
+
+Now we can access the private variable using a public method.
+
+
+- It provides a controlled method to access private variables using public method.
+
+
+To access private variables, we can use getter setter methods.
+
+        class Person{
+            #name;
+
+            constructor(name){
+                this.#name = name
+            }
+        }
+
+
+        let p1 = new Person("Kanish")
+        console.log(p1.name)   // cannot access
+
+
+But with getter methods, we can be get the name:
+
+        class Person{
+            #name;
+
+            constructor(name){
+                this.#name = name
+            }
+
+            get name(){
+                return this.#name
+            }
+        
+        }
+
+        let p1 = new Person("Kanish")
+        console.log(p1.name)  // get name
+
+
+To set the name, we can use setter() method,
+
+
+            class Person{
+                #name;
+
+                constructor(name){
+                    this.#name = name
+                }
+
+                get name(){
+                    return this.#name
+                }
+
+                set name(name){
+                    if(typeof name === 'string'){
+                        this.#name = name
+                    }
+                    else{
+                        console.error("Invalid name")
+                    }
+                }
+            }
+
+
+            let p1 = new Person("Kanish")
+            p1.name = 'Akash' // set new name
+            console.log(p1.name) 
+
+----
+
+## Multi level inheritance:
+
+Multilevel Inheritance involves a chain of inheritance where a class inherits from another class, which in turn inherits from yet another class.
+
+
+        class Animal{
+            constructor(name){
+                this.name = name
+        }
+
+        display(){
+            console.log(this.name + " is an animal")
+        }
+        }
+
+        class Dog extends Animal{
+            constructor(name, breed){
+                super(name)
+                this.breed = breed
+        }
+        info1(){
+            console.log(this.name + " is a " + this.breed + " dog")
+        }
+        }
+
+        class Cat extends Animal{
+            constructor(name, color){
+                super(name)
+                this.color = color
+        }
+
+        info2(){
+            console.log(this.name + " is a " + this.color + " cat")
+        }
+        }
+
+
+        p1 = new Cat("Cat","orange")
+        p1.display()
+        p1.info2()
+
+        p2 = new Dog("Dog","labrador")
+        p2.display()
+        p2.info1()
+
+
+## Abstraction:
+
+Abstraction hides the implementation details and exposes only what is necessary.
+
+`Abstract Class`:
+
+An abstract class is a class that cannot be instantiated.
+
+`Abstract Method`:
+
+- A type of method that is only declared and has no implementation or “function body” is known as the Abstract method. 
+
+-The abstract method must be declared inside the Abstract Class. Where its definition can be added in its subclass.
+
+----
