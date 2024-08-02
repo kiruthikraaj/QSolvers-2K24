@@ -1,5 +1,43 @@
 ## Milestone - 10
 
+### Table of Contents
+
+- [Types of Properties in Javascript](#types-of-properties-in-javascript)
+- [Defining multiple properties](#defining-multiple-properties)
+- [Reading property attributes](#reading-property-attributes)
+- [Object Creation](#object-creation)
+- [Design Patterns](#design-patterns)
+  - [Creational Patterns](#creational-patterns)
+    - [Singleton Pattern](#singleton-pattern)
+    - [Factory Pattern](#factory-pattern)
+    - [Builder Pattern](#builder-pattern)
+    - [Prototype Pattern](#prototype-pattern)
+    - [Constructor Pattern](#constructor-pattern)
+  - [Structural Patterns](#structural-patterns)
+    - [Decorator Pattern](#decorator-pattern)
+    - [Adapter Pattern](#adapter-pattern)
+    - [Composite Pattern](#composite-pattern)
+    - [Facade Pattern](#facade-pattern)
+    - [Bridge Pattern](#bridge-pattern)
+    - [Flyweight Pattern](#flyweight-pattern)
+    - [Proxy Pattern](#proxy-pattern)
+  - [Behavioral Patterns](#behavioral-patterns)
+    - [Observer Pattern](#observer-pattern)
+    - [Strategy Pattern](#strategy-pattern)
+    - [State Pattern](#state-pattern)
+  - [Combination Constructor/Prototype Pattern](#combination-constructorprototype-pattern)
+  - [Object.create() vs new Object()](#objectcreate-vs-new-object)
+  - [Dynamic Prototype Pattern](#dynamic-prototype-pattern)
+  - [Parasitic Constructor Pattern](#parasitic-constructor-pattern)
+  - [Durable Constructor Pattern](#durable-constructor-pattern)
+  - [Inheritance in JavaScript](#inheritance-in-javascript)
+  - [Prototype Chaining and Constructor Stealing](#prototype-chaining-and-constructor-stealing)
+  - [Parasitic Inheritance](#parasitic-inheritance)
+  - [Combination Inheritance](#combination-inheritance)
+  - [Parasitic Combination Inheritance](#parasitic-combination-inheritance)
+  - [S.O.L.I.D Principles](#solid-principles)
+  - [A Car Showroom application to demonstrate the SOLID principles](#a-car-showroom-application-to-demonstrate-the-solid-principles)
+
 ### Types of Properties in Javascript
 
 1.  **Data Properties**:
