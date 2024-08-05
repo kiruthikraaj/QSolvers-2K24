@@ -76,30 +76,32 @@ class RailwayStation {
   }
 
   operateStation() {
-    let continueOperating = true;
-    while (continueOperating) {
-      continueOperating = false;
-      for (let train of this.trains) {
-        if (
-          train.status === "0" &&
-          this.operatingTime >= train.getTravelTime()
-        ) {
+    let i = 0;
+    while (i < this.trains.length) {
+      const notDepartedTrains = this.getNotDepartedTrains();
+      // const arrivedTrains = this.getArrivedTrains();
+      for (let train of notDepartedTrains) {
+        if (this.operatingTime >= train.getTravelTime() * 2) {
           this.track.addTrainToTrack(train);
-          this.operatingTime -= train.getTravelTime();
-          this.passengersTravelled += train.getCapacity();
-          this.updateStatus(train, "2");
-          continueOperating = true;
+          this.operatingTime -= train.getTravelTime() * 2;
+          this.passengersTravelled += train.getCapacity() * 2;
+          this.updateStatus(train, "1");
         } else if (
-          train.status === "2" &&
-          this.operatingTime >= train.getTravelTime()
+          this.operatingTime >= train.getTravelTime() &&
+          this.operatingTime <= train.getTravelTime() * 2
         ) {
           this.operatingTime -= train.getTravelTime();
+          this.updateStatus(train, "2");
           this.passengersTravelled += train.getCapacity();
-          this.updateStatus(train, "1");
-          this.track.removeTrainFromTrack(train);
-          continueOperating = true;
+        } else {
+          this.updateStatus(train, "0");
         }
       }
+      this.getTrainStatus();
+      this.trains.map((train) => {
+        this.updateStatus(train, "0");
+      });
+      i++;
     }
   }
 
@@ -158,12 +160,12 @@ class RailwayTrack {
 }
 
 // Usage
-let railwayStation = new RailwayStation(6);
+let railwayStation = new RailwayStation(25);
 
 let trains = [
   {
     name: "A",
-    travelTime: 1.5,
+    travelTime: 1,
     capacity: 100,
     departureTime: "10:00",
     arrivalTime: "12:00",
@@ -171,7 +173,7 @@ let trains = [
   },
   {
     name: "B",
-    travelTime: 0.5,
+    travelTime: 2,
     capacity: 200,
     departureTime: "12:00",
     arrivalTime: "13:00",
@@ -179,7 +181,7 @@ let trains = [
   },
   {
     name: "C",
-    travelTime: 0.75,
+    travelTime: 2,
     capacity: 300,
     departureTime: "13:00",
     arrivalTime: "13:45",
@@ -200,7 +202,7 @@ trains.forEach((train) => {
 
 railwayStation.operateStation();
 
-railwayStation.getTrainStatus();
+// railwayStation.getTrainStatus();
 
 console.log(`Extra time: ${railwayStation.operatingTime * 60} minutes`);
 
