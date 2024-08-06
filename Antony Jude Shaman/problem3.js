@@ -1,27 +1,26 @@
-function reverseString(str) {
-  const rev = str.split("").reverse().join("");
-  return rev;
-}
+function nextSmallest(arr) {
+  const n = arr.length;
+  let res = [];
 
-let i = 0;
-const str = "aabcbdeod";
-const n = str.length;
-let len = 0;
-let count = 0;
-while (i < n) {
-  for (let j = i; j < n; j++) {
-    console.log(str[j], str[i]);
-    if (str[j] == str[i]) {
-      let str2 = str.substring(i, j + 1);
-      if (reverseString(str2) === str2) {
-        len = Math.max(len, str2.length);
-        // console.log(reverseString(str2), str2);
-        count++;
+  for (let i = 0; i < n; i++) {
+    let found = false;
+    for (let j = i + 1; j < n; j++) {
+      if (arr[j] < arr[i]) {
+        res.push(arr[j]);
+        // console.log(arr[j]);
+        found = true;
+        break;
       }
     }
-    // console.log(str[j]);
+    if (!found) {
+      res.push(-1);
+      // console.log(-1);
+    }
   }
-  i++;
+
+  return res;
 }
 
-console.log(len);
+const arr = [10, 7, 9, 3, 2, 1, 15];
+const res = nextSmallest(arr);
+console.log(res.join(" "));
