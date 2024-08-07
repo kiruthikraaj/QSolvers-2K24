@@ -496,7 +496,56 @@ Prototype is a creational design pattern that lets you copy existing objects wit
         console.log(original.name); 
         console.log(cloned.name);  
   
-  ---
+## Builder Pattern
+
+Builder is a creational design pattern that lets you construct complex objects step by step. 
+
+        class Pizza{
+            constructor(){
+                this.crust = ''
+                this.sauce = ''
+                this.topping =[]
+            }
+
+            describe(){
+                return `A ${this.crust} crust pizza with ${this.sauce} sauce and toppings: ${this.topping.join(', ')}`;
+            }
+        }
+
+        class PizzaBuilder{
+            constructor(){
+                this.pizza = new Pizza()
+            }
+
+            setcrust(crust){
+                this.pizza.crust = crust;
+                return this
+            }
+
+            setsauce(sauce){
+                this.pizza.sauce = sauce;
+                return this
+            }
+
+            settopping(topping){
+                this.pizza.topping.push(topping);
+                return this;
+            }
+
+            build(){
+                return this.pizza
+            }
+        }
+
+        builder= new PizzaBuilder();
+        pizza = builder
+        .setcrust('medium')
+        .setsauce('chilli')
+        .settopping('olive , tomato')
+        .build()
+
+        console.log(pizza.describe())
+
 
 ## Constructor Pattern:
 
@@ -533,3 +582,360 @@ Prototype is a creational design pattern that lets you copy existing objects wit
 
             let b1 = new Book('Java', 'PQRS')
             b1.display()
+
+---
+
+## Structural Design Pattern
+
+## 1. Facade Pattern:
+
+Facade is a structural design pattern that provides a simplified interface to a library, a framework, or any other complex set of classes.
+
+
+        class Grinder {
+            grind() {
+                console.log("Grinding coffee beans.");
+            }
+        }
+
+        class WaterHeater {
+            heatWater() {
+                console.log("Heating water to the perfect temperature.");
+            }
+        }
+
+        class Brewer {
+            brew() {
+                console.log("Brewing the coffee.");
+            }
+        }
+
+        class CoffeeMachineFacade {
+            constructor() {
+                this.grinder = new Grinder();
+                this.waterHeater = new WaterHeater();
+                this.brewer = new Brewer();
+            }
+
+            makeCoffee() {
+                console.log("Starting coffee preparation...");
+                this.grinder.grind();
+                this.waterHeater.heatWater();
+                this.brewer.brew();
+                console.log("Coffee is ready!");
+            }
+        }
+
+        const coffeeMachine = new CoffeeMachineFacade();
+        coffeeMachine.makeCoffee();
+
+
+## 2. Decorator Pattern:
+
+Decorator is a structural design pattern that lets you attach new behaviors to objects by placing these objects inside special wrapper objects that contain the behaviors.
+
+        class Pizza {
+            cost() {
+                return 10; 
+            }
+
+            description() {
+                return "Pizza";
+            }
+        }
+
+        class PizzaDecorator {
+            constructor(pizza) {
+                this.pizza = pizza;
+            }
+
+            cost() {
+                return this.pizza.cost();
+            }
+
+            description() {
+                return this.pizza.description();
+            }
+        }
+
+        class CheeseDecorator extends PizzaDecorator {
+            cost() {
+                return super.cost() + 2; 
+            }
+
+            description() {
+                return super.description() + ", Cheese";
+            }
+        }
+
+        class PepperoniDecorator extends PizzaDecorator {
+            cost() {
+                return super.cost() + 3; 
+            }
+
+            description() {
+                return super.description() + ", Pepperoni";
+            }
+        }
+
+        let myPizza = new Pizza();
+
+        myPizza = new CheeseDecorator(myPizza);
+        myPizza = new PepperoniDecorator(myPizza);
+        console.log(myPizza.description()); 
+        console.log(`Cost: $${myPizza.cost()}`); 
+
+
+## 3. Adapter Pattern
+
+Adapter is a structural design pattern that allows objects with incompatible interfaces to collaborate.
+
+        class OldCalculator {
+            constructor() {
+            this.operations = function(term1, term2, operation) {
+                switch (operation) {
+                case 'add':
+                    return term1 + term2;
+                case 'sub':
+                    return term1 - term2;
+                default:
+                    return NaN;
+                }
+            };
+            }
+        }
+
+        class NewCalculator {
+            constructor() {
+            this.add = function(term1, term2) {
+                return term1 + term2;
+            };
+            this.sub = function(term1, term2) {
+                return term1 - term2;
+            };
+            }
+        }
+        
+        class CalculatorAdapter {
+            constructor() {
+            const newCalculator = new NewCalculator();
+            this.operations = function(term1, term2, operation) {
+                switch (operation) {
+                case 'add':
+                    return newCalculator.add(term1, term2);
+                case 'sub':
+                    return newCalculator.sub(term1, term2);
+                default:
+                    return NaN;
+                }
+            };
+            }
+        }
+
+        const oldCalc = new OldCalculator();
+
+        const adaptedCalc = new CalculatorAdapter();
+
+        console.log(oldCalc.operations(3, 2, 'add')); // Output: 5
+
+        console.log(adaptedCalc.operations(3, 2, 'add')); // Output: 5
+
+
+## 4. Bridge Pattern
+
+Bridge is a structural design pattern that lets you split a large class into two separate hierarchies - abstraction and implementation which can be developed independently of each other.
+
+        class Device {
+            turnOn() {}
+            turnOff() {}
+            setVolume(volume) {}
+        }
+        
+        class TV extends Device {
+            turnOn() {
+            console.log("TV is now ON");
+            }
+        
+            turnOff() {
+            console.log("TV is now OFF");
+            }
+        
+            setVolume(volume) {
+            console.log(`TV volume set to ${volume}`);
+            }
+        }
+        
+        class Radio extends Device {
+            turnOn() {
+            console.log("Radio is now ON");
+            }
+        
+            turnOff() {
+            console.log("Radio is now OFF");
+            }
+        
+            setVolume(volume) {
+            console.log(`Radio volume set to ${volume}`);
+            }
+        }
+        
+        class RemoteControl {
+            constructor(device) {
+            this.device = device;
+            }
+        
+            togglePower() {
+            console.log("Toggling power");
+            this.device.turnOn();
+            }
+        
+            volumeUp() {
+            console.log("Increasing volume");
+            this.device.setVolume(10); 
+            }
+        
+            volumeDown() {
+            console.log("Decreasing volume");
+            this.device.setVolume(-10);
+            }
+        }
+        
+        const tv = new TV();
+        const radio = new Radio();
+        
+        const tvRemote = new RemoteControl(tv);
+        const radioRemote = new RemoteControl(radio);
+        
+        tvRemote.togglePower();
+        tvRemote.volumeDown();
+
+
+## 5. Proxy Pattern
+
+Proxy is a structural design pattern that lets you provide a substitute or placeholder for another object. A proxy controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
+
+class Document {
+    view() {
+      console.log("Viewing the document content...");
+    }
+  }
+  class DocumentProxy {
+    constructor(name, role) {
+      this.userName = name;
+      this.userRole = role;
+      this.document = new Document();
+    }
+  
+    view() {
+      if (this.userRole === 'admin') {
+        this.document.view();
+      } else {
+        console.log(`User Access denied.`);
+      }
+    }
+  }
+  
+const adminDocument = new DocumentProxy('Kanish', 'admin');
+const guestDocument = new DocumentProxy('Kumar', 'guest');
+
+adminDocument.view(); 
+guestDocument.view();
+
+## 6. Composite Pattern:
+
+Composite is a structural design pattern that lets you compose objects into tree structures and then work with these structures as if they were individual objects.
+
+        // Component
+        class TeamMember {
+            constructor(name) {
+            this.name = name;
+            }
+        
+            display() {
+            throw new Error("This method should be overridden");
+            }
+        }
+        
+        // Leaf
+        class Employee extends TeamMember {
+            display() {
+            console.log(`Employee: ${this.name}`);
+            }
+        }
+        
+        // Composite
+        class Team extends TeamMember {
+            constructor(name) {
+            super(name);
+            this.members = [];
+            }
+        
+            add(member) {
+            this.members.push(member);
+            }
+        
+            display() {
+            console.log(`Team: ${this.name}`);
+            this.members.forEach(member => member.display());
+            }
+        }
+        
+        const alice = new Employee("Alice");
+        const bob = new Employee("Bob");
+
+        const developmentTeam = new Team("Development Team");
+        const designTeam = new Team("Design Team");
+
+        developmentTeam.add(alice);
+        designTeam.add(bob);
+
+        const company = new Team("Company");
+        company.add(developmentTeam);
+        company.add(designTeam);
+
+        company.display();
+
+
+## 7. Flyweight Pattern
+
+The Flyweight design pattern is a structural pattern that focuses on optimizing memory usage by sharing a common state among multiple objects. 
+
+It aims to reduce the number of objects created and to decrease memory footprint, particularly useful when dealing with a large number of similar objects.
+
+        class Genre {
+            constructor(name) {
+            this.name = name; // Shared state
+            }
+        
+            showBooks(books) {
+            console.log(`Genre: ${this.name}`);
+            books.forEach(book => console.log(`  Book: ${book}`));
+            }
+        }
+        
+        class GenreFactory {
+            constructor() {
+            this.genres = {};
+            }
+        
+            getGenre(name) {
+            if (!this.genres[name]) {
+                this.genres[name] = new Genre(name);
+            }
+            return this.genres[name];
+            }
+        }
+        
+        const factory = new GenreFactory();
+
+        const booksByGenre = [
+        { genre: 'Science Fiction', books: ['Dune', 'Neuromancer'] },
+        { genre: 'Fantasy', books: ['The Hobbit', 'Harry Potter'] },
+        { genre: 'Science Fiction', books: ['Foundation', 'Ender\'s Game'] },
+        { genre: 'Mystery', books: ['Sherlock Holmes', 'Gone Girl'] }
+        ];
+
+        booksByGenre.forEach(({ genre, books }) => {
+        const genreFlyweight = factory.getGenre(genre);
+        genreFlyweight.showBooks(books);
+        });

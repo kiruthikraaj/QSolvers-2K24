@@ -17,4 +17,3 @@ class Prototype {
   
   console.log(original.name); 
   console.log(cloned.name);  
-  

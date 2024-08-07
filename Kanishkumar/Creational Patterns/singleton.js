@@ -1,18 +1,27 @@
-class Singleton {
-    constructor() {
-        if(Singleton.instance){
-            return Singleton.instance
+class ConfigManager{
+    constructor(){
+        if(ConfigManager.instance){
+            return ConfigManager.instance
         }
-        this.value = 5
-        Singleton.instance = this
 
+        this.credential ={};
+        ConfigManager.instance = this;
     }
-    getValue(){
-        return this.value
-    }
+        getvalue(key){
+         return this.credential[key];
+        }
+
+        setValue(key, value){
+            this.credential[key] = value;
+        }
+
+    
 }
 
-const instance1 = new Singleton();
-const instance2 = new Singleton();
-console.log(instance1 === instance2); 
-console.log(instance1.getValue()); 
+instance1 = new ConfigManager();
+instance1.setValue('admin', 'Admin@123');
+console.log(instance1)
+
+instance2 = new ConfigManager();
+instance2.getvalue('adamin')
+console.log(instance2)
