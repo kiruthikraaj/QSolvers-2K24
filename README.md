@@ -939,3 +939,885 @@ It aims to reduce the number of objects created and to decrease memory footprint
         const genreFlyweight = factory.getGenre(genre);
         genreFlyweight.showBooks(books);
         });
+
+---
+
+## Behavioral Design Pattern:
+
+Behavioral design patterns are concerned with algorithms and the assignment of responsibilities between objects.
+
+
+## 1. State Pattern:
+
+State is a behavioral design pattern that lets an object alter its behavior when its internal state changes.
+
+        class State{
+            change(light){
+                throw new Error("Error")
+            }
+
+            getStateName(){
+                throw new Error("Error")
+                }
+        }
+
+        class Red extends State{
+            change(light){
+                light.setState(new Green())
+            }
+
+            getStateName(){
+                return "Red color"
+            }
+        }
+
+        class Green extends State{
+            change(light){
+                light.setState(new Yellow())
+            }
+
+            getStateName(){
+                return "Green color"
+            }
+        }
+
+        class Yellow extends State{
+            change(light){
+                light.setState(new Red())
+            }
+
+            getStateName(){
+                return "Yellow color"
+            }
+        }
+
+        class TrafficLight{
+            constructor(){
+                this.state = new Red()
+            }
+            
+            change(){
+                this.state.change(this)
+            }
+
+            setState(state){
+                this.state = state
+            }
+
+            getStateName(){
+                return this.state.getStateName()
+            }
+        }
+
+        light = new TrafficLight()
+        console.log(light.getStateName()) // Red color
+        light.change()
+        console.log(light.getStateName())  // Green color
+
+
+
+## 2. Strategy Pattern:
+
+Strategy is a behavioral design pattern that lets you define a family of algorithms, put each of them into a separate class, and make their objects interchangeable.
+
+        class MenuStrategy {
+            choose() {
+            throw new Error("Method 'choose()' must be implemented.");
+            }
+        }
+        
+        class VegetarianMenuStrategy extends MenuStrategy {
+            choose() {
+            return ["Vegetarian Pizza", "Paneer Curry", "Veg Burger"];
+            }
+        }
+        
+        class NonVegMenuStrategy extends MenuStrategy {
+            choose() {
+            return ["Mutton Biriyani", " Chicken 65", "Fish Fry"];
+            }
+        }
+
+        class MenuChooser {
+            constructor(menuStrategy) {
+            this.menuStrategy = menuStrategy;
+            }
+        
+            setMenuStrategy(menuStrategy) {
+            this.menuStrategy = menuStrategy;
+            }
+        
+            chooseMenu() {
+            return this.menuStrategy.choose();
+            }
+        }
+        
+        const menuChooser = new MenuChooser(new NonVegMenuStrategy());
+
+        console.log(menuChooser.chooseMenu()); 
+  
+
+## 3. Template Pattern:
+
+The Template Pattern (Template Method Pattern) is a behavioral design pattern that defines the skeleton of an algorithm in a base class and allows subclasses to override specific steps of the algorithm without changing its structure. 
+
+        class Beverage {
+        prepare() {
+            this.boilWater();
+            this.addMainIngredient();
+            this.pourInCup();
+        }
+
+        boilWater() {
+            console.log("Boiling water...");
+        }
+
+        addMainIngredient() {
+            throw new Error("addMainIngredient() must be implemented");
+        }
+
+        pourInCup() {
+            console.log("Pouring into cup...");
+        }
+        }
+
+        class Tea extends Beverage {
+        addMainIngredient() {
+            console.log("Adding tea leaves...");
+        }
+        }
+
+        class Coffee extends Beverage {
+        addMainIngredient() {
+            console.log("Adding coffee grounds...");
+        }
+        }
+
+        const tea = new Tea();
+        tea.prepare();
+
+        const coffee = new Coffee();
+        coffee.prepare();
+
+
+
+## 4. Visitor Pattern:
+
+Visitor is a behavioral design pattern that lets you separate algorithms from the objects on which they operate.
+
+        class AnimalVisitor {
+        visitLion(lion) {
+            throw new Error("This method should be overridden");
+        }
+
+        visitElephant(elephant) {
+            throw new Error("This method should be overridden");
+        }
+        }
+
+        class FeedVisitor extends AnimalVisitor {
+        visitLion(lion) {
+            console.log("Feeding the lion.");
+        }
+
+        visitElephant(elephant) {
+            console.log("Feeding the elephant.");
+        }
+        }
+
+        class VetCheckVisitor extends AnimalVisitor {
+        visitLion(lion) {
+            console.log("Checking the lion's health.");
+        }
+
+        visitElephant(elephant) {
+            console.log("Checking the elephant's health.");
+        }
+        }
+        class Animal {
+        accept(visitor) {
+            throw new Error("This method should be overridden");
+        }
+        }
+
+        class Lion extends Animal {
+        accept(visitor) {
+            visitor.visitLion(this);
+        }
+        }
+
+        class Elephant extends Animal {
+        accept(visitor) {
+            visitor.visitElephant(this);
+        }
+        }
+
+        const lion = new Lion();
+        const elephant = new Elephant();
+        const feedVisitor = new FeedVisitor();
+        const vetCheckVisitor = new VetCheckVisitor();
+
+        lion.accept(feedVisitor);      
+        lion.accept(vetCheckVisitor); 
+        elephant.accept(feedVisitor);      
+        elephant.accept(vetCheckVisitor); 
+
+## 5. Observer Pattern
+
+Observer is a behavioral design pattern that lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they’re observing.
+
+        class WhatsappGroup {
+            constructor() {
+            this.observers = [];
+            }
+        
+            addMember(observer) {
+            this.observers.push(observer);
+            }
+        
+            notifyObservers(message) {
+            this.observers.forEach(observer => observer.update(message));
+            }
+        }
+        
+        class Observer {
+            constructor(name){
+            this.name = name
+            }
+            
+            update() {
+            console.log(`Welcome to group ${this.name}`);
+            }
+        }
+        
+        const group = new WhatsappGroup();
+        const member1 = new Observer('Kanish');
+        const member2 = new Observer('Kumar');
+        
+        group.addMember(member1);
+        group.addMember(member2);
+        
+        group.notifyObservers('Hello Observers!');
+
+
+## 6. Mediator Pattern
+
+Mediator is a behavioral design pattern that lets you reduce dependencies between objects. The pattern restricts direct communications between the objects and forces them to collaborate only via a mediator object.
+
+        class Mediator {
+        send(message, sender) {
+            if (sender === 'A') {
+            console.log(`Mediator received message from A: ${message}`);
+            console.log('Mediator forwards message to B');
+            } else if (sender === 'B') {
+            console.log(`Mediator received message from B: ${message}`);
+            console.log('Mediator forwards message to A');
+            }
+        }
+        }
+
+        class ColleagueA {
+        constructor(mediator) {
+            this.mediator = mediator;
+        }
+
+        send(message) {
+            console.log(`A sends: ${message}`);
+            this.mediator.send(message, 'A');
+        }
+        }
+
+        class ColleagueB {
+        constructor(mediator) {
+            this.mediator = mediator;
+        }
+
+        send(message) {
+            console.log(`B sends: ${message}`);
+            this.mediator.send(message, 'B');
+        }
+        }
+
+        const mediator = new Mediator();
+
+        const colleagueA = new ColleagueA(mediator);
+        const colleagueB = new ColleagueB(mediator);
+
+        colleagueA.send('Hello from A');
+        colleagueB.send('Hello from B');
+
+## 7. Iterator Pattern
+
+The Iterator Pattern allows sequential access to elements in a collection without exposing the underlying structure. 
+
+        class BookCollection {
+        constructor() {
+            this.books = [];
+        }
+
+        addBook(book) {
+            this.books.push(book);
+        }
+
+        *[Symbol.iterator]() {
+            for (const book of this.books) {
+            yield book;
+            }
+        }
+        }
+
+        const collection = new BookCollection();
+        collection.addBook('Book 1');
+        collection.addBook('Book 2');
+        collection.addBook('Book 3');
+
+        for (const book of collection) {
+        console.log(book);
+        }
+
+## 8. Interpreter Pattern
+
+The Interpreter Pattern defines a grammar for a language and creates an interpreter to deal with it.
+
+        class Expression {
+        interpret() {
+            throw new Error("This method should be overridden.");
+        }
+        }
+
+        class NumberExpression extends Expression {
+        constructor(value) {
+            super();
+            this.value = value;
+        }
+
+        interpret() {
+            return this.value;
+        }
+        }
+
+        class AddExpression extends Expression {
+        constructor(left, right) {
+            super();
+            this.left = left;
+            this.right = right;
+        }
+
+        interpret() {
+            return this.left.interpret() + this.right.interpret();
+        }
+        }
+
+        const expression = new AddExpression(new NumberExpression(2), new NumberExpression(3));
+
+        const result = expression.interpret();
+        console.log(result); // Output: 5
+
+## 9. Chain of Responsibility
+
+Chain of Responsibility is a behavioral design pattern that lets you pass requests along a chain of handlers. Upon receiving a request, each handler decides either to process the request or to pass it to the next handler in the chain.
+
+        class Handler {
+        constructor(nextHandler = null) {
+            this.nextHandler = nextHandler;
+        }
+
+        handle(request) {
+            if (this.nextHandler) {
+            this.nextHandler.handle(request);
+            }
+            else{
+                console.log("None can handle")
+            }
+        }
+        }
+
+        class HandlerA extends Handler {
+        handle(request) {
+            if (request === 'A') {
+            console.log('HandlerA handled request A');
+            } else {
+            super.handle(request);
+            }
+        }
+        }
+
+        class HandlerB extends Handler {
+        handle(request) {
+            if (request === 'B') {
+            console.log('HandlerB handled request B');
+            } else {
+            super.handle(request);
+            }
+        }
+        }
+
+        const handlerB = new HandlerB();
+        const handlerA = new HandlerA(handlerB);
+
+        handlerA.handle('A'); // HandlerA handled request A
+        handlerA.handle('B'); // HandlerB handled request B
+        handlerA.handle('C'); // None can handle
+
+
+## 10. Memento Pattern:
+
+Memento is a behavioral design pattern that lets you save and restore the previous state of an object without revealing the details of its implementation.
+
+        class Memento {
+        constructor(state) {
+            this.state = state;
+        }
+
+        getState() {
+            return this.state;
+        }
+        }
+
+        class Originator {
+        constructor() {
+            this.state = '';
+        }
+
+        setState(state) {
+            this.state = state;
+            console.log(`State set to: ${this.state}`);
+        }
+
+        getState() {
+            return this.state;
+        }
+
+        createMemento() {
+            return new Memento(this.state);
+        }
+
+        restoreMemento(memento) {
+            this.state = memento.getState();
+            console.log(`State restored to: ${this.state}`);
+        }
+        }
+
+        class Caretaker {
+        constructor() {
+            this.mementos = [];
+        }
+
+        saveMemento(memento) {
+            this.mementos.push(memento);
+        }
+
+        getMemento(index) {
+            return this.mementos[index];
+        }
+        }
+
+        const originator = new Originator();
+        const caretaker = new Caretaker();
+
+        originator.setState('State 1');
+        caretaker.saveMemento(originator.createMemento());
+
+        originator.setState('State 2');
+        caretaker.saveMemento(originator.createMemento());
+
+        originator.setState('State 3');
+        originator.restoreMemento(caretaker.getMemento(0)); 
+
+
+## Summary
+
+| Design Pattern        | Purpose                                      | Use Case                                      |
+|-----------------------|----------------------------------------------|-----------------------------------------------|
+| **Singleton**         | Ensures a single instance of a class.        | Configuration management, logging services.   |
+| **Factory Method**    | Creates objects without specifying exact class. | GUI components, document parsers.            |
+| **Prototype**         | Creates new objects by copying an existing object. | Object cloning, dynamic object creation.     |
+| **Builder**           | Separates the construction of a complex object from its representation. | Constructing complex objects step-by-step.   |
+| **Adapter**           | Converts one interface into another interface expected by the client. | Integrating with legacy systems, third-party libraries. |
+| **Bridge**            | Separates abstraction from implementation, allowing them to vary independently. | Graphic libraries, database access layers.   |
+| **Composite**         | Allows you to compose objects into tree structures to represent part-whole hierarchies. | File systems, organizational structures.     |
+| **Decorator**         | Adds functionality to an object dynamically. | Enhancing GUI components, adding features.   |
+| **Facade**            | Provides a simplified interface to a complex subsystem. | Simplifying complex APIs, system interfaces. |
+| **Flyweight**         | Reduces the cost of creating and manipulating a large number of similar objects. | Text formatting, graphics rendering.         |
+| **Proxy**             | Provides a surrogate or placeholder to control access to another object. | Access control, lazy initialization.         |
+| **Strategy**          | Encapsulates algorithms and makes them interchangeable. | Sorting algorithms, payment processing.     |
+| **Command**           | Encapsulates requests as objects for flexible command handling. | Undo/redo operations, task scheduling.       |
+| **Observer**          | Notifies multiple objects of changes.        | Event handling, real-time data updates.      |
+| **Mediator**          | Defines an object that encapsulates how a set of objects interact. | Communication between components, chat systems. |
+| **State**             | Allows an object to alter its behavior when its internal state changes. | State machines, workflow systems.            |
+| **Template Method**   | Defines the skeleton of an algorithm but lets subclasses override specific steps. | Framework design, code skeletons.            |
+| **Chain of Responsibility** | Passes a request along a chain of handlers until one handles it. | Event handling, processing pipelines.        |
+
+
+---
+
+## The Constructor Pattern:
+
+The Constructor Pattern in JavaScript is a design pattern used to create objects and initialize them with specific properties and methods.
+
+`Using constructor function`:
+
+        function Person(name, age) {
+        this.name = name;
+        this.age = age;
+        
+        this.getFullName = function() {
+            return `${this.name}, Age: ${this.age}`;
+        };
+        }
+
+        const person1 = new Person('Kanish Kumar', 22);
+        console.log(person1.getFullName()); // Kanish Kumar, Age: 22
+
+`Using Class`:
+
+        class Person {
+        constructor(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+        
+        getFullName() {
+            return `${this.name}, Age: ${this.age}`;
+        }
+        }
+
+        const person1 = new Person('Kanish Kumar', 22);
+        console.log(person1.getFullName()); // Kanish Kumar, Age: 22
+
+---
+
+## Prototype Pattern:
+
+The Prototype Pattern in JavaScript is a creational design pattern that allows you to create new objects by copying existing ones, known as prototypes. This pattern is useful when the creation of an object is costly or complex, and you want to create a new object based on an existing one.
+
+## Dynamic Protype Pattern:
+
+The dynamic prototype pattern is used to define methods on a prototype in a way that ensures the methods are only defined once, regardless of how many instances of the object are created.
+
+        function Person(first, last){
+        this.first = first;
+        this.last = last;
+
+        if( typeof Person.prototype.getName!== 'function')
+                {
+                    Person.prototype.getName = function(){
+                    return this.first + ' ' + this.last;
+                }
+            }
+
+            if(typeof Person.prototype.About!== 'function') 
+                {
+                    Person.prototype.About = function(){
+                    return "Student"
+                }
+            }
+        }
+        
+        p1 = new Person("Kanish", "Kumar")
+        console.log(p1.getName())
+
+        console.log(p1.About())
+
+## Combination Constructor/ Prototype Pattern:
+
+Leverages the cmbination of both. The constructor handles the instance-specific properties, while the prototype handles shared methods and properties.
+
+        function Person(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        }
+
+        Person.prototype.getFullName = function() {
+        return `${this.firstName} ${this.lastName}`;
+        };
+
+        const kanish = new Person("Kanish", "Kumar", 22);
+        console.log(kanish.getFullName()); // Output: Kanish Kumar
+
+## Durable Constructor Pattern
+
+The Durable Constructor Pattern is a design pattern in JavaScript that aims to create secure, immutable objects by minimizing the exposure of an object's internals. It does so by restricting access to properties and methods, preventing unintended modification. 
+
+        function DurablePerson(name) {
+        // Private variable
+        let _name = name;
+
+        // Public method
+        return {
+            getName: function () {
+                return _name;
+            }
+        };
+        }
+
+        const person = DurablePerson("Kanish");
+
+        console.log(person.getName()); 
+        console.log(person._name); // undefined 
+
+## Parasitic Constructor Pattern:
+
+The Parasitic Constructor Pattern is a JavaScript design pattern where a constructor function creates and customizes an object without directly using this. Instead, it creates a new object, augments it with properties and methods, and then returns this modified object.
+
+        function Person(name, age) {
+            const person = {};
+            person.name = name;
+            person.age = age;
+            person.getInfo = function() {
+                return `Name: ${this.name}, Age: ${this.age}`;
+            };
+            return person;
+        }
+
+        const person1 = Person('Kanish', 22);
+        console.log(person1.getInfo()); 
+
+## Prototype Chaining:
+
+Prototype chaining is a mechanism in JavaScript where an object inherits properties and methods from another object via its prototype.
+
+`Function based`:
+
+        const parent = {
+        greet: function() {
+            console.log("Hello");
+        }
+        };
+
+        const child = Object.create(parent);
+        child.greet(); // Output: "Hello"
+
+
+`Class based`:
+
+        class Parent {
+        greet() {
+            console.log("Hello");
+        }
+        }
+
+        class Child extends Parent {}
+
+        const childInstance = new Child();
+        childInstance.greet(); // Output: "Hello"
+
+
+## Inheritance:
+
+`Class`:
+
+        class Parent {
+        greet() {
+            console.log("Hello from Parent");
+        }
+        }
+
+        class Child extends Parent {
+        greet() {
+            console.log("Hello from Child");
+        }
+        }
+
+        const childInstance = new Child();
+        childInstance.greet(); // Output: "Hello from Child"
+
+
+`Prototype based`:
+
+        const parent = {
+        greet: function() {
+            console.log("Hello from Parent");
+        }
+        };
+
+        const child = Object.create(parent);
+        child.greet = function() {
+        console.log("Hello from Child");
+        };
+
+        child.greet(); // Output: "Hello from Child"
+
+
+---
+
+## Constructor Stealing:
+
+Constructor Stealing is a technique in JavaScript where a constructor function from one object is used within another constructor function to borrow functionality or properties
+
+        function Parent(name) {
+        this.name = name;
+        this.sayHello = function() {
+            console.log(`Hello from ${this.name}`);
+        };
+        }
+
+        function Child(name, age) {
+        // Steal properties from Parent
+        Parent.call(this, name);
+        this.age = age;
+        }
+
+        const childInstance = new Child("Kanish", 22);
+
+        childInstance.sayHello(); 
+        console.log(childInstance.age); 
+
+---
+
+### Prototypal Inheritance:
+
+Prototypal inheritance involves objects inheriting directly from other objects, without using constructor functions.
+
+        const parent = {
+        greet: function() {
+            console.log('Hello from Parent');
+        }
+        };
+
+        const child = Object.create(parent);
+        child.greet(); // Output: "Hello from Parent"
+
+
+## Combination Inheritance:
+
+Combination inheritance combines both constructor and prototypal inheritance.
+
+        function Parent(name) {
+        this.name = name; 
+        }
+
+        Parent.prototype.greet = function() {
+        console.log(`Hello from ${this.name}`);
+        };
+
+        function Child(name) {
+        Parent.call(this, name);   // Cnstructor Inheritance
+        }
+
+        Child.prototype = Object.create(Parent.prototype);  // Prototypal inheritance
+        Child.prototype.constructor = Child;
+
+        const child = new Child('Kanish');
+        child.greet(); 
+
+## Parasitic Inheritance:
+
+In parasitic inheritance, you create a new object based on an existing object (the "prototype"), and then you add or change properties and methods on the new object. This is done without altering the original prototype object.
+
+`Class based`:
+
+        class Parent {
+        greet() {
+            console.log('Hello from parent!');
+        }
+        }
+
+        class Child extends Parent {
+        greet() {
+            console.log('Hello from child!');
+        }
+        }
+
+        const parent = new Parent();
+        const child = new Child();
+
+        parent.greet(); // Outputs: Hello from parent!
+        child.greet();  // Outputs: Hello from child!
+
+`Function based`:
+
+        const parent = {
+            greet: function() {
+                console.log('Hello from Parent');
+            }
+        };
+
+        function createChild() {
+            const child = Object.create(parent);
+            child.sayHello = function() {
+                console.log('Hello from Child');
+            };
+            return child;
+        }
+
+        const child = createChild();
+
+        child.greet(); // Output: "Hello from Parent"
+        child.sayHello(); // Output: "Hello from Child"
+
+The function createChild() in the example is used to encapsulate the process of creating and customizing a new object based on the parent object. 
+
+---
+
+## Parasitic Combination Inheritance
+
+It combines the combination and parasitic inheritance.
+This pattern uses a mix of constructor function and prototypal inheritance while also modifying the object.
+
+
+        function Parent(name) {
+        this.name = name;
+        }
+
+        Parent.prototype.greet = function() {
+        console.log(`Hello from ${this.name} (parent)!`);
+        };
+
+        // Parasitic Inheritance function
+        function createChildPrototype() {
+        const childPrototype = Object.create(Parent.prototype); 
+        childPrototype.greet = function() {
+            console.log(`Hello from ${this.name} (child)!`);
+        };
+
+        childPrototype.bye = function() {
+            console.log(`Bye from ${this.name} (child)!`);
+        };
+
+        return childPrototype;
+        }
+
+        // Child constructor function
+        function Child(name) {
+        Parent.call(this, name); 
+        }
+
+        Child.prototype = createChildPrototype();
+
+        const parent = new Parent('John');
+        const child = new Child('Jane');
+
+        parent.greet(); 
+        child.greet();  
+        child.bye();    
+
+---
+
+## SOLID Principles:
+
+The SOLID principles are a set of five design principles aimed at improving the structure and maintainability of object-oriented software. 
+
+## 1. Single Responsibility Principle (SRP)
+A class should have only one reason to change, meaning it should have only one job or responsibility.
+
+## 2. Open/Closed Principle (OCP)
+Software entities should be open for extension but closed for modification.
+
+## 3. Liskov Substitution Principle (LSP)
+Subtypes must be substitutable for their base types without altering the correctness of the program.
+
+## 4. Interface Segregation Principle (ISP)
+Clients should not be forced to depend on interfaces they do not use.
+
+## 5. Dependency Inversion Principle (DIP)
+High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions.
+
+## Dependency Injection:
+
+Dependency Injection (DI) is a design pattern in which an object receives its dependencies from an external source rather than creating them itself. This pattern promotes loose coupling between components, making the system more modular, easier to test, and maintain.
+
+## Code Snippet:
+
+https://github.com/kiruthikraaj/QSolvers-2K24/tree/kanish-solid-principles
+
