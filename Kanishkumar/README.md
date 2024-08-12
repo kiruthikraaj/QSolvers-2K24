@@ -814,17 +814,17 @@ Bridge is a structural design pattern that lets you split a large class into two
 
 Proxy is a structural design pattern that lets you provide a substitute or placeholder for another object. A proxy controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
 
-class Document {
-    view() {
-      console.log("Viewing the document content...");
-    }
-  }
-  class DocumentProxy {
-    constructor(name, role) {
-      this.userName = name;
-      this.userRole = role;
-      this.document = new Document();
-    }
+        class Document {
+            view() {
+              console.log("Viewing the document content...");
+            }
+          }
+          class DocumentProxy {
+            constructor(name, role) {
+              this.userName = name;
+              this.userRole = role;
+              this.document = new Document();
+            }
   
     view() {
       if (this.userRole === 'admin') {
