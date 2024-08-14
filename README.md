@@ -1,1804 +1,669 @@
-# Milestone 10 : Object Oriented Programming
-- In JavaScript, OOP (Object-Oriented Programming) is a paradigm that uses objects and classes to structure and manage code.
+# Milestone 1 of NODE jS:
 
-## Understanding Objects: 
-- In JavaScript, objects are collections of key-value pairs.
-- Keys are strings , and values can be any data type, including functions.
-```js
-const person = {
-  name: 'Ajay',
-  city: 'Chennai',
-  greet: function() {
-    console.log('Hello, my name is ' + this.name);
-  }
-};
+## Call Back:
+- A callback is a function passed as an argument to another function.
+- This technique allows a function to call another function.
+- A callback function can run after another function has finished.
+### Function sequence:
+Functions in JS are executed in the sequence they are called. Not in the sequence they are defined.
+```javascript
+<!DOCTYPE html>
+<html>
+<body>
 
-console.log(person.name);
-person.greet();
+<p id="demo"></p>
+
+<script>
+function myDisplayer(some) {
+  document.getElementById("demo").innerHTML = some;
+}
+
+function myFirst() {
+  myDisplayer("Welcome");
+}
+
+function mySecond() {
+  myDisplayer("Goodbye");
+}
+
+myFirst();
+mySecond();
+</script>
+
+</body>
+</html>
+// output : Goodbye
 ```
-## types of properties:
-- properties of an object can be,
-    - Data property : Stores values.
-    - Accessor property: Getter and Setter methods.
+- To avoid two function call and prevent a function from calling another function, call back is used.
 
-## Defining Multiple properties:
-- Objects can be defined with multiple property.
-```js
-const car = {
-  brand: 'Toyota',
-  model: 'Corolla',
-  year: 2020,
-  
-  
-  start() {
-    console.log(this.brand+'Car started');
-  }
-};
+### JS Callbacks:
+- Callbacks are important in JavaScript as they enable you to execute code after an asynchronous task finishes. 
+```javascript
+<!DOCTYPE html>
+<html>
+<body>
 
-car.start(); // Output: Car started
+<p id="demo"></p>
 
-```
-## Reading Property Attributes
-- Attributes can be read by  `Object.getOwnPropertyDescriptor` or by directly accessing them.
-```js
-const person = {
-  name: 'Ajay',
-  city: 'Chennai'
-};
-
-const descriptor = Object.getOwnPropertyDescriptor(person, 'name');
-console.log(descriptor);
-// { value: 'Ajay', writable: true, enumerable: true, configurable: true }
-```
-## Object Creation:
-The Objects in javascript can be created using various ways.
-### Object literals
-```js
-const person = {
-  name: 'Ajay',
-  city: 'Chennai'
-};
-```
-### Contructor Functions:
-```js
-function Person(name, city) {
-  this.name = name;
-  this.city = city;
+<script>
+function Display(something) {
+  document.getElementById("demo").innerHTML = something;
 }
 
-Person.prototype.greet = function() {
-  console.log('Hello, my name is ' + this.name + ' from ' + this.city);
-};
-
-const info = new Person('Ajay', 'Chennai');
-info.greet();
-
-// Hello, my name is Ajay from Chennai
-```
-### Using ES6 Class :
-```js
-class Person {
-    constructor(name,city){
-        this.name = name;
-        this.city = city;
-    }
-    getInfo(){
-        console.log('Hello, my name is ' + this.name + ' from ' + this.city)
-    }
- 
+function myCalculator(name, myCallback) {
+  let text = "Hello  " + name;
+  myCallback(text);
 }
 
-const info = new Person('Ajay', 'Chennai');
-info.getInfo();
+myCalculator("Ajay", Display);
+</script>
 
-// Hello, my name is Ajay from Chennai
-```
-
-## Creational Pattern:
-### Factory Pattern:
-- The Factory Design Pattern is a creational pattern that allows for the creation of objects without exposing the creation logic to the client.
-```js
-// Base class
-class Vehicle {
-    constructor(name) {
-        this.name = name;
-    }
-
-    getType() {
-        return 'Generic Vehicle';
-    }
-}
-
-// Subclass Car
-class Car extends Vehicle {
-    constructor(name) {
-        super(name);
-    }
-
-    getType() {
-        return 'Car';
-    }
-}
-
-// Subclass Bike
-class Bike extends Vehicle {
-    constructor(name) {
-        super(name);
-    }
-
-    getType() {
-        return 'Bike';
-    }
-}
-
-// Factory class
-class VehicleFactory {
-    static createVehicle(type, name) {
-        switch (type) {
-            case 'car':
-                return new Car(name);
-            case 'bike':
-                return new Bike(name);
-            default:
-                throw new Error('Invalid vehicle type');
-        }
-    }
-}
-
-// Usage
-try {
-    const myCar = VehicleFactory.createVehicle('car', 'Toyota');
-    console.log(`${myCar.name} is a ${myCar.getType()}`); // Outputs: Toyota is a Car
-
-    const myBike = VehicleFactory.createVehicle('bike', 'Harley');
-    console.log(`${myBike.name} is a ${myBike.getType()}`); // Outputs: Harley is a Bike
-
-} catch (error) {
-    console.error(error.message); // Outputs: Invalid vehicle type
-}
+</body>
+</html>
 
 ```
-### Abtract Factory Pattern:
-- Abstract Factory Pattern is to abstract the process of object creation by defining a family of related factory methods, each responsible for creating a different type of object.
-```js
-// Abstract Product A
-class Button {
-    render() {
-        throw new Error("Method 'render()' must be implemented.");
-    }
+- Example with aynchronous function:
+```javascript
+function mainFunction(callback) {
+  console.log("Start");
+  setTimeout(function() {
+    callback("Hello There!");
+  },2000);
+  console.log("End");
 }
 
-// Abstract Product B
-class Checkbox {
-    render() {
-        throw new Error("Method 'render()' must be implemented.");
-    }
+function callbackFunction(result) {
+  console.log("Message:  " + result);
 }
 
-// Concrete Product A1
-class LightButton extends Button {
-    render() {
-        console.log("Rendering light-themed button");
-    }
-}
-
-// Concrete Product B1
-class LightCheckbox extends Checkbox {
-    render() {
-        console.log("Rendering light-themed checkbox");
-    }
-}
-
-// Concrete Product A2
-class DarkButton extends Button {
-    render() {
-        console.log("Rendering dark-themed button");
-    }
-}
-
-// Concrete Product B2
-class DarkCheckbox extends Checkbox {
-    render() {
-        console.log("Rendering dark-themed checkbox");
-    }
-}
-
-// Abstract Factory
-class ThemeFactory {
-    createButton() {
-        throw new Error("Method 'createButton()' must be implemented.");
-    }
-
-    createCheckbox() {
-        throw new Error("Method 'createCheckbox()' must be implemented.");
-    }
-}
-
-// Concrete Factory 1
-class LightThemeFactory extends ThemeFactory {
-    createButton() {
-        return new LightButton();
-    }
-
-    createCheckbox() {
-        return new LightCheckbox();
-    }
-}
-
-// Concrete Factory 2
-class DarkThemeFactory extends ThemeFactory {
-    createButton() {
-        return new DarkButton();
-    }
-
-    createCheckbox() {
-        return new DarkCheckbox();
-    }
-}
- 
-// Client Code
-function renderUI(factory) {
-    const button = factory.createButton();
-    const checkbox = factory.createCheckbox();
-    
-    button.render();
-    checkbox.render();
-}
-
-// Usage
-const lightFactory = new LightThemeFactory();
-renderUI(lightFactory); // Outputs: Rendering light-themed button \n Rendering light-themed checkbox
-
-const darkFactory = new DarkThemeFactory();
-renderUI(darkFactory); // Outputs: Rendering dark-themed button \n Rendering dark-themed checkbox
+mainFunction(callbackFunction);
 ```
-### Builder Pattern:
-- The Builder design pattern is a creational design pattern used to construct complex objects by separating the construction process from the actual representation.
-```js
-class User {									 
-    constructor(name) {						 
-        this.name = name; 
-        this.age = null; 
-        this.weight = null; 
-        this.address = null; 
-        this.gender = null; 
-    } 
-    
+- Call Back for array element:
+```javascript
+let arr = ['apple','ball' , 'cat' , 'dog'];
+function mainFunction(arr ,callback) {
+  console.log("Start");
+  arr.forEach(callback);
+  console.log("End");
 }
 
-class userbuilder{
-    constructor(name){
-        this.user = new User(name);
-    }
-    setAge(age) {								 
-        this.user.age = age; 
-        return this; 
-        } 
-        
-    
-    setWeight(weight) {						 
-        this.user.weight = weight; 
-        return this; 
-    } 
-    
-  
-    setAddress(address) { 
-        this.user.address = address; 
-        return this; 
-    } 
-   
-    setGender(gender) { 
-        this.user.gender = gender; 
-        return this; 
-    } 
-    
-   
-    build() { 
-        if (!this.user.name) { 
-        throw Error('Name is required'); 
-        } 
-        return this; 
-    } 
-
+function callbackFunction(item , index) {
+  console.log("Position :  " + index + "    Value :  " + item);
 }
-     
-    
-    
-    const userinfo = new userbuilder('Cliff').setAge(50).setAddress('Hollywood Hills').setGender('Male').setWeight(70).build();
-    
-  
-    
-    
-    console.log(userinfo);
-    
+
+mainFunction(arr ,callbackFunction);
 ```
-### Prototype Pattern:
-- A Prototype Method is a JavaScript design pattern where objects share a common prototype object, which contains shared methods.
-```js
-class Vehicle {
-    constructor(make, model) {
-        this.make = make;
-        this.model = model;
-    }
+## Avoid Call Back hell:
 
-    start() {
-        console.log(`Starting ${this.make} ${this.model}`);
-    }
-}
-
-const prototypeVehicle = new Vehicle('Generic Make', 'Generic Model');
-
-class Car {
-    constructor(make, model) {
-
-        this.vehicle = Object.create(prototypeVehicle);
-        
-        this.vehicle.make = make;
-        this.vehicle.model = model;
-    }
-
-    start() {
-       
-        this.vehicle.start();
-    }
-}
-
-const myCar = new Car('Toyota', 'Corolla');
-myCar.start();
-console.log(`Starting ${prototypeVehicle.make} ${prototypeVehicle.model}`);
+### Call Back Hell:
+- Callback hell, also known as the "Pyramid of Doom" . 
+- It refers to the situation in JavaScript programming where callbacks are nested within other callbacks several levels deep, making the code hard to read and maintain.
+- This often occurs when performing a series of asynchronous operations that depend on each other.
+- Example:
+```javascript
+doSomething(function(result1) {
+  doSomethingElse(result1, function(result2) {
+    doMore(result2, function(result3) {
+      doFinalThing(result3, function(result4) {
+        console.log(result4);
+      });
+    });
+  });
+});
 
 ```
-### Singleton pattern:
-- Singleton pattern is a design pattern which restricts a class to instantiate its multiple objects. 
-```js
-class Singleton {
-   
-    static #instance;
+### Problems of Callback hell:
+- Readability
+- Maintainability
+- Error Handling
+- Scalability
 
-    constructor() {
-        if (Singleton.#instance) {
-            throw new Error("Singleton instance already exists. Use getInstance method.");
-        }
-       
-        this.data = Math.random(); 
-    }
+### Avoiing Callback hell:
+- Promises: Promises allow you to chain asynchronous operations, reducing nesting.
+- Async/Await: These keywords make asynchronous code look synchronous, improving readability.
+- Modularization: Breaking the code into smaller, reusable functions helps manage complexity.
+- Control Flow Libraries: Libraries like async.js provide control flow mechanisms for handling asynchronous code.
 
-   
-    static getInstance() {
-        if (!Singleton.#instance) {
-            Singleton.#instance = new Singleton();
-        }
-        return Singleton.#instance;
-    }
-}
+## JavaScript Promise:
+- JavaScript Promises are used to simplify managing multiple asynchronous operations, preventing callback hell and unmanageable code. 
+- They represent future values, associating handlers with eventual success or failure, resembling synchronous methods by postponing value delivery.
+- It contains : Producing code and Consuming code.
+- Syntax:
+```javascript
+let myPromise = new Promise(function(myResolve, myReject) {
+// "Producing Code" (May take some time)
 
-try {
-    const singletonInstance1 = Singleton.getInstance();
-    console.log(singletonInstance1);
+  myResolve(); // when successful
+  myReject();  // when error
+});
 
-   
-    const singletonInstance2 = new Singleton();
-} catch (error) {
-    console.error(error.message); 
-}
-
+// "Consuming Code" (Must wait for a fulfilled Promise)
+myPromise.then(
+  function(value) { /* code if successful */ },
+  function(error) { /* code if some error */ }
+);
 ```
-## Constructor pattern:
-- With function
-```js
-function Person(name, city) {
-  this.name = name;
-  this.city = city;
-}
+- The promise constructor takes only one argument which is a callback function
+- The callback function takes two arguments, resolve and reject
+### States of promise:
+- `Fulfilled` : Action related to the promise succeeded.
+- `Rejected`  : Action related to the promise failed
+- `Pending`   : Promise is still pending i.e. not fulfilled or rejected yet
+- `Settled`   :	Promise has been fulfilled or rejected
 
-Person.prototype.greet = function() {
-  console.log('Hello, my name is ' + this.name + ' from ' + this.city);
-};
+### Consumers of promise:
+- Promises can be consumed by registering functions using .then and .catch methods.
+- Takes two parameter:
+  - The first function executes when promise is resolved and a result is received.
+  - The second function executes if the promise is rejected and an error is received.
 
-const info = new Person('Ajay', 'Chennai');
-info.greet();
-```
-- With class
-```js
-class Person {
-    constructor(name,city){
-        this.name = name;
-        this.city = city;
-    }
-    getInfo(){
-        console.log('Hello, my name is ' + this.name + ' from ' + this.city)
-    }
- 
-}
+### Catch in promise:
+- Promise catch() Method is invoked when a promise is either rejected or some error has occurred in execution.
+- It is used as an error handler whenever there is a possibility of error.
+- Takes one function as an argument.
 
-const info = new Person('Ajay', 'Chennai');
-info.getInfo();
-```
-### Combination of constructor and prototype:
-- This approach allows you to create object instances with shared methods defined on the prototype.
-```js
-function Person(name, city) {
-  this.name = name;
-  this.city = city;
-}
 
-Person.prototype.greet = function() {
-  console.log('Hello, my name is ' + this.name + 'from' + this.city);
-};
+### Example 
+```javascript
+let myPromise = new Promise(function(myResolve, myReject) {
+  let x = 0;
 
-const info = new Person('Ajay', 'Chennai');
-info.greet();
+// producing code
 
-```
-## Structural Pattern:
-### Adaptor pattern:
-```js
-class OldCalculator {
-    constructor() {
-      this.operations = function(term1, term2, operation) {
-        switch (operation) {
-          case 'add':
-            return term1 + term2;
-          case 'sub':
-            return term1 - term2;
-          default:
-            return NaN;
-        }
-      };
-    }
+  if (x == 0) {
+    myResolve("OK");
+  } else {
+    myReject("Error");
   }
+});
 
-class NewCalculator {
-    constructor() {
-      this.add = function(term1, term2) {
-        return term1 + term2;
-      };
-      this.sub = function(term1, term2) {
-        return term1 - term2;
-      };
-    }
-  }
-  
-  class CalculatorAdapter {
-    constructor() {
-      const newCalculator = new NewCalculator();
-      this.operations = function(term1, term2, operation) {
-        switch (operation) {
-          case 'add':
-            return newCalculator.add(term1, term2);
-          case 'sub':
-            return newCalculator.sub(term1, term2);
-          default:
-            return NaN;
-        }
-      };
-    }
-  }
-
-const oldCalc = new OldCalculator();
-
-const adaptedCalc = new CalculatorAdapter();
-
-console.log(oldCalc.operations(3, 2, 'add')); // Output: 5
-```
-
-### Bridge Pattern:
-- The Bridge pattern is about separating an abstraction from its implementation so that both can be modified independently.
-```js
-class Device {
-  turnOn() {
-    throw new Error('This method should be overridden');
-  }
-  
-  turnOff() {
-    throw new Error('This method should be overridden');
-  }
-}
-
-
-class TV extends Device {
-  turnOn() {
-    console.log('Turning on the TV');
-  }
-  
-  turnOff() {
-    console.log('Turning off the TV');
-  }
-}
-
-
-class Stereo extends Device {
-  turnOn() {
-    console.log('Turning on the Stereo');
-  }
-  
-  turnOff() {
-    console.log('Turning off the Stereo');
-  }
-}
-
-
-class RemoteControl {
-  constructor(device) {
-    this.device = device;
-  }
-  
-  pressPowerButton() {
-    
-    console.log('Pressing power button');
-    this.device.turnOn();
-  }
-}
-
-
-class AdvancedRemoteControl extends RemoteControl {
-  mute() {
-    console.log('Muting device');
-    
-  }
-}
-
-const tv = new TV();
-const stereo = new Stereo();
-
-const tvRemote = new RemoteControl(tv);
-const stereoRemote = new RemoteControl(stereo);
-const advancedRemote = new AdvancedRemoteControl(tv);
-
-tvRemote.pressPowerButton(); // Turning on the TV
-stereoRemote.pressPowerButton(); // Turning on the Stereo
-advancedRemote.pressPowerButton(); // Turning on the TV
-advancedRemote.mute(); // Muting device
-
-```
-
-### Composite Pattern:
-- Treats objects as tree structures to represent part-whole hierarchies.
-
-```js
-// Component
-class FileSystemComponent {
-  constructor(name) {
-    this.name = name;
-  }
-  
-  getSize() {
-    throw new Error('This method should be overridden');
-  }
-  
-  print() {
-    throw new Error('This method should be overridden');
-  }
-}
-
-// Leaf
-class File extends FileSystemComponent {
-  constructor(name, size) {
-    super(name);
-    this.size = size;
-  }
-  
-  getSize() {
-    return this.size;
-  }
-  
-  print() {
-    console.log(`File: ${this.name} (${this.size} KB)`);
-  }
-}
-
-// Composite
-class Directory extends FileSystemComponent {
-  constructor(name) {
-    super(name);
-    this.children = [];
-  }
-  
-  add(component) {
-    this.children.push(component);
-  }
-  
-  getSize() {
-    return this.children.reduce((total, child) => total + child.getSize(), 0);
-  }
-  
-  print(indent = '') {
-    console.log(`${indent}Directory: ${this.name}`);
-    this.children.forEach(child => child.print(indent + '  '));
-  }
-}
-
-// Client code
-const file1 = new File('file1.txt', 50);
-const file2 = new File('file2.txt', 30);
-const dir1 = new Directory('dir1');
-const dir2 = new Directory('dir2');
-
-dir1.add(file1);
-dir1.add(file2);
-dir2.add(dir1);
-
-console.log(`Total size of dir2: ${dir2.getSize()} KB`);
-dir2.print();
-
-```
-
-### Decorated Pattern:
-- Extends object behaviour dynamically without affecting the original object.
-
-```js
-class User{
-    constructor(name){
-        this.name = name;
-    }
-    
-    getInfo(){
-        console.log('Name: '+this.name);
-    }
-}
-
-class decoratedUser{
-    constructor(user,city,country){
-        this.user = user;
-        this.city = city;
-        this.country = country;
-    }
-    
-    getInfo(){
-        console.log('Name: '+this.user.name + '  City: '+this.city + '  Country: '+this.country);
-    }
-}
-
-const user = new User('Ajay')
-const fullInfo = new decoratedUser(user,'Chennai','India')
-user.getInfo()
-fullInfo.getInfo()
-```
-### Farcade Design Pattern
-- shields clients from complex functionality in one or more subsystems.
-```js
-class DVDPlayer{
-    constructor(movie){
-        this.movie = movie;
-        this.name = 'DVD Player'
-
-    }
-
-    on(){
-        console.log("DVD Player is starting...")
-    }
-
-    play(){
-        console.log('Playing Movie : '+ this.movie);
-    }
-
-    off(){
-        console.log("Turning off DVD Player... Thank You")
-    }
-}
-
-class Projector{
-    constructor(input){
-        this.input = input
-    }
-
-    onProjector(){
-        console.log("Turning On Projector")
-    }
-
-    inp(){
-        console.log('Connected to ' + this.input.name)
-    }
-
-    offProjector(){
-        console.log("Turning Off Projector")
-    }
-
-}
-
-class SoundSystem{
-    onSound(){
-        console.log('Turning on ... Dolby Atmos sound system');
-    }
-
-    setVolume(vol){
-        console.log("Volume set to "+ vol)
-    }
-
-    offSound(){
-        console.log("Turning off Sound System");
-    }
-}
-
-
-class HomeTheatre{
-    constructor(dvd , projector , sound){
-        this.dvd = dvd;
-        this.projector = projector;
-        this.sound = sound;
-    }
-
-    WatchMovie(){
-        this.projector.onProjector();
-        this.sound.onSound();
-        this.projector.inp();
-        this.dvd.on();
-        this.dvd.play();
-    }
-    
-    EndMovie(){
-        this.dvd.off();
-        this.sound.offSound();
-        this.projector.offProjector();
-    }
-
-
-}
-
-
-const dvd = new DVDPlayer('Man Of Steel');
-const projector = new Projector(dvd);
-const sound = new SoundSystem();
-const Movie = new HomeTheatre(dvd,projector,sound);
-Movie.WatchMovie();
-console.log('\n ----------------------------------- \n')
-Movie.EndMovie();
-```
-### Proxy Pattern:
-- Retricts the access to use the objects of a class.
-```js
-class Person {
-    constructor(name, city) {
-      this.name = name;
-      this.city = city;
-    }
-    
-    getDetails() {
-      return `Name: ${this.name}, City: ${this.city}`;
-    }
-  }
-  
-  
-  class PersonProxy {
-    constructor(person,log) {
-      this.person = person;
-      this.log = log;
-    }
-    
-    getDetails() {
-        if(this.log == 'admin'){
-            console.log('Accessing person details...');
-            return this.person.getDetails();
-        }
-        else{
-            return "Access Denied !"
-        }
+myPromise  // consuming code
+.then(
+  function(value) {
+      console.log(value);
       
-    }
   }
-  
+)
+.catch(function(error){
+    console.log(error);
+});
+```
+- With two promise contructor and without catch in consuming block:
+```javascript
+const promise1 = new Promise((resolve, reject) => {
+	setTimeout(() => {
+		resolve('Hello');
+	}, 100);
+});
+
+const promise2 = new Promise((resolve, reject) => {
+	setTimeout(() => {
+		reject('Ajay');
+	}, 100);
+});
+
+promise2.then((value) => {
+	console.log(value)},
+	(reject) => {
+	    console.log("rejected");
+	}
+);
+
+promise1.then((value) => {
+	console.log(value);
+
+});
+
+```
+### Promise.all method:
+- The Promise.all method in JavaScript is used to handle multiple promises concurrently.
+- It takes an array of promises and returns a single promise that resolves when all of the promises in the array have resolved, or rejects if any of the promises reject.
+- It takes an array of promises as input and gives a single promise a an output.
+- syntax:
+```javascript
+Promise.all(iterable);
+```
+#### Rules:
+- If passed argument is empty, it returns a Promise that is already resolved.
+- If the passed iterable contains no promises, it returns a Promise that is resolved asynchronously.
+- For all other cases, it returns a pending Promise.
+
+#### Example 1 : with resolve
+```javascript
+const promise1 = Promise.resolve(3);
+const promise2 = 42; // not a promise but promise.all method treats as resolved one.
+const promise3 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 'foo');
+});
+
+Promise.all([promise1, promise2, promise3])
+  .then(values => {
+    console.log(values); // [3, 42, 'foo']
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+```
+#### Example 2: with reject / error:
+```javascript
+const promise1 = Promise.resolve(3);
+const promise2 = new Promise((resolve, reject) =>{
+    resolve("Hello")
+});
+const promise3 = new Promise((resolve, reject) => {
+  reject("Error")
+});
+
+Promise.all([promise1, promise2, promise3])
+  .then(values => {
+    console.log(values); 
+  })
+  .catch(error => {
+    console.error(error);
+  });
+ // output: Error
+```
+
+### Promise.allSettled() Method:
+- Promise.allSettled() method in JavaScript is used to handle multiple promises concurrently and return a single promise.
+- Unlike Promise.all(), Promise.allSettled() does not short-circuit when one of the promises is rejected; instead, it waits for all promises to settle, providing information about each one.
+- syntax:
+```javascript
+Promise.allSettled(iterable);
+```
+
+#### Property:
+- Each object in the array will have:
+  - `status` property: either `fulfilled` or `rejected`.
+  - `value` property if the promise is fulfilled.
+  - `reason` property if the promise is rejected.
+
+  #### Example
+  ```javascript
+    const promise1 = Promise.resolve(3);
+    const promise2 = new Promise((resolve, reject) =>{
+        setTimeout(resolve,1000,"Hello")
+    });
+    const promise3 = new Promise((resolve, reject) => {
+      setTimeout(reject,1000,"Error")
+    });
+
+    Promise.allSettled([promise1, promise2, promise3])
+      .then(results => { 
+          results.forEach(
+              (result) =>{
+                  
+          if(result.status == 'fulfilled'){
+              console.log('Fulfilled with value:'+ result.value);
+          }
+          else if(result.status == 'rejected'){
+              console.log('Rejected with reason:'+ result.reason);
+          }
+          else{
+              console.log('Fulfilled with value:'+ result.value);
+          }
+      }
+        );
+      });
  
-  const person = new Person('Ajay', 'Chennai');
-  const personProxy = new PersonProxy(person,'admin');
-  
-  console.log(personProxy.getDetails());
-  
-```
-### Flyweight Pattern:
-```js
-class Shape {
-    constructor(type) {
-      this.type = type;
-    }
-    
-    draw(x, y) {
-      throw new Error('This method should be overridden');
-    }
-  }
 
-  class Circle extends Shape {
-    constructor(color) {
-      super('Circle');
-      this.color = color;
-    }
-    
-    draw(x, y) {
-      console.log(`Drawing a ${this.color} Circle at (${x}, ${y})`);
-    }
-  }
-  
-
-  class ShapeFactory {
-    constructor() {
-      this.shapes = {};
-    }
-    
-    getShape(color) {
-      if (!this.shapes[color]) {
-        this.shapes[color] = new Circle(color); 
-      }
-      return this.shapes[color];
-    }
-  }
-  
-
-  const shapeFactory = new ShapeFactory();
-  
-  const redCircle1 = shapeFactory.getShape('Red');
-  const redCircle2 = shapeFactory.getShape('Red');
-  const blueCircle = shapeFactory.getShape('Blue');
-  
-  redCircle1.draw(10, 20); 
-  redCircle2.draw(30, 40); 
-  blueCircle.draw(50, 60);
-  console.log(redCircle1 === redCircle2); 
-  
-```
-## Dynamic Prototype pattern:
-```js
-function Info(name){
-   this.name = name;
-
-    if(typeof this.getInfo !== 'funtion'){
-        Info.prototype.getInfo = function(){
-            console.log('Name: '+this.name)
-        }
-    }
-}
-
-if(typeof this.getMsg !== 'funtion'){
-    Info.prototype.getMsg = function(){
-        console.log('Hello , My name is '+this.name)
-    }
-}
-
-const person = new Info('Ajay')
-person.getInfo();
-person.getMsg();
-```
-## Behavioral pattern
-### Chain of Responsibility:
-```js
-class Handler {
-    constructor(successor = null) {
-      this.successor = successor; 
-    }
-  
-    handleRequest(request) {
-      if (this.successor) {
-        this.successor.handleRequest(request); 
-      } else {
-        console.log('No handler available for request:', request);
-      }
-    }
-  }
-
-  class ConcreteHandler1 extends Handler {
-    handleRequest(request) {
-      if (request === 'Request1') {
-        console.log('ConcreteHandler1 handling request:', request);
-      } else {
-        super.handleRequest(request); 
-      }
-    }
-  }
-
-  class ConcreteHandler2 extends Handler {
-    handleRequest(request) {
-      if (request === 'Request2') {
-        console.log('ConcreteHandler2 handling request:', request);
-      } else {
-        super.handleRequest(request); 
-      }
-    }
-  }
-  
-
-  const handler1 = new ConcreteHandler1();
-  const handler2 = new ConcreteHandler2(handler1);
-  
-  handler2.handleRequest('Request1'); 
-  handler2.handleRequest('Request2'); 
-  handler2.handleRequest('Request3'); 
-  
-```
-### Command method design pattern:
-```js
-class Command {
-    execute() {
-      throw new Error("This method should be overridden");
-    }
-  }
-
-class Light {
-    turnOn() {
-      console.log("Light is ON");
-    }
-    
-    turnOff() {
-      console.log("Light is OFF");
-    }
-  }
-  
-  class TurnOnLightCommand extends Command {
-    constructor(light) {
-      super();
-      this.light = light;
-    }
-  
-    execute() {
-      this.light.turnOn();
-    }
-  }
-  
-  class TurnOffLightCommand extends Command {
-    constructor(light) {
-      super();
-      this.light = light;
-    }
-  
-    execute() {
-      this.light.turnOff();
-    }
-  }
-  class RemoteControl {
-    constructor() {
-      this.command = null;
-    }
-  
-    setCommand(command) {
-      this.command = command;
-    }
-  
-    pressButton() {
-      this.command.execute();
-    }
-  }
-
-const light = new Light();
-
-const turnOn = new TurnOnLightCommand(light);
-const turnOff = new TurnOffLightCommand(light);
-
-const remote = new RemoteControl();
-
-remote.setCommand(turnOn);
-remote.pressButton();
-
-remote.setCommand(turnOff);
-remote.pressButton(); 
-```
-### Strategy Pattern:
-```js
-class TextFormatter {
-    format(text) {
-      throw new Error("This method should be overridden");
-    }
-  }
-  
-class UppercaseFormatter extends TextFormatter {
-    format(text) {
-      return text.toUpperCase();
-    }
-  }
-  
-  class LowercaseFormatter extends TextFormatter {
-    format(text) {
-      return text.toLowerCase();
-    }
-  }
-  
-  class CapitalizeFormatter extends TextFormatter {
-    format(text) {
-      return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-    }
-  }
-  class TextEditor {
-    constructor(formatter) {
-      this.formatter = formatter;
-    }
-  
-    setFormatter(formatter) {
-      this.formatter = formatter;
-    }
-  
-    formatText(text) {
-      return this.formatter.format(text);
-    }
-  }
-  const text = "hello world";
-
-const uppercaseFormatter = new UppercaseFormatter();
-const lowercaseFormatter = new LowercaseFormatter();
-const capitalizeFormatter = new CapitalizeFormatter();
-
-const editor = new TextEditor(uppercaseFormatter);
-console.log("Uppercase:", editor.formatText(text)); // Output: HELLO WORLD
-
-editor.setFormatter(lowercaseFormatter);
-console.log("Lowercase:", editor.formatText(text)); // Output: hello world
-
-editor.setFormatter(capitalizeFormatter);
-console.log("Capitalized:", editor.formatText(text)); // Output: Hello world
-
-```
-### Template Method design pattern:
-```js
-class Beverage {
-    prepareRecipe() {
-      this.boilWater();
-      this.brew();
-      this.pourInCup();
-      this.addCondiments();
-    }
-  
-    boilWater() {
-      console.log("Boiling water");
-    }
-  
-    pourInCup() {
-      console.log("Pouring into cup");
-    }
-
-    brew() {
-      throw new Error("This method should be overridden");
-    }
-  
-    addCondiments() {
-      throw new Error("This method should be overridden");
-    }
-  }
-  class Tea extends Beverage {
-    brew() {
-      console.log("Steeping the tea");
-    }
-  
-    addCondiments() {
-      console.log("Adding lemon");
-    }
-  }
-  
-  class Coffee extends Beverage {
-    brew() {
-      console.log("Dripping coffee through filter");
-    }
-  
-    addCondiments() {
-      console.log("Adding sugar and milk");
-    }
-  }
-
-const tea = new Tea();
-tea.prepareRecipe();
-const coffee = new Coffee();
-coffee.prepareRecipe();
-
-```
-### Observer Pattern:
-```js
-class Publish {
-  constructor(msg) {
-    this.msg = msg;
-    this.observers = [];
-  }
-
-  addMember(observer) {
-    this.observers.push(observer);
-  }
-
-  notifyObservers(msg) {
-    this.observers.forEach(observer => observer.update(msg));
-  }
-}
-
-class Observer {
-  constructor(name){
-    this.name = name
-  }
-  
-  update(msg) {
-    console.log(msg + this.name);
-  }
-}
-
-const group = new Publish();
-const mem1 = new Observer('Ajay');
-const mem2 = new Observer('Saran');
-
-group.addMember(mem1);
-group.addMember(mem2);
-
-group.notifyObservers('Hello ');
-```
-### Interpreter pattern:
-```js
-class Expression {
-  interpret(context) {
-    throw new Error("This method should be overridden");
-  }
-}
-class NumberExpression extends Expression {
-  constructor(number) {
-    super();
-    this.number = number;
-  }
-
-  interpret(context) {
-    return this.number;
-  }
-}
-class AddExpression extends Expression {
-  constructor(left, right) {
-    super();
-    this.left = left;
-    this.right = right;
-  }
-
-  interpret(context) {
-    return this.left.interpret(context) + this.right.interpret(context);
-  }
-}
-
-class SubtractExpression extends Expression {
-  constructor(left, right) {
-    super();
-    this.left = left;
-    this.right = right;
-  }
-
-  interpret(context) {
-    return this.left.interpret(context) - this.right.interpret(context);
-  }
-}
-
-const five = new NumberExpression(5);
-const three = new NumberExpression(3);
-const two = new NumberExpression(2);
-
-const addExpression = new AddExpression(five, three);     
-const subtractExpression = new SubtractExpression(addExpression, two); 
-console.log(addExpression.interpret());
-console.log(subtractExpression.interpret()); 
-
-```
-### Iterator pattern:
-```js
-class Iterator {
-  constructor(items) {
-    this.items = items;
-    this.index = 0;
-  }
-
-  hasNext() {
-    return this.index < this.items.length;
-  }
-
-  next() {
-    if (this.hasNext()) {
-      return this.items[this.index++];
-    }
-    return null;
-  }
-}
-class BookCollection {
-  constructor() {
-    this.books = [];
-  }
-
-  addBook(book) {
-    this.books.push(book);
-  }
-
-  getIterator() {
-    return new Iterator(this.books);
-  }
-}
-
-const collection = new BookCollection();
-collection.addBook("Book 1");
-collection.addBook("Book 2");
-collection.addBook("Book 3");
-
-const iterator = collection.getIterator();
-
-while (iterator.hasNext()) {
-  console.log(iterator.next());
-}
-
-```
-### Visitor Pattern
-```js
-class AnimalVisitor {
-  visitLion(lion) {
-    throw new Error("This method should be overridden");
-  }
-
-  visitElephant(elephant) {
-    throw new Error("This method should be overridden");
-  }
-}
-
-class FeedVisitor extends AnimalVisitor {
-  visitLion(lion) {
-    console.log("Feeding the lion.");
-  }
-
-  visitElephant(elephant) {
-    console.log("Feeding the elephant.");
-  }
-}
-
-class VetCheckVisitor extends AnimalVisitor {
-  visitLion(lion) {
-    console.log("Checking the lion's health.");
-  }
-
-  visitElephant(elephant) {
-    console.log("Checking the elephant's health.");
-  }
-}
-class Animal {
-  accept(visitor) {
-    throw new Error("This method should be overridden");
-  }
-}
-
-class Lion extends Animal {
-  accept(visitor) {
-    visitor.visitLion(this);
-  }
-}
-
-class Elephant extends Animal {
-  accept(visitor) {
-    visitor.visitElephant(this);
-  }
-}
-
-const lion = new Lion();
-const elephant = new Elephant();
-const feedVisitor = new FeedVisitor();
-const vetCheckVisitor = new VetCheckVisitor();
-
-lion.accept(feedVisitor);      
-lion.accept(vetCheckVisitor); 
-elephant.accept(feedVisitor);      
-elephant.accept(vetCheckVisitor); 
-```
-### Mediator Pattern:
-```js
-class Mediator {
-  send(message, sender) {
-    if (sender === 'A') {
-      console.log(`Mediator received message from A: ${message}`);
-      console.log('Mediator forwards message to B');
-    } else if (sender === 'B') {
-      console.log(`Mediator received message from B: ${message}`);
-      console.log('Mediator forwards message to A');
-    }
-  }
-}
-
-class ColleagueA {
-  constructor(mediator) {
-    this.mediator = mediator;
-  }
-
-  send(message) {
-    console.log(`A sends: ${message}`);
-    this.mediator.send(message, 'A');
-  }
-}
-
-class ColleagueB {
-  constructor(mediator) {
-    this.mediator = mediator;
-  }
-
-  send(message) {
-    console.log(`B sends: ${message}`);
-    this.mediator.send(message, 'B');
-  }
-}
-
-const mediator = new Mediator();
-
-const colleagueA = new ColleagueA(mediator);
-const colleagueB = new ColleagueB(mediator);
-
-colleagueA.send('Hello from A');
-colleagueB.send('Hello from B');
-```
-
-### Memento Pattern:
-```js
-class Memento {
-  constructor(state) {
-    this.state = state;
-  }
-
-  getState() {
-    return this.state;
-  }
-}
-
-class TextEditor {
-  constructor() {
-    this.text = "";
-  }
-
-  setText(text) {
-    this.text = text;
-  }
-
-  getText() {
-    return this.text;
-  }
-
-  save() {
-    return new Memento(this.text);
-  }
-
-  restore(memento) {
-    this.text = memento.getState();
-  }
-}
-
-class History {
-  constructor() {
-    this.mementos = [];
-  }
-
-  addMemento(memento) {
-    this.mementos.push(memento);
-  }
-
-  getMemento(index) {
-    return this.mementos[index];
-  }
-}
-
-const editor = new TextEditor();
-const history = new History();
-
-editor.setText("Hello");
-history.addMemento(editor.save());
-
-editor.setText("Hello, World!");
-history.addMemento(editor.save());
-
-editor.restore(history.getMemento(0));
-console.log(editor.getText()); 
-
-```
-## S.O.L.I.D Principles:
-- SOLID is a set of five principles designed to make object-oriented designs more understandable, flexible, and maintainable.
-### Single Responsibility Principle (SRP):
-- A class should have only one responsibility.
-- Violation :
-```js
-class User {
-  constructor(name) {
-    this.name = name;
-  }
-
-  saveToDatabase() {
-    // code to save user to database
-    console.log("Saving user to database");
-  }
-
-  sendEmail() {
-    // code to send an email
-    console.log("Sending email");
-  }
-}
-
-```
-- with...
-```js
-class User {
-  constructor(name) {
-    this.name = name;
-  }
-}
-
-class UserDatabase {
-  save(user) {
-    console.log("Saving user to database");
-  }
-}
-
-class EmailService {
-  send(email) {
-    console.log("Sending email");
-  }
-}
-
-const user = new User("Alice");
-const userDatabase = new UserDatabase();
-userDatabase.save(user);
-
-const emailService = new EmailService();
-emailService.send("alice@example.com");
-```
-### Open/Closed Principle (OCP):
-- Software entities (classes, modules, functions) should be open for extension but closed for modification.
-- Violation
-```js
-class Report {
-  generate(type) {
-    if (type === 'pdf') {
-      // generate PDF report
-      console.log("Generating PDF report");
-    } else if (type === 'csv') {
-      // generate CSV report
-      console.log("Generating CSV report");
-    }
-  }
-}
-```
-- Using this principle:
-```js
-class Report {
-  generate() {
-    throw new Error("Method 'generate()' must be implemented.");
-  }
-}
-
-class PDFReport extends Report {
-  generate() {
-    console.log("Generating PDF report");
-  }
-}
-
-class CSVReport extends Report {
-  generate() {
-    console.log("Generating CSV report");
-  }
-}
-
-
-const pdfReport = new PDFReport();
-pdfReport.generate();
-
-const csvReport = new CSVReport();
-csvReport.generate();
-```
-### Liskov Substitution Principle (LSP):
-- Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program.
-- Violation:
-```js
-class Bird {
-  fly() {
-    console.log("Flying");
-  }
-}
-
-class Penguin extends Bird {
-  fly() {
-    throw new Error("Penguins can't fly");
-  }
-}
-```
-- Using this principle:
-```js
-class Bird {
-  move() {
-    console.log("Moving");
-  }
-}
-
-class Sparrow extends Bird {
-  move() {
-    console.log("Flying");
-  }
-}
-
-class Penguin extends Bird {
-  move() {
-    console.log("Waddling");
-  }
-}
-
-const sparrow = new Sparrow();
-sparrow.move(); 
-
-const penguin = new Penguin();
-penguin.move(); 
-```
-### Interface Segregation Principle (ISP):
-- Clients should not be forced to depend on interfaces they do not use.
-```js
-class Printable {
-  print() {
-    throw new Error("Method 'print()' must be implemented.");
-  }
-}
-
-class Scannable {
-  scan() {
-    throw new Error("Method 'scan()' must be implemented.");
-  }
-}
-
-class Faxable {
-  fax() {
-    throw new Error("Method 'fax()' must be implemented.");
-  }
-}
-class Printer extends Printable {
-  print() {
-    console.log("Printing document...");
-  }
-}
-
-class Scanner extends Scannable {
-  scan() {
-    console.log("Scanning document...");
-  }
-}
-
-class MultifunctionPrinter extends Printable {
-  print() {
-    console.log("Printing document...");
-  }
-
-  scan() {
-    console.log("Scanning document...");
-  }
-
-  fax() {
-    console.log("Sending fax...");
-  }
-}
-
-```
-###  Dependency Inversion Principle (DIP):
-- High-level modules should not depend on low-level modules. Both should depend on abstractions. 
-- Violation:
-```js
-class LightBulb {
-  turnOn() {
-    console.log("LightBulb: turned on");
-  }
-  
-  turnOff() {
-    console.log("LightBulb: turned off");
-  }
-}
-
-class Switch {
-  constructor(lightBulb) {
-    this.lightBulb = lightBulb;
-    this.isOn = false;
-  }
-
-  operate() {
-    if (this.isOn) {
-      this.lightBulb.turnOff();
-      this.isOn = false;
-    } else {
-      this.lightBulb.turnOn();
-      this.isOn = true;
-    }
-  }
-}
-```
-- Using this principle:
-```js
-class Switchable {
-  turnOn() {
-    throw new Error("Method 'turnOn()' must be implemented.");
-  }
-
-  turnOff() {
-    throw new Error("Method 'turnOff()' must be implemented.");
-  }
-}
-
-class LightBulb extends Switchable {
-  turnOn() {
-    console.log("LightBulb: turned on");
-  }
-  
-  turnOff() {
-    console.log("LightBulb: turned off");
-  }
-}
-
-class Switch {
-  constructor(device) {
-    this.device = device;
-    this.isOn = false;
-  }
-
-  operate() {
-    if (this.isOn) {
-      this.device.turnOff();
-      this.isOn = false;
-    } else {
-      this.device.turnOn();
-      this.isOn = true;
-    }
-  }
-}
-```
-## Parasitic Constructor Pattern
-- The parasitic constructor pattern is to create a constructor that simply wraps the creation and return of another object.
-```js
-function Person(name, city, country){
-   var o = new Object();
-   o.name = name;
-   o.city = city;
-   o.country = country;
-   o.sayName = function(){
-      console.log(this.name);
-   };
-   return o;
-}
-var friend = new Person("Ajay", "Chennai", "India");
-friend.sayName();
-```
-## Durable Constructor Pattern:
-- The Durable Constructor Pattern ensures that an object is always in a valid state upon creation. 
-- It handles initialization, validation, and defaults within the constructor, so the object can be used safely and consistently. 
-```js
-class Person {
-  constructor(name, age) {
-    this.name = name || 'Unknown';
-    this.age = (age >= 0 && age <= 120) ? age : 'undefined';
-  }
-
-  getDetails() {
-    return `Name:  ${this.name},Age:  ${this.age}`;
-  }
-}
-const person1 = new Person('Alpha', 30);
-console.log(person1.getDetails()); 
-const person2 = new Person('Beta');
-console.log(person2.getDetails()); 
-const person3 = new Person('Charlie', -5);
-console.log(person3.getDetails());
-```
-## Inheritance:
-- In JS, inheritance is the method through which the objects inherit the properties and the methods from the other objects.
-## Prototype Chaining:
-```js
-class Person {
-  constructor(name, age) {
-    this.name = name || 'Unknown';
-    this.age = age;
-  }
-
-  getDetails() {
-    return `Name:  ${this.name},Age:  ${this.age}`;
-  }
-}
-
-class Student extends Person{
-    constructor(name,age,grade) {
-    super(name,age)
-    this.grade = grade;
-  }
-  getInfo(){
-      return `Name:  ${this.name},Age:  ${this.age} Grade: ${this.grade}`;
-  }
-}
-const person1 = new Person('Alpha', 30);
-console.log(person1.getDetails()); 
-const person2 = new Student('Beta',20,'A');
-console.log(person2.getInfo()); 
+  /*
+  output:
+    Fulfilled with value:3
+    Fulfilled with value:Hello
+    Rejected with reason:Error 
+    */
+  ```
+### Promise.race():
+- The Promise.race() method returns a promise that fulfills or rejects as soon as one of the promises in an iterable fulfills or rejects, with the value or reason from that promise.
+- Reallife example can be running race, whoever comes first wins.
+```javascript
+const promise1 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 600, "one");
+});
  
-```
-## Constructor Stealing:
-- A constructor function is used within another constructor function to inherit or extend its behavior.
-```js
-function Animal(name) {
-  this.name = name;
-  this.eat = function() {
-    console.log(this.name + ' is eating.');
-  };
-}
-function Dog(name, breed) {
-  Animal.call(this, name); 
-  this.breed = breed; 
-  this.bark = function() {
-    console.log(this.name + ' from ' + this.breed +' breed is barking.');
-  };
-}
-const myDog = new Dog('Rex', 'German Shepherd');
-myDog.eat(); 
-myDog.bark(); 
-
+const promise2 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 200, "two");
+});
+ 
+Promise.race([promise1, promise2]).then((value) => {
+    console.log(value);
+});
+// output: "two"
 ```
 
-## Combination Inheritance:
-- Combination inheritance combines both constructor and prototypal inheritance.
-```js
-function Animal(name) {
-  this.name = name;
-}
+### Promise finally() Method:
+- The finally() method of the Promise object is used to return a Promise when a Promise is settled, that is, it is either fulfilled or rejected.
+```javascript
+let task = new Promise((resolve, reject) => { 
+setTimeout(() => { 
+	reject("Promise has been rejected!"); 
+}, 2000); 
+}); 
 
-Animal.prototype.speak = function() {
-  console.log(this.name + ' makes a noise.');
-};
-function Dog(name) {
-  Animal.call(this, name); 
-}
+task 
+.then( 
+	(result) => { 
+	console.log(result); 
+	}, 
+ 
+	(error) => { 
+	console.log("Error:", error); 
+	} 
+) 
 
-Dog.prototype = Object.create(Animal.prototype);
-Dog.prototype.constructor = Dog;
+.finally(() => { 
+	console.log( 
+	"This is finally() block which is executed after Promise is settled"
+	); 
+});
 
-Dog.prototype.speak = function() {
-  console.log(this.name + ' barks.');
-};
-const animal = new Animal('Generic Animal');
-animal.speak(); 
-const dog = new Dog('Rex');
-dog.speak(); 
+/*
+Output:
+ERROR!
+Error: Promise has been rejected!
+This is finally() block which is executed after Promise is settled
+*/
 ```
-## Prototypal Inheritance:
+
+## Bluebird Promise:
+- Bluebird is a powerful and feature-rich promise library for JavaScript.
+- It offers more features and better performance than the native Promise implementation, especially in environments where native promises are not well optimized.
+- `new promise` constructor is used to create a promise.
+- to use bluebird in the project, we have to import it or to use require.
 ```js
-const animal = {
-  eat() {
-    console.log(this.name + ' is eating.');
+const Promise = require('bluebird');
+
+```
+```js
+const myPromise = new Promise((resolve, reject) => {
+
+    setTimeout(() => {
+      resolve('Hello, Bluebird!');
+    }, 1000);
+  });
+  
+  myPromise.then(result => {
+    console.log(result); // 'Hello, Bluebird!'
+  });
+  
+```
+
+### Promisify:
+- Bluebird provides a utility function called promisify that converts callback-based functions to promise-based functions.
+```js
+function delayedGreeting(name, callback) {
+    setTimeout(() => {
+      callback(null, `Hello, ${name}!`);
+    }, 1000);
   }
-};
-const dog = Object.create(animal);
-dog.bark = function() {
-  console.log(this.name + ' is barking.');
-};
-const myDog = Object.create(dog);
-myDog.name = 'Rex';
-myDog.eat();  
-myDog.bark();
+
+  const Promise = require('bluebird');
+
+  const delayedGreetingAsync = Promise.promisify(delayedGreeting);
+  
+  delayedGreetingAsync('World')
+    .then(greeting => {
+      console.log(greeting); // 'Hello, World!'
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  
+```
+### Promisify All:
+- we can use this to promisify all functions of an object using promisifyAll.
+```js
+const Promise = require('bluebird');
+
+Promise.promisifyAll(asyncOperations);
+
+asyncOperations.delayAsync()
+  .then(result => {
+    console.log(result); // 'Delay done'
+    return asyncOperations.immediateAsync();
+  })
+  .then(result => {
+    console.log(result); // 'Immediate done'
+  })
+  .catch(err => {
+    console.error(err);
+  });
+
 
 ```
-## Parasitic Inheritance
-- Parasitic inheritance is a pattern in JavaScript where you create a new object based on an existing one, and then extend or modify the new object with additional properties or methods. 
+### Bluebird Methods:
+#### Promise.map
+- Similar to Array.prototype.map, but works with promises and runs a concurrency limit.
 ```js
-const animal = {
-  eat() {
-    console.log(this.name + ' is eating.');
-  }
+const urls = ['url1', 'url2', 'url3'];
+
+Promise.map(urls, url => {
+  return fetch(url).then(response => response.json());
+}, { concurrency: 2 })
+  .then(results => {
+    console.log(results);
+  });
+
+```
+#### Promise.each:
+Iterates over an array of promises in series.
+```js
+const tasks = [task1, task2, task3];
+
+Promise.each(tasks, task => {
+  return task();
+})
+  .then(() => {
+    console.log('All tasks completed');
+  });
+
+```
+#### Promise.all
+- Similar to native Promise.all, but can handle more types of iterables.
+```js
+const promises = [promise1, promise2, promise3];
+
+Promise.all(promises)
+  .then(results => {
+    console.log(results);
+  });
+
+```
+#### Promise.props
+Waits for the properties of an object to be resolved.
+```js
+const obj = {
+  prop1: Promise.resolve(1),
+  prop2: Promise.resolve(2),
+  prop3: Promise.resolve(3)
 };
 
-function createdog(name,breed){
-    const dog = Object.create(animal)
-    dog.name = name;
-    dog.breed = breed;
-    dog.bark = function() {
-        console.log('The dog '+dog.name+' from '+dog.breed+' breed is barking');
-    }
+Promise.props(obj)
+  .then(results => {
+    console.log(results); // { prop1: 1, prop2: 2, prop3: 3 }
+  });
+
+```
+#### Promise.delay
+Creates a promise that resolves after a specified delay.
+```js
+Promise.delay(2000)
+  .then(() => {
+    console.log('2 seconds later...');
+  });
+
+```
+
+#### Promise.timeout
+Sets a timeout for a promise, causing it to reject if it takes too long.
+```js
+Promise.resolve('Hello')
+  .timeout(1000)
+  .then(result => {
+    console.log(result);
+  })
+  .catch(error => {
+    console.error('Operation timed out');
+  });
+
+```
+## Async and Await in javascript
+- Async and Await in JavaScript are powerful keywords used to handle asynchronous operations with promises.
+- `async` functions implicitly return promises.
+- `await` pauses the execution until the promise is resolved.
+### Async Function:
+- It allows to write promise based code as it were synchronous.
+- async function always return a promise, if value returned isnt a promise it always wrap it in a resolved promise.
+
+### Await function:
+- `await` keyword is used to wait for a promise to get resolved
+- Can be used only within async block.
+
+
+### Example Program:
+```js
+function async_await(){
+    let promise = new Promise((resolve,reject) => resolve("Hello"));
     
-    return dog;
+    let promise2 = new Promise((resolve,reject) => {
+        setTimeout(() => {
+            resolve("Ajay")
+        },1000)
+    });
+    
+    let combined = Promise.all([promise,promise2]);
+    
+    return combined;
 }
 
-const myDog = new createdog('Cooper','Labrador');
-myDog.eat();  
-myDog.bark();
+async function display(){
+    let result = await async_await();
+    console.log(result);
+}
 
+display();
 ```
-## Parasitic Combination Inheritance:
-- Combination of parasitic and combination inheritance
+
+### Advantages:
+- Improved Readability
+- Error Handling
+- Avoids Callback Hell
+- Better Debugging
+
+## Converting Callback to Promise
+- consider the below call back example
 ```js
-function Animal(name) {
-  this.name = name;
+function fetchData(callback) {
+    setTimeout(() => {
+        callback(null, "Data received");
+    }, 1000);
 }
-Animal.prototype.speak = function() {
-  console.log(this.name + ' makes a noise.');
-};
-function createDog(name) {
-  const dog = Object.create(Animal.prototype);
-  Animal.call(dog, name);
-  dog.speak = function() {
-    console.log(this.name + ' barks.');
-  };
-  return dog;
-}
-const animal = new Animal('Generic Animal');
-animal.speak();
-const dog = createDog('Rex');
-dog.speak();
+
+fetchData((error, data) => {
+    if (error) {
+        console.error(error);
+    } else {
+        console.log(data);
+    }
+});
 
 ```
+- to convert this into a promise code...
+```js
+function fetchData() {
+    let promise = new Promise((resolve,reject) => {
+        setTimeout(() => {
+            resolve("Data received");
+         }, 1000);
+    })
+    
+    return promise;
+    
+}
+
+fetchData()
+    .then(data => console.log(data))
+    .catch(error => console.log(error));
+
+```
+## Converting promise to async await:
+```js
+function fetchData() {
+    let promise = new Promise((resolve,reject) => {
+        setTimeout(() => {
+            let v =false;
+            if(v == true){
+               resolve("Data received"); 
+            }
+            else{
+                reject("Data Isnt Received");
+            }
+            
+         }, 1000);
+    })
+    
+    return promise;
+}
+
+async function display(){
+    try{
+        let data = await fetchData();
+        console.log(data);
+    }catch (error){
+        console.error(error.message);
+    }
+}
+
+display();
+
+```
+## HTTP Methods:
+
+### A Stateless Protocol
+- Two messages: request and response.
+- HTTP request carries encoded data.
+
+### HTTP Request
+- Contains HTTP version, URL, HTTP methods, request headers, and body.
+- Initial version 0.9 with only GET method. Current version: HTTP/3.
+
+### HTTP Response
+- Contains status code, HTTP response headers, and body.
+- Status codes:
+  - 1xx: Informational
+  - 2xx: Success
+  - 3xx: Redirection
+  - 4xx: Client error
+  - 5xx: Server error
+
+### HTTPS
+- Secure version of HTTP using SSL/TLS.
+
+### Headers:
+- HTTP headers are key-value pairs sent in both HTTP requests and responses. They provide metadata about the request or response, like content type, length, and authentication information.
+- Example: In a response, you might see headers like.
+
+### Body:
+- The body of an HTTP request or response contains the actual data being sent.
+- For example, in a POST request, the body might contain form data or JSON payload.
+- In a response, it might contain the HTML of a webpage or the JSON data for an API.
+```js
+{
+  "name": "Ajay",
+  "email": "ajay@gmail.com"
+}
+
+```
+
+### Content-Type:
+- The Content-Type header tells the server or client what type of data is being sent. It helps the recipient understand how to interpret the data in the body.
+- The MIME type is always displayed as a combination of two pieces of information, one indicating what type of medium it is and the other the sub-type of the medium.
+`media type/sub-type`
+- Types includes:
+  - text : `text/css`, `text/javascript`, `text/xml`
+  - image : `image/jpeg` , `image/gif`
+  - video : `video/avi` , `video/avi`
+  - audio : `audio/mpeg`
+  - application : `application/javascript`
