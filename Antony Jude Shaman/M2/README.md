@@ -1,5 +1,24 @@
 ## Milestone - 2
 
+### Table of Contents
+
+- [Exporting and Consuming Modules](#exporting-and-consuming-modules)
+  - [Exporting Modules](#exporting-modules)
+  - [Consuming Modules](#consuming-modules)
+- [How modules are loaded](#how-modules-are-loaded)
+
+- [Event Emitters](#event-emitters)
+  - [Passing arguments to event listeners](#passing-arguments-to-event-listeners)
+  - [Exception handling](#exception-handling)
+  - [Try and Catch](#try-and-catch)
+- [Event Loop](#event-loop)
+  - [Microtask Queue](#microtask-queue)
+  - [Timer Queue](#timer-queue)
+  - [I/O Queue](#i/o-queue)
+  - [I/O Polling](#i/o-polling)
+  - [Check Queue](#check-queue)
+  - [Close Queue](#close-queue)
+
 ### Exporting and Consuming Modules
 
 #### Exporting Modules
