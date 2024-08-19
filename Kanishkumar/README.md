@@ -467,4 +467,37 @@ The event loop manages the following key queues:
 4. The **Close Queue** runs next to handle tasks like closing sockets or file streams.
 5. After each phase, the **Microtask Queue** is always checked and processed before moving to the next phase.
 
+
+Example:
+
+        setTimeout(() => {
+        console.log('setTimeout: 0ms');
+        }, 0);
+        
+        setImmediate(() => {
+        console.log('setImmediate');
+        });
+        
+        process.nextTick(() => {
+        console.log('process.nextTick');
+        });
+        
+        console.log('Start');
+        
+        process.nextTick(() => {
+        console.log('process.nextTick 2');
+        });
+        
+        setImmediate(() => {
+        console.log('setImmediate 2');
+        });
+  
+`Output:`
+
+        Start
+        process.nextTick
+        process.nextTick 2
+        setTimeout: 0ms
+        setImmediate
+        setImmediate 2
 ---
