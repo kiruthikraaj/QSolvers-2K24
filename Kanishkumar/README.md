@@ -391,7 +391,7 @@ When you run a Node.js program:
 
 ---
 
-## Phases of the Node.js Event Loop
+### Phases of the Node.js Event Loop
 
 The event loop consists of several phases that repeat in a loop. Each phase has a specific purpose and handles a specific type of callback. Here’s a breakdown of each phase:
 
@@ -419,7 +419,7 @@ The event loop consists of several phases that repeat in a loop. Each phase has 
 
 ---
 
-## Queues in the Node.js Event Loop
+### Queues in the Node.js Event Loop
 
 In Node.js, the event loop processes various asynchronous tasks using multiple queues.
 
@@ -459,7 +459,7 @@ The event loop manages the following key queues:
      - Handling socket closures: `socket.on('close', ...)`
      - Closing streams
 
-## Interaction among these Queues:
+### Interaction among these Queues:
 
 1. The event loop starts by processing the **Timer Queue** if any timers have expired.
 2. Next, it processes pending callbacks in the **I/O Queue** (for I/O tasks like reading files).
