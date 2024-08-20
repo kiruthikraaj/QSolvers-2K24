@@ -4,7 +4,7 @@
 
 - [Package.json](#packagejson)
 - [Package-lock.json](#package-lockjson)
-- [How pnp install works?](#how-pnp-install-works)
+- [How pnpm install works?](#how-pnpm-install-works)
 - [Dependencies vs DevDependencies](#dependencies-vs-devdependencies)
 - [Debugger mode in VS Code](#debugger-mode-in-vs-code)
 - [Debugging in the terminal](#debugging-in-the-terminal)
@@ -38,7 +38,7 @@
 - It describes the exact tree that was generated, such that subsequent installs are able to generate identical trees, regardless of
   intermediate dependency updates.
 
-### How pnp install works?
+### How pnpm install works?
 
 - When you run `pnpm install`, pnpmlooks at the dependencies listed in the `package.json` file and installs them in the `node_modules` folder.
 
