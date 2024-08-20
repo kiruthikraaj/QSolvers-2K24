@@ -1,503 +1,751 @@
-# NodeJS Milestone-2
+# Milestone - 3
 
-## Exporting Modules:
+## Express JS:
 
-## ECMAScript module system
+- Express.js is a web application framework for Node.js. 
+- It simplifies the process of building web applications and APIs by providing a robust set of features and utilities.
 
-Exporting a module is done by using the export keyword.
+### Express is Unopinionated Framework
 
-There are two types of exports:
+`Opinionated Frameworks`:
 
-- Named Exports
-- Default Exports
+They prescribe specific methods, tools, and architectures, guiding developers toward a particular way of building applications.
 
-`Named Exports:`
+`Unopinionated Framework`:
 
-Named exports are useful to export several values. During the import, it is mandatory to use the same name of the corresponding object.
-
-export const PI = 3.14;
-export function add(a, b) {
-  return a + b;
-}
-export class Person {
-  constructor(name) {
-    this.name = name;
-  }
-}
-
-`Default Exports:`
-
-Default exports are useful to export only a single value. During the import, it is not mandatory to use the same name of the corresponding object.
-
-export default function greet(name) {
-  return `Hello, ${name}!`;
-}
-
-## CommonJs module system
-
-Exporting a module is done by using the module.exports object.
-
-    // Single Export
-    module.exports = function greet(name) { /* ... */ };
-
-    // Multiple Exports
-    module.exports = {
-      pi: 3.14,
-      add(a, b) { /* ... */ },
-      Person
-    };
-
-
-## Exporting Literals:
-
-`script.js`
-        
-        module.exports = "hello"
-
-`index.js`
-        
-        const msg = require("./script"); 
-        console.log(msg); 
-
-## Exporting functions:
-
-`script.js`
-        
-        function add(a,b){
-            return a+b;
-        }
-
-        function sub(a,b){
-            return a-b;
-        }
-
-        module.exports = {add, sub}
-
-`index.js`
-        
-        const {add, sub} = require('./script')
-
-        console.log(add(2,3))
-        console.log(sub(4,2))
-
-
-## Exporting Objects:
-        
-`script.js`
-
-        module.exports = {
-            name: "Kanish",
-            age : 22
-        }        
-
-`index.js`
-                
-        const person = require('./script')
-        console.log(person.name)
-        console.log(person.age)
+They do not enforce specific patterns or structures, allowing developers to choose how they want to implement features and organize their code.
 
 ---
 
-## Consuming Modules
+### Features:
 
-## ECMAScript module system
+`Routing:`
 
-Importing a module is done by using the import keyword.
+Easy-to-use routing system for handling different HTTP requests and URLs.
 
-There are two types of imports:
+`Middleware:`
 
-- Named Imports
-- Default Imports
+ Middleware functions to handle various tasks like authentication, logging, and body parsing.
 
-## Named Imports:
+`Request and Response Handling:`
 
-Named imports are useful to import several values. During the import, it is mandatory to use the same name of the corresponding object.
+Simplifies handling of incoming requests and outgoing responses.
 
-  import { name, age } from "demo.js";
+`Error Handling:`
 
-## Default Imports:
+Customizable error-handling middleware.
 
-Default imports are useful to import only a single value. During the import, it is not mandatory to use the same name of the corresponding object.
+`Template Rendering:` 
 
-  import name from "demo.js";
-
----
-
-
-- Exporting modules in Node.js is fundamental for organizing and structuring your code. 
-
-- You can export functionality such as variables, functions, objects, or classes from one file so that they can be imported and used in another file.
+Support for rendering HTML pages using template engines.
 
 ---
 
-## How modules are imported in NodeJS:
+### Installation:
 
-The CommonJs module system uses the require function to load the modules.
+        npm install express
 
-By default, the CommonJs module system is used in Node.js.
+### Creation of web server:
 
+` 1. Import express module`
 
-        const greet = require('./bookingServices');
+    const express = require('express');
 
+`2. Create Express server`:
 
-`Call require():`
+    const app = express();
 
-- When you call require('moduleName'), Node.js starts the process to load and execute the module.
+`3. Defining routes`:
 
-`Check Cache`:
+    app.get('/', (req, res) => {
+        res.send('Hello, World!');
+    });
+    
+`4. Setting port number`:
 
-- Node.js first checks if the module is already in the cache (Module._cache). If it is, it returns the cached module.
-
-`Create Module Instance`:
-
-- If the module is not in the cache, Node.js creates a new Module instance for it.
-
-
-`Load Module`:
-
-Node.js then loads the module,
-
-- For JSON Files: It reads the file, parses the JSON content, and assigns it to module.exports.
-
-- For JavaScript Files: It reads the file, wraps the content in a function, and compiles it to JavaScript code. This allows the module to use exports, require, and module within its code.
-
-`Compile and Execute`:
-
-JavaScript files are wrapped in a function that takes exports, require, module, __filename, and __dirname as arguments. This function is then compiled and executed.
-
-`Return Module Exports`:
-
-After loading and executing the module, Node.js returns the module.exports property of the module.
-
----
-- The ECMAScript module system uses the import keyword to load the modules.
-
->The require() call is synchronous and the import statement is asynchronous.
+    const PORT = process.env.PORT;
+        app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
 
 ---
 
+### Configuring dotenv:
 
-# Event Emitters:
+`Install`:
 
-EventEmitter provides a simple way to handle events. You can think of it as a publisher-subscriber pattern where:
+    npm install dotenv
 
-- Emitters publish (emit) named events.
-- Listeners subscribe to (handle) these events by attaching callback functions.
+`Import`:
+    
+    require('dotenv').config();
 
-## Importing Event emitters:
+`.env file`:
 
-        const EventEmitter = require('events');
+    PORT = 3000
 
-## Creating EventEmitter class:
+### Middleware:
 
-The EventEmitter class is used to create event emitters.
+Middleware in Express.js refers to functions that have access to the request (req), response (res), and the next middleware function in the application’s request-response cycle. 
 
-        const emitter = new EventEmitter();
+- Performs in Executing the code
+- Modifying the request and response objects
+- Ending the request-response cycle
+- Calling the next middleware function in the stack
 
-## Register Event Emitters:
+`Types`:
 
-The on method is used to listen for specific events.
+- `Application-Level Middleware:` Bound to an instance of express.
 
-        emitter.on('eventName', (data) => {
-        console.log('Event received with data:', data);
-        });
+- `Router-Level Middleware:` Bound to express.Router().
 
-## Emit an event: 
+- `Error-Handling Middleware:` Used to catch and handle errors.
 
-The emit method is used to emit an event.
-
-        emitter.emit('eventName', 'Hello');
-
-## Example:
-
-        const EventEmitter = require('events');
-
-        const taskEmitter = new EventEmitter();
-
-
-        taskEmitter.on('taskCompleted', (taskName) => {
-        console.log(`Notification: Task "${taskName}" has been completed.`);
-        });
-
-        function completeTask(taskName) {
-        console.log(`Task "${taskName}" is being completed.`);
-        taskEmitter.emit('taskCompleted', taskName);
-        }
-
-        completeTask('Write documentation');
-        completeTask('Fix bugs');
-        completeTask('Deploy application');
+- `Built-in Middleware:` Functions like express.json() and express.urlencoded().
 
 ---
-
-### once()  method:
-
-It will listen to the event only once.
-
-        const EventEmitter = require('events');
-
-        const taskEmitter = new EventEmitter();
-
-        taskEmitter.once('taskCompleted', (taskName) => {
-        console.log(`One-time Notification: Task "${taskName}" has been completed.`);
-        });
-
-        function completeTask(taskName) {
-        console.log(`Task "${taskName}" is being completed.`);
-        taskEmitter.emit('taskCompleted', taskName);
-        }
-
-        completeTask('Write documentation'); // This will trigger the one-time listener
-        completeTask('Fix bugs'); // This will not trigger the one-time listener
-        completeTask('Deploy application'); // This will not trigger the one-time listener
-
----
-
-## removeListener() event:
-
-It is used to remove the listener for the event
-
-        const EventEmitter = require('events');
-
-        const myEmitter = new EventEmitter();
-
-        function onGreeting(name) {
-        console.log(`Hello, ${name}!`);
-        }
-
-        myEmitter.on('greeting', onGreeting);
-
-        myEmitter.emit('greeting', 'Kanish'); // This will trigger the listener
-
-        myEmitter.removeListener('greeting', onGreeting);
-
-        myEmitter.emit('greeting', 'Kumar'); // This will not trigger the listener
-
----
-### WebSockets:
-
-- WebSockets provide a full-duplex communication channel over a single, long-lived connection, enabling real-time data exchange between a client and a server. 
-
-- Unlike HTTP, which follows a request-response model, WebSockets allow for bi-directional communication where the server can send data to the client anytime.
-
-## Use Cases for WebSockets
-
-WebSockets are ideal for scenarios where low-latency, real-time communication is required:
-- **Chat Applications**: Instant message delivery between users.
-- **Live Data Feeds**: Financial data, sports scores, or stock market updates.
-- **Online Gaming**: Real-time updates between players and servers.
-
-`Example`:
-
-        const WebSocket = require('ws');
-        const server = new WebSocket.Server({ port: 8080 });
-
-        server.on('connection', (socket) => {
-        console.log('New client connected');
-
-        socket.on('message', (message) => {
-        console.log(`Received: ${message}`);
-
-        server.clients.forEach((client) => {
-        if (client !== socket && client.readyState === WebSocket.OPEN) {
-                client.send(message);
-        }
-        });
-        });
-
-        socket.on('close', () => {
-        console.log('Client disconnected');
-        });
-        });
-
-
-Chat systems: 
-        New client connected
-        Received: hi
-        Client disconnected
-        New client connected
-        Received: hoo
-        Client disconnected
-
-
-### Exception Handling:
-
-Error event is used to handle errors
-
-        const EventEmitter = require("events");
-
-        const eventEmitter = new EventEmitter();
-
-        eventEmitter.on("error", (err) => {
-        console.log(`Error: ${err.message}`);
-        });
-
-        eventEmitter.emit("error", new Error("An error occurred"));
-
----
-
-### Try and catch:
-
-Try and catch used to handle exceptions
-
-        try {
-        throw new Error("An error occurred");
-        } catch (err) {
-        console.log(`Error: ${err.message}`);
-        }
-
----
-
-## Event Loop:
-
-- The event loop allows Node to perform non-blocking I/O operations despite the fact that JavaScript is single-threaded. 
-- It is done by assigning operations to the operating system whenever and wherever possible.
-
-
-- Node.js is single-threaded and uses an event-driven, non-blocking architecture to handle multiple tasks efficiently. 
-
-### How Node.js Works
-
-When you run a Node.js program:
-
-1. **Initialization**:
-   - Node.js starts by setting up the *event loop*, which is responsible for managing the flow of tasks, especially asynchronous operations.
-
-2. **Running the Script**:
-   - Node.js executes your code from top to bottom. During this phase:
-     - Synchronous operations (like `console.log`) are handled immediately.
-     - Asynchronous tasks (like `setTimeout`, file reading) are scheduled to be processed later.
-
-3. **Async Operations with `libuv`**:
-   - Node.js uses a special library called `libuv` to manage many asynchronous tasks.
-   - If the task is heavy (like file I/O), it’s sent to a *thread pool* managed by `libuv`. This pool contains four background threads that work on these tasks while the main thread stays free.
-
-4. **Callbacks and the Event Queue**:
-   - Once a background task is completed, a *callback function* (to handle the result or error) is added to the *event queue*.
-   - For example, after reading a file, a callback may be triggered to process the file contents.
-
-5. **Event Loop and Call Stack**:
-   - The event loop constantly checks if the call stack is empty.
-   - When there are no tasks in the stack, it starts picking tasks from the event queue and pushes their callbacks to the stack for execution.
-
-6. **Handling Callbacks**:
-   - Callbacks are executed one by one. If they involve more asynchronous work, those tasks are again sent to the thread pool or scheduled for later, continuing the cycle.
-
-## Summary
-
-- Node.js is single-threaded but uses the `libuv` library to offload heavy operations (like file I/O) to a background *thread pool*.
-- The *event loop* coordinates between the main thread and background tasks, ensuring non-blocking execution.
-- The result is that Node.js can efficiently handle many tasks at once without getting stuck.
-
----
-
-### Phases of the Node.js Event Loop
-
-The event loop consists of several phases that repeat in a loop. Each phase has a specific purpose and handles a specific type of callback. Here’s a breakdown of each phase:
-
-1. **Timers Phase**:
-   - Executes callbacks scheduled by `setTimeout()` and `setInterval()`.
-   - If the specified time delay has passed, the callbacks are executed in this phase.
-
-2. **Pending Callbacks Phase**:
-   - Executes I/O callbacks that were deferred to the next loop iteration, such as certain types of errors.
-
-3. **Idle, Prepare Phase**:
-   - Used internally by Node.js. This phase is mostly for Node’s internal operations, and you don’t typically interact with it directly.
-
-4. **Poll Phase**:
-   - This is the most important phase where I/O operations are executed (e.g., reading from files, network requests).
-   - The event loop waits for I/O tasks to be completed and executes callbacks when they’re ready.
-   - If there are no I/O tasks to process, and no timers are scheduled, the loop may enter a waiting state.
-
-5. **Check Phase**:
-   - Executes callbacks from `setImmediate()`.
-   - `setImmediate()` is similar to `setTimeout()`, but it’s designed to execute after the poll phase, making it useful for running tasks immediately after I/O.
-
-6. **Close Callbacks Phase**:
-   - Executes close events like `socket.on('close', ...)`. For example, if a connection is abruptly closed, the related callbacks are handled here.
-
----
-
-### Queues in the Node.js Event Loop
-
-In Node.js, the event loop processes various asynchronous tasks using multiple queues.
-
-The event loop manages the following key queues:
-
-### 1. **Microtask Queue**
-   - **Purpose**: Handles high-priority tasks like resolved Promises and `process.nextTick()` callbacks.
-   - **When It Runs**: The microtask queue is processed immediately after each phase of the event loop, before moving to the next phase. It takes priority over all other queues.
-   - **Examples**: 
-     - Resolved `Promise` callbacks: `Promise.resolve().then(...)`
-     - `process.nextTick()` callbacks
-
-### 2. **Timer Queue**
-   - **Purpose**: Contains callbacks scheduled using `setTimeout()` and `setInterval()`.
-   - **When It Runs**: The event loop checks this queue during the Timers phase. Callbacks are executed if the specified time has passed.
-   - **Examples**:
-     - `setTimeout(() => console.log('Timeout callback'), 1000)`
-     - `setInterval(() => console.log('Interval callback'), 1000)`
-
-### 3. **I/O Queue**
-   - **Purpose**: Manages callbacks for I/O operations such as reading files, network requests, and more.
-   - **When It Runs**: The I/O queue is processed in the Poll phase, which is where most of the actual I/O work happens. This queue is responsible for handling operations like disk access and network communication.
-   - **Examples**:
-     - File system operations: `fs.readFile()`
-     - Network requests: HTTP responses, database queries
-
-### 4. **Check Queue**
-   - **Purpose**: Handles callbacks scheduled using `setImmediate()`.
-   - **When It Runs**: The check queue is processed during the Check phase, which runs after the Poll phase.
-   - **Examples**:
-     - `setImmediate(() => console.log('Immediate callback'))`
-
-### 5. **Close Queue**
-   - **Purpose**: Contains callbacks related to closing resources, such as `socket.on('close')` events.
-   - **When It Runs**: The close queue is processed in the Close phase, which handles clean-up tasks like closing connections.
-   - **Examples**:
-     - Handling socket closures: `socket.on('close', ...)`
-     - Closing streams
-
-### Interaction among these Queues:
-
-1. The event loop starts by processing the **Timer Queue** if any timers have expired.
-2. Next, it processes pending callbacks in the **I/O Queue** (for I/O tasks like reading files).
-3. After I/O, the loop checks for **setImmediate()** callbacks in the **Check Queue**.
-4. The **Close Queue** runs next to handle tasks like closing sockets or file streams.
-5. After each phase, the **Microtask Queue** is always checked and processed before moving to the next phase.
-
 
 Example:
 
-        setTimeout(() => {
-        console.log('setTimeout: 0ms');
-        }, 0);
-        
-        setImmediate(() => {
-        console.log('setImmediate');
-        });
-        
-        process.nextTick(() => {
-        console.log('process.nextTick');
-        });
-        
-        console.log('Start');
-        
-        process.nextTick(() => {
-        console.log('process.nextTick 2');
-        });
-        
-        setImmediate(() => {
-        console.log('setImmediate 2');
-        });
-  
-`Output:`
+`Parse JSON bodies`:
+    
+    app.use(bodyParser.json()); 
 
-        Start
-        process.nextTick
-        process.nextTick 2
-        setTimeout: 0ms
-        setImmediate
-        setImmediate 2
+`Parse URL-encoded bodies`:
+
+    app.use(bodyParser.urlencoded({ extended: true })); 
+
+
+
+`express.json()` is the modern, built-in middleware function for parsing JSON request bodies in Express.js, available since Express 4.16.0.
+
+`bodyParser.json()` is from the body-parser package and was commonly used before the functionality was integrated into Express. It is still valid.
+
+### Routing:
+
+`Route Methods`:
+
+Express supports various HTTP methods (GET, POST, PUT, DELETE, etc..)
+
+- GET: Retrieve data from the server.
+- POST: Send data to the server to create a new resource.
+- PUT: Update an existing resource on the server.
+- DELETE: Delete a resource from the server.
+
+---
+
+`Express router`:
+
+- Router class is available in Express. 
+- It allows you to define routes in separate files and then use them in your main application.
+
+    
+        const router = express.Router();
+
+---
+
+`Routing Middleware`:
+
+- We can use middleware functions to process requests before they reach the route handler. 
+- This can be used for authentication, validation, etc.
+
+`Example`:
+
+    router.post(
+        '/book',
+        authenticateJwt,
+        bookTicketValidation,
+        bookingController.bookTicket
+    );
+
+---
+
+### DB integration with express:
+
+Express does not include built-in database support. But it has,
+
+`ORM (Object-Relational Mapping)` libraries like Sequelize for SQL databases
+
+`ODM (Object-Document Mapping)` libraries like Mongoose for MongoDB.
+
+    const Sequelize = require('sequelize');
+    const sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: 'mysql'
+    });
+
+---
+
+### Template Engine:
+
+- Express supports various templating engines for rendering dynamic HTML. 
+- Common engines include Pug, EJS, and Handlebars.
+
+
+Installation:
+
+    npm install ejs
+
+Example:
+
+    app.set('view engine', 'ejs');
+
+    app.get('/', (req, res) => {
+    res.render('index', { title: 'My App' });
+    });
+
+---
+
+`1. app.use()`:
+
+ app.use() is a method used to register middleware functions that handle requests. 
+
+`2. app.set():`
+
+The app.set() method is used to configure various application settings. 
+
+
+`3. app.set()`:
+
+The app.get() method is used to retrieve the value of a previously set setting. 
+
+It allows you to access the current value of settings that were defined using app.set().
+
+---
+
+## Helmet:
+
+- Helmet is a middleware for Node.js applications that helps secure Express.js applications by setting various HTTP headers. 
+
+- It is a collection of smaller middleware functions that can be used to improve the security of your application by setting HTTP headers that help protect against common security vulnerabilities.
+
+### Why Use Helmet?
+
+- Helmet helps mitigate risks from various types of attacks by setting security-related HTTP headers. 
+
+- It provides protection against attacks such as:
+
+- Cross-Site Scripting (XSS)
+- Clickjacking
+- MIME type sniffing
+- HTTP response splitting
+- Content Security Policy (CSP) issues
+
+---
+
+`Install`:
+
+        npm install helmet
+
+---
+
+### Response header after configuring helmet:
+
+
+    connection: keep-alive
+    content-security-policy: default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
+    cross-origin-opener-policy: same-origin
+    cross-origin-resource-policy: same-origin
+    date: Tue, 20 Aug 2024 05:24:41 GMT
+    etag: W/"c-Lve95gjOVATpfV8EL5X4nxwjKHE"
+    keep-alive: timeout=5
+    origin-agent-cluster: ?1
+    referrer-policy: no-referrer
+    strict-transport-security:
+    max-age=15552000; includeSubDomains x-content-type-options: nosniff x-dns-prefetch-control: off
+    x-download-options: noopen
+    x-frame-options: SAMEORIGIN
+    x-permitted-cross-domain-policies: none
+    x-xss-protection: 0
+
+---
+
+### Configuration:
+
+        var express = require('express');
+        var app = express();
+        var helmet = require('helmet');
+
+        app.use(helmet());
+
+
+## Default Headers provided by helmet:
+
+By default, Helmet sets the following headers:
+
+- Content-Security-Policy: A powerful allow-list of what can happen on your page which mitigates many attacks
+
+- Cross-Origin-Opener-Policy: Helps process-isolate your page
+
+- Cross-Origin-Resource-Policy: Blocks others from loading your resources cross-origin
+
+- Origin-Agent-Cluster: Changes process isolation to be origin-based
+
+- Referrer-Policy: Controls the Referer header
+
+- Strict-Transport-Security: Tells browsers to prefer HTTPS
+
+- X-Content-Type-Options: Avoids MIME sniffing
+- X-DNS-Prefetch-Control: Controls DNS prefetching
+- X-Download-Options: Forces downloads to be saved (Internet Explorer only)
+- X-Frame-Options: Legacy header that mitigates clickjacking attacks
+- X-Permitted-Cross-Domain-Policies: Controls cross-domain behavior for Adobe products, like Acrobat
+- X-Powered-By: Info about the web server. Removed because it could be used in simple attacks
+- X-XSS-Protection: Legacy header that tries to mitigate XSS attacks, but makes things worse, so Helmet disables it.
+
+---
+
+### Helmet Middleware functions:
+
+1. **`helmet.contentSecurityPolicy()`**
+   - Sets the `Content-Security-Policy` header to prevent XSS attacks by specifying allowed content sources.
+
+2. **`helmet.xssFilter()`**
+   - Sets the `X-XSS-Protection` header to prevent cross-site scripting (XSS) attacks.
+
+3. **`helmet.frameguard()`**
+   - Sets the `X-Frame-Options` header to prevent clickjacking by controlling how your site can be framed.
+
+4. **`helmet.noSniff()`**
+   - Sets the `X-Content-Type-Options` header to prevent MIME type sniffing.
+
+5. **`helmet.hsts()`**
+   - Sets the `Strict-Transport-Security` header to enforce HTTPS.
+
+6. **`helmet.dnsPrefetchControl()`**
+   - Sets the `X-DNS-Prefetch-Control` header to control DNS prefetching.
+
+7. **`helmet.hidePoweredBy()`**
+   - Removes the `X-Powered-By` header to obscure the technology stack used.
+
+8. **`helmet.referrerPolicy()`**
+   - Sets the `Referrer-Policy` header to control how much referrer information is sent with requests.
+
+`Example`:
+
+        const express = require('express');
+        const helmet = require('helmet');
+
+        const app = express();
+
+        app.use(helmet());
+
+        app.get('/', (req, res) => {
+        res.send('Hello World!');
+        });
+
+        app.listen(3000, () => {
+        console.log('Server running on port 3000');
+        });
+
+---
+
+### CORS:
+
+- CORS (Cross-Origin Resource Sharing) is a mechanism that allows servers to specify who can access their resources from a different origin (domain, protocol, or port). 
+
+- It is a security feature implemented by browsers to prevent unauthorized cross-origin requests.
+
+`Installation`:
+
+        npm install cors
+
+`Cors middlware`:
+
+        const express = require('express');
+        const cors = require('cors');
+
+        const app = express();
+
+        // Use CORS middleware
+        app.use(cors());
+
+        app.get('/', (req, res) => {
+        res.send('Hello World!');
+        });
+
+        app.listen(3000, () => {
+        console.log('Server running on port 3000');
+        });
+
+
+`Allowing CORS for specific origins`:
+
+    const express = require('express');
+    const cors = require('cors');
+
+    const app = express();
+
+    const corsOptions = {
+    origin: ['https://example1.com', 'https://example2.com'], 
+    };
+
+    app.use(cors(corsOptions));
+
+    app.get('/', (req, res) => {
+    res.send('Hello World!');
+    });
+
+    app.listen(3000, () => {
+    console.log('Server running on port 3000');
+    });
+
+---
+
+## Need for CORS in Node.js
+
+- Node.js applications often serve APIs that need to be consumed by clients running on different origins. 
+
+- Enabling CORS in a Node.js server allows these clients to make requests to the server, even if they originate from different domains. 
+
+### Allowing Specific Methods
+
+To allow only specific HTTP methods, use the following configuration:
+
+    const corsOptions = {
+        // Only allow GET and POST requests
+        methods: ['GET', 'POST'],
+    };
+
+    app.use(cors(corsOptions));
+
+## Supporting Credentials
+
+If you need to support credentials, you can enable them with this configuration:
+
+    const corsOptions = {
+        origin: 'http://example.com',
+        // Allow credentials like cookies
+        credentials: true,
+    };
+
+    app.use(cors(corsOptions));
+
+## Customizing Headers
+
+To specify which headers are allowed in CORS requests, use this approach:
+
+    const corsOptions = {
+        // Allow specific headers
+        allowedHeaders: ['Content-Type', 'Authorization'],
+    };
+
+    app.use(cors(corsOptions));
+
+---
+
+## Preflight Requests:
+- They are used by browsers to determine if a cross-origin request is safe to send to the server.
+
+### What is a Preflight Request?
+
+- A preflight request is an HTTP OPTIONS request sent by the browser before the actual request.
+ - It checks with the server to see if the actual request is allowed. This is done to ensure that the server is willing to accept the cross-origin request with the specified method and headers.
+
+### When Does a Preflight Request Occur?
+
+- HTTP Methods: If the request method is anything other than GET, POST, or HEAD (e.g., PUT, DELETE).
+
+- Custom Headers: If the request includes headers that are not considered "simple" (e.g., custom headers like X-Custom-Header).
+
+- Content-Type: If the Content-Type header is not one of the "simple" types (application/x-www-form-urlencoded, multipart/form-data, text/plain).
+
+### How Does a Preflight Request Work?
+
+`Client Sends OPTIONS Request:`
+
+The browser sends an OPTIONS request to the server to check if the cross-origin request is allowed. This request includes the Access-Control-Request-Method and 
+Access-Control-Request-Headers headers.
+
+`Server Responds:`
+
+The server responds with headers indicating whether the actual request is permitted. This includes headers like Access-Control-Allow-Methods, Access-Control-Allow-Headers, and Access-Control-Allow-Origin.
+
+`Actual Request:`
+
+If the server's response to the preflight request indicates that the actual request is allowed, the browser sends the actual request (e.g., GET, POST, PUT) with the appropriate headers.
+
+
+---
+
+`Example`:
+
+        // Configure CORS with specific options
+        const corsOptions = {
+        origin: 'https://example.com', // Allow only this origin
+        methods: 'GET, POST, PUT, DELETE', // Allow these methods
+        allowedHeaders: 'Content-Type, Authorization', // Allow these headers
+        };
+
+        app.use(cors(corsOptions)); // Apply CORS middleware
+
+---
+
+### REST API:
+
+REST is an architectural style for designing networked applications with a stateless, client-server communication model.
+
+- REST (Representational State Transfer) is an architectural style for designing networked applications. 
+- It relies on a stateless, client-server communication protocol, usually HTTP, to handle requests and responses. 
+- A REST API (Application Programming Interface) adheres to REST principles to allow interaction between clients and servers.
+
+### Key Principles of REST
+
+They align to the following six REST design principles, also known as architectural constraints.
+
+`Stateless:`
+
+- Each request from a client must contain all the information needed for the server to fulfill that request. 
+- The server does not store any state about the client session between requests.
+
+`Client-Server Architecture`: 
+
+- The client and server are separate entities that communicate over a network. The client requests resources, and the server provides them. 
+- This separation allows for independent evolution of client and server.
+
+`Uniform Interface`: 
+
+- RESTful APIs have a consistent and standardized way of interacting with resources. This includes using standard HTTP methods and status codes.
+
+`Resource-Based`: 
+
+Resources are identified by URIs (Uniform Resource Identifiers). Each resource is represented by a URL and can be manipulated using HTTP methods.
+
+`Stateless Communication`: 
+
+Communication between client and server should be stateless, meaning each request should contain all necessary information to process the request.
+
+`Cacheable:` 
+
+Responses from the server should be explicitly marked as cacheable or non-cacheable to improve performance and reduce the need for repeated requests.
+
+---
+
+`Common HTTP Methods in REST APIs`
+
+- GET: Retrieve data from the server. The request should not change the state of the server.
+
+- POST: Submit data to the server to create a new resource or perform an action.
+
+- PUT: Update an existing resource on the server with new data.
+
+- DELETE: Remove a resource from the server.
+
+- PATCH: Apply partial modifications to a resource.
+
+---
+
+## Example:
+
+[From Railway Reservation Application]
+
+    router.post(
+        '/book',
+        authenticateJwt,
+        bookTicketValidation,
+        bookingController.bookTicket
+    );
+
+    router.get(
+        '/available-seats',
+        authenticateJwt,
+        bookingController.getAvailableSeats
+    );
+
+    router.delete(
+        '/cancel/:bookingId',
+        authenticateJwt,
+        authorizeRole(['admin', 'user']),
+        bookingController.cancelBooking
+    );
+
+---
+
+## Route Paramters:
+
+- Route parameters are used to capture values from the URL path. 
+
+- They are specified in the route definition with a colon (:) followed by the parameter name.
+
+Format:
+
+        /path/:param1/:param2
+
+Example:
+
+        router.get(
+            'api/users/:id',
+            authenticateJwt,
+            authorizeRole(['admin', 'user']),
+            userController.getUserById
+        );
+
+- In this example, the '...api/users/1' will fetch the user data with user id 1.
+
+## Query Parameters
+
+Query parameters are used to filter or sort the data, and they are appended to the URL after the question mark (?). They are key-value pairs separated by &.
+
+        GET /items?page=2&limit=5
+
+Pagination is done using query parameters.
+
+![alt text](image.png)
+
+## Format of Query Parameters
+
+Query parameters are formatted as a series of key-value pairs:
+
+    key1=value1&key2=value2&key3=value3 
+
+key1: The parameter name.
+
+value1: The value associated with key1.
+
+Common Uses
+
+- Filtering: To specify criteria for the data to be returned.
+- Sorting: To define the order in which the data should be sorted.
+- Pagination: To control which page of data is returned and how many items per page.
+- Searching: To include search terms or parameters for more specific queries.
+
+---
+
+## Express Validator:
+
+- Express Validator is a popular middleware for validating and sanitizing data in Express.js applications. 
+
+- It integrates well with the Express framework, making it easy to validate user input from requests and handle errors in a structured way.
+
+## Key Features
+
+- Validation: Check if input values meet certain criteria (e.g., required fields, email format).
+- Sanitization: Clean input values to avoid issues like SQL injection or XSS attacks.
+- Error Handling: Provide detailed error messages when validation fails.
+- Chainable API: Use a fluent, chainable API for defining validation rules.
+
+`Installation`
+
+        npm install express-validator
+
+---
+
+`Importing express-validator`:
+
+    const { body, validationResult } = require('express-validator');
+
+
+### Validation Examples:
+
+`Email Validation:`
+
+    body('email').isEmail().withMessage('Invalid email address');
+
+`String Length Validation:`
+
+    body('password').isLength({ min: 5 }).withMessage('Password must be at least 5 characters long');
+
+`Sanitization:`
+
+    body('username').trim().escape();
+
+---
+
+#### Custom Validation:
+
+We can define our own validation rules.
+
+        body('age').custom(value => {
+            if (value < 18) {
+                throw new Error('You must be at least 18 years old');
+            }
+            return true;
+        });
+
+
+### Validation Chain:
+
+        query('search_query').notEmpty().trim();
+
+First checks its not empty or not, then trims it.
+
+### Wildcards:
+
+- Sometimes you will want to apply the same rules to all items of an array, or all keys of an object. That's what the *, also known as the wildcard, is for.
+
+- The wildcard can be used in place of any segment, which will correctly select all indices of the array or keys of the object it's located in.
+
+        app.post(
+        '/update-user',
+        body('siblings.*.name').notEmpty(),
+        );
+
+
+### Common Methods:
+
+# Express Validator Common Methods
+
+| Method                           | Description                                                   | Usage Example                                    |
+|----------------------------------|---------------------------------------------------------------|--------------------------------------------------|
+| `check('field').isEmail()`        | Checks if the value of the field is an email.                | `check('email').isEmail()`                      |
+| `check('field').isLength({ min: 5 })` | Checks if the field value is at least the specified length. | `check('username').isLength({ min: 5 })`       |
+| `check('field').isInt()`           | Checks if the value is an integer.                           | `check('age').isInt()`                          |
+| `check('field').isNumeric()`       | Checks if the value is numeric.                              | `check('quantity').isNumeric()`                 |
+| `check('field').isAlphanumeric()`  | Checks if the value contains only letters and numbers.       | `check('username').isAlphanumeric()`            |
+| `check('field').isURL()`           | Checks if the value is a valid URL.                          | `check('website').isURL()`                      |
+| `check('field').isDate()`          | Checks if the value is a valid date.                         | `check('birthdate').isDate()`                   |
+| `check('field').matches(pattern)`  | Checks if the value matches a regular expression pattern.    | `check('password').matches(/\d/)`               |
+|
+
+
+---
+
+
+### Schema based validation:
+
+Schemas are an object-based way of defining validations or sanitizations on requests. They offer exactly the same functionality as regular validation chains.
+
+        checkSchema({
+        username: {
+            errorMessage: 'Invalid username',
+            isEmail: true,
+        },
+        password: {
+            isLength: {
+            options: { min: 8 },
+            errorMessage: 'Password should be at least 8 chars',
+            },
+        },
+        });
+
+---
+
+## Nodemon
+
+The nodemon npm Module is a module that develop node.js based applications by automatically restarting the node application when file changes in the directory are detected. Nodemon does not require any change in the original code and method of development.
+
+### Advantages of Using nodemon Module:
+
+- It is easy to use and easy to get started.
+- It does not affect the original code and no instance require to call it.
+- It help to reduce the time of typing the default syntax node for executing again and again.
+
+---
+
+![](image-1.png)
+
+---
+
+### nodemon -h   
+
+    Usage: nodemon [options] [script.js] [args]
+
+  Options:
+
+        --config file ............ alternate nodemon.json config file to use
+        -e, --ext ................ extensions to look for, ie. js,pug,hbs.
+        -x, --exec app ........... execute script with "app", ie. -x "python -v".
+        -i, --ignore ............. ignore specific files or directories.
+        -V, --verbose ............ show detail on what is causing restarts.
+
 ---
