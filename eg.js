@@ -1,9 +1,11 @@
-const fs = require("fs");
+const express = require("express");
 
-setTimeout(() => {
-  console.log("hello");
-}, 0);
+const app = express();
 
-fs.readFile(__filename, () => {
-  console.log("File");
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
 });
