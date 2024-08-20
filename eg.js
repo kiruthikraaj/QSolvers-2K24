@@ -1,11 +1,20 @@
-const express = require("express");
+function add(a, b) {
+  return a + b;
+}
 
-const app = express();
+function multiply(a, b) {
+  return a * b;
+}
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+function calculate(a, b) {
+  const sum = add(a, b);
+  const product = multiply(a, b);
+  return { sum, product };
+}
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
+const a = 5;
+const b = 10;
+const result = calculate(a, b);
+
+console.log(result.sum);
+console.log(result.product);
