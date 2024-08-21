@@ -1,265 +1,333 @@
-# Milestone 2:
-## Exporting and Consuming Modules:
-- In Node.js, exporting and consuming modules allows you to split your code into manageable parts.
-### Exporting Modules:
-- functions, objects, or values can be exported from a module using module.exports or exports.
-
+# Milestone 3 of Node JS
+## Express Configuration
+- Express configuration involves setting up an Express.js application to handle various tasks such as routing, middleware management, view rendering, error handling, and more.
+### Setting Up the Express application:
+- To install Express the following command have to be run `npm install express`.
+- Basic initialization can be done by creating an instance of the express app.
 ```js
-const greet = (name) => {
-  return `Hello, ${name}!`;
-};
+const express = require('express');
+const app = express();
+```
+- Environment Configuration: The port of the system can be set using environment variables.
+```js
+const PORT = process.env.PORT || 3000;
 
-const farewell = (name) => {
-  return `Goodbye, ${name}!`;
-};
+```
+### Middleware Configuration:
+- Middleware functions are function that have access to the requext object, the response object and the next middleware function in the system's request-response cycle.
+#### Build-in Middleware:
+- Express provides built-in middleware like express.json() and express.urlencoded() to handle JSON and URL-encoded data.
+```js
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-exports.greet = greet;
-exports.farewell = farewell;
+```
+#### Third-Party Middleware:
+- Third-party middleware like morgan can be used for logging or cors for enabling cross-origin requests.
+```js
+const morgan = require('morgan');
+app.use(morgan('dev'));
+
+```
+#### Custom Middleware:
+- Custome middleware function can also be created to perform specific tasks, such as logging or authentication.
+```js
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
+```
+### Routing Configuration:
+#### Basic Routing:
+- Express allows you to define routes to handle different HTTP methods (GET, POST, PUT, DELETE, etc.).
+```js
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+});
+
+```
+#### Route parameters:
+- Dynamic routes can be defined with the help of parameter.
+```js
+app.get('/user/:id', (req, res) => {
+    res.send(`User ID: ${req.params.id}`);
+});
+```
+#### Route Grouping: 
+- Using `express.Router()`, you can create modular route handlers for different parts of your application.
+```js
+const userRouter = express.Router();
+
+userRouter.get('/', (req, res) => {
+    res.send('User List');
+});
+
+app.use('/users', userRouter);
+
+```
+### Error Handling:
+- Custom Error Handlers: Express allows you to define custom error-handling middleware.
+- This middleware must have four arguments: err, req, res, and next.
+```js
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
+```
+### Serving Static files:
+- Static files are files that are sent to the client "as-is" without any processing by the server.
+- Examples include images, CSS files, JavaScript files, and other assets.
+- Express can serve these files from a specific directory using the express.static middleware.
+- Suppose we have a folder named public that contains static files (like images, CSS, etc.). Here’s how we can set it up:
+```js
+app.use(express.static('public'));
+
+```
+### Listening to Incomming Requests:
+- Express can be used to listen on a specified port.
+```js
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
 ```
 
-### Consuming Modules:
-- To use the exported module, the require function can be used.
+## Helmet:
+- Helmet is a middleware in Node.js, specifically designed to enhance the security of your Express-based applications.
+- It helps secure your app by setting various HTTP headers that can protect against some common web vulnerabilities.
+
+### Features of Helmet:
+- Hides X-Powered-By Header:By default, Express adds an `X-Powered-By: Express` header, which reveals the technology stack of your app.
+- Sets Strict-Transport-Security Header: This header ensures that your site is accessed only over HTTPS, protecting against man-in-the-middle attacks.
+- Prevents Clickjacking: Helmet sets the X-Frame-Options header, which prevents your site from being embedded into a frame or iframe, a common method used in clickjacking attacks.
+- Cross-Site Scripting (XSS) Protection: The X-XSS-Protection header is set by Helmet to enable the XSS filter built into most web browsers, reducing the risk of XSS attacks.
+- Content Security Policy (CSP): Helmet can help you define a CSP, which controls which resources the user agent is allowed to load. This protects against various types of attacks, such as cross-site scripting.
+- Referrer Policy: Helmet allows you to control the information sent along with requests made to external sites via the Referrer-Policy header.
+
+### Using Helmet in Express app:
 ```js
-const greet = require('./myModule'); 
+const express = require('express');
+const helmet = require('helmet');
 
-console.log(greet('Ajay')); 
+const app = express();
 
-// OR
+app.use(helmet());
 
-const { greet, farewell } = require('./myModule');
+app.get('/', (req, res) => {
+  res.send('Hello, world!');
+});
 
-console.log(greet('Ajay')); 
-console.log(farewell('Ajay')); 
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+
 ```
-## Exporting and Importing Module in node.js:
-### Exporting modules
-- `module.exports` is the primary way to export a single value or object from a module.
+### Customizing Helmet:
+- Helmet comes with several smaller middleware functions that you can use individually or customize.
 ```js
-const add = (a, b) => a + b;
-const subtract = (a, b) => a - b;
+app.use(
+  helmet({
+    contentSecurityPolicy: false, 
+    frameguard: { action: 'deny' },
+  })
+);
+
+```
+## CORS:
+- CORS is an acronym for Cross-Origin Resource Sharing.
+- It is a security feature implemented by web browsers to control how resources from different origins can be shared.
+- It’s a mechanism that allows your server to indicate to a browser that it should permit web applications running at one origin (domain) to access selected resources from a different origin.
+- To enable CORS in a Node.js application, you can use the cors middleware package with Express.
+```js
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+
+// Enable CORS for all routes
+app.use(cors());
+
+// Example route
+app.get('/api/data', (req, res) => {
+  res.json({ message: 'This is a CORS-enabled route!' });
+});
+
+app.listen(5000, () => {
+  console.log('Server is running on port 5000');
+});
+
+
+```
+### Configuring CORS:
+```js
+const corsOptions = {
+  origin: 'http://localhost:3000', // Only allow requests from this origin
+  methods: 'GET,POST', // Only allow GET and POST requests
+  allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+  credentials: true, // Allow credentials (cookies, authorization headers)
+};
+
+app.use(cors(corsOptions));
+
+```
+
+## REST API:
+- REST (Representational State Transfer) is an architectural style for designing networked applications.
+- A RESTful API is an API that adheres to the principles of REST, making it easy to interact with and understand.
+
+### Principles of REST:
+- Client-Server Architecture: The client and server are separate entities that communicate via a stateless protocol.
+- Statelessness: The server does not store any client state between requests.
+- Cacheability: Responses must define whether they are cacheable or not to improve performance.
+- Layered System: The architecture can be composed of multiple layers, such as load balancers, proxies, and gateways.
+
+## GET POST PUT DELETE methods in REST:
+
+### GET method:
+- The GET method is used to retrieve data from the server.It’s a read-only operation (does not modify any data).Typically used to fetch data from a server.
+```js
+const express = require('express');
+const app = express();
+
+app.get('/users', (req, res) => {
+  res.json([{ id: 1, name: 'John Doe' }, { id: 2, name: 'Jane Doe' }]);
+});
+```
+### POST method:
+- Creates new resources on the server.
+- Can also submit data to perform some operations on the backend server.
+```js
+app.post('/users', function(req, res){
+    //callback function
+})
+```
+
+### PUT method:
+- It updates the database with an entirely new entry or replaces the previous resource with a new one.
+```js
+app.put('/users/:id', (req, res) => {
+  const userId = req.params.id;
+  const updatedUser = req.body;
+  res.json({ id: userId, ...updatedUser });
+});
+
+```
+### DELETE method:
+- The DELETE method is used to delete a resource from the server.
+- It deletes the specified resource.
+```js
+app.delete('/users/:id', (req, res) => {
+  const userId = req.params.id;
+  // Delete the user with the given ID from the database
+  res.status(204).send(); // No Content
+});
+
+```
+
+## Get with params , query params:
+- In a RESTful API built with Node.js and Express, you can handle GET requests that include both route parameters and query parameters.
+
+### Route parameter:
+- Route parameters are used to capture values specified in the URL path. - They are defined by placing a colon (:) before the parameter name in the route path.
+```js
+const express = require('express');
+const app = express();
+
+app.get('/users/:id', (req, res) => {
+  const userId = req.params.id;
+  res.json({ message: `Fetching details for user with ID: ${userId}` });
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+
+```
+
+### Query Parameters:
+- Query parameters are used to pass optional parameters in the URL after the ? symbol.
+- They are typically used for filtering, sorting, or paginating results.
+```js
+const express = require('express');
+const app = express();
+
+// GET users with optional query parameters (e.g., for filtering)
+app.get('/users', (req, res) => {
+  const name = req.query.name; 
+  const age = req.query.age;
+
+  // other operations
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+
+```
+
+## Express Validator:
+- Express Validator is a popular library used in Node.js applications to validate and sanitize user input.
+- It helps ensure that the data your application processes meets certain criteria, which is crucial for security and data integrity.
+
+### Example:
+- Consider this user controller which gets user details:
+```js
+const userService = require('../services/userService');
+
+exports.createUser = async (req, res) => {
+  try {
+    const { email, username, password, phoneNumber, address ,role } = req.body;
+    const user = await userService.createUser(email, username, password, phoneNumber, address ,role);
+    res.status(201).json({ message: 'User created successfully', userId: user.id });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating user', error: error.message });
+  }
+};
+
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users', error: error.message });
+  }
+};
+
+```
+- The validation can be applied to each fields as follows:
+```js
+const { body, validationResult } = require('express-validator');
+
+const validateUser = [
+  body('email').isEmail().withMessage('Invalid email address'),
+  body('username').isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+  body('phoneNumber').optional().isMobilePhone().withMessage('Invalid phone number'),
+  body('address').optional().isLength({ max: 255 }).withMessage('Address can be up to 255 characters long'),
+];
+
+const handleValidationErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next();
+};
 
 module.exports = {
-  add,
-  subtract
+  validateUser,
+  handleValidationErrors
 };
-```
-- `exports` is a shorthand to add properties to `module.exports`. It's useful for exporting multiple properties from a module.
-```js
-
-exports.uppercase = (str) => str.toUpperCase();
-exports.lowercase = (str) => str.toLowerCase();
-```
-### Importing Modules:
-- To use the exported module, the require function is used.
-```js
-const math = require('./math'); 
-console.log(math.add(5, 3)); 
-console.log(math.subtract(5, 3)); 
-
-const utils = require('./utils');
-console.log(utils.uppercase('hello')); 
-console.log(utils.lowercase('WORLD'));
-```
-
-## How modules are loaded:
-- In Node.js, modules are loaded using the require function, which is responsible for importing modules into your application.
-- It includes the following steps:
-  - Check Cache: Node.js caches loaded modules to improve performance and prevent redundant loading. 
-  - Read File: If the module is not in the cache, Node.js reads the file content. 
-  - Compile and Execute: Node.js compiles the JavaScript file into machine code (if it's not already compiled) and executes it within its own context.
-  - Wrap in Function: Node.js wraps each module's code in a function to create a local scope and prevent variable leaks.
-
-- Return Exports: After executing the module code, Node.js returns the module.exports object. This object contains all the properties and methods that the module has exported.
-
-## Event Emitters - Web Sockets:
-- Event Emitters and WebSockets are key concepts in Node.js for handling asynchronous events and real-time communication.
-### Event Emitters:
-- the EventEmitter class use to create and handle custom events.
-- Creating an EventEmitter Instance:
-```js
-const EventEmitter = require('events');
-const emitter = new EventEmitter();
-```
-- `on` method used to listen for specific events.
-
-- Example:
-```js
-const EventEmitter = require('events');
-const emitter = new EventEmitter();
-
-emitter.on('greet', (name) => {
-  console.log(`Hello, ${name}!`);
-});
-
-emitter.emit('greet', 'Alice'); 
-```
-### WebSockets:
-- WebSockets enable real-time ,two way communication between the server and clients.
-- WebSocket is a communication protocol enabling full-duplex communication, allowing simultaneous two-way communication between a user’s browser and the server.
-
-## Exception Handling in node.js:
-- Exception handling refers to the mechanism by which the exceptions occurring in a code while an application is running is handled.
-- Node.js supports several mechanisms for propagating and handling errors. 
-- Exception handling in synchronous code:If an error occurs in a synchronous code, return the error. 
-  ```js
-  
-  let divideSync = function (x, y) {
-    if (y === 0) {
-      return new Error("Can't divide by zero")
-    }
-    else {
-      return x / y
-    }
-  }
-
-  let result = divideSync(9, 3)
-  if (result instanceof Error) {
-    console.log("9/3=err", result)
-  }
-  else {
-    console.log("9/3=" + result)
-  }
-  result = divideSync(9, 0)
-  if (result instanceof Error) {
-    console.log("9/0=err", result)
-  }
-  else {
-    console.log("9/0=" + result)
-  }
-
-  ```
-  - using try and catch:
-  ```js
-    let divideSync = function (x, y) {
-      if (y === 0) {
-        throw new Error("Can't divide by zero");
-      } else {
-        return x / y;
-      }
-    };
-
-    try {
-      let result = divideSync(9, 3);
-      console.log("9/3=" + result);
-    } catch (error) {
-      console.log("9/3=err", error.message);
-    }
-
-    try {
-      let result = divideSync(9, 0);
-      console.log("9/0=" + result);
-    } catch (error) {
-      console.log("9/0=err", error.message);
-    }
-
-  ```
-
-### Web Sockets Example:
-```js
-const WebSocket = require('ws');
-
-const server = new WebSocket.Server({ port: 8080 });
-
-server.on('connection', socket => {
-  console.log('Client connected');
-
-  // Send a message to the client
-  socket.send('Welcome to the WebSocket server!');
-
-  // Handle incoming messages from the client
-  socket.on('message', message => {
-    console.log('Received:', message);
-    // Echo the message back to the client
-    socket.send(`You said: ${message}`);
-  });
-
-  // Handle client disconnection
-  socket.on('close', () => {
-    console.log('Client disconnected');
-  });
-});
-
-console.log('WebSocket server is listening on ws://localhost:8080');
 
 ```
+## Nodemon:
+- Nodemon is a utility that helps in the development of Node.js applications by automatically restarting the server when file changes in the directory are detected.
+- It's especially useful during development as it saves time by eliminating the need to manually stop and start the server every time you make a change to your code.
+### Features of nodemon:
+- Automatic Restarts: Restarts your Node.js server automatically when a file changes.
+- File Watching: Monitors your files for changes and triggers a restart.
+- Ease of Use: Integrates seamlessly with existing Node.js workflows.
 
-  
-### Event Emitters:
-- Event Emitters are a core part of Node.js, allowing objects to emit named events that can cause corresponding functions, known as listeners, to be called.
-- Core Concept: An event emitter allows an object to produce events, and other objects can listen to these events and respond accordingly.
-- Example Use: In a typical Node.js application, you might want to handle events such as a connection to a server, the completion of a file read, or the arrival of data on a stream.
-- Basic Syntax:
-```js
-const EventEmitter = require('node:events');
-
-const eventEmitter = new EventEmitter();
-
-```
-- emit is used to trigger an event.
-- on is used to add a callback function that's going to be executed when the event is triggered.
-
-```js
-eventEmitter.on('start', () => {
-  console.log('started');
-});
-// running
-eventEmitter.emit('start');
-```
-
-#### Argument passing in emit():
-- The argument can be passed to eventEmitter using `emit()`.
-```js
-eventEmitter.on('start', number => {
-  console.log(`started ${number}`);
-});
-
-eventEmitter.emit('start', 23);
-
-```
-#### Multiple Arguments:
-```js
-eventEmitter.on('start', (start, end) => {
-  console.log(`started from ${start} to ${end}`);
-});
-
-eventEmitter.emit('start', 1, 100);
-
-```
-#### Other methods:
-- The other methods includes,
-- `once()`: add a one-time listener
-- `removeListener()` / `off()`: remove an event listener from an event
-- `removeAllListeners()`: remove all listeners for an event
-
-## Event Loop:
-- The Event Loop is a fundamental concept in Node.js that enables non-blocking, asynchronous operations, making it highly efficient for I/O-bound tasks.
-- Node.js is designed to handle many concurrent connections efficiently. This is possible because of the Event Loop.
-
-### Working:
-- Call Stack: When a function is called, it's added to the call stack. If a function requires an asynchronous operation (like reading a file), Node.js pushes this task to the background and continues processing other tasks.
-
-- Background Tasks: The background operations (handled by Node.js APIs like fs, http, etc.) will eventually be completed, at which point they will push the associated callback function to the Callback Queue.
-
-- Callback Queue: The callback queue holds the callback functions for tasks that have completed. The Event Loop constantly checks this queue.
-
-- Event Loop Execution:
-
-  - If the call stack is empty (i.e., all synchronous code has been executed), the Event Loop takes the first callback in the callback queue and pushes it onto the call stack.
-  - The call stack then executes this callback, and the process continues.
-
-### Phases of the Event Loop:
-The Event Loop operates in several phases, each handling different types of operations:
-
-- Timers Phase: Executes callbacks scheduled by setTimeout and setInterval.
-
-- Pending Callbacks Phase: Executes I/O callbacks deferred to the next loop iteration (for example, some types of errors or network I/O callbacks).
-
-- Idle, Prepare Phase: Used internally by Node.js for specific operations (not typically used in user applications).
-
-- Poll Phase:
-
-  - This is where the event loop spends most of its time. It processes events like I/O, checking for new I/O events and executing their associated callbacks.
-  - If the poll phase is empty, and there are no timers set, the event loop will block here and wait for new I/O events.
-- Check Phase: Executes callbacks from setImmediate.
-
-- Close Callbacks Phase: Handles closing callbacks like socket.on('close', ...).
+- Once the nodemon is installed , we can use `nodemon` to start the application instead of `node`.
