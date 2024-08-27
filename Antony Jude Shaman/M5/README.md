@@ -1,5 +1,26 @@
 ## Milestone - 5
 
+### Table of Contents
+
+-[cURL Commands](#cURL-Commands)  
+-[What is cURL?](#What-is-cURL?)  
+-[cURL Commands](#cURL-Commands)  
+-[Testing Car Showroom Application with cURL](#Testing-Car-Showroom-Application-with-cURL)  
+-[Wget vs cURL](#Wget-vs-cURL)  
+-[GraphQL Basics](#GraphQL-Basics)  
+-[A simple GraphQL Application](#A-simple-GraphQL-Application)  
+-[GraphQL Queries](#GraphQL-Queries)  
+-[Redis Basics](#Redis-Basics)  
+-[A Redis Application with various data structures](#A-Redis-Application-with-various-data-structures)  
+-[Redis Commands used in the application](#Redis-Commands-used-in-the-application)  
+-[Docker Basics](#Docker-Basics)  
+-[Components of Docker](#Components-of-Docker)  
+-[Docker Commands](#Docker-Commands)  
+-[Dockerfile](#Dockerfile)  
+-[Docker Compose](#Docker-Compose)  
+-[Docker Compose Commands](#Docker-Compose-Commands)  
+-[.dockerignore file](#.dockerignore-file)
+
 ### cURL Commands
 
 #### What is cURL?
