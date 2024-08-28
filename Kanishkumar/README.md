@@ -497,7 +497,7 @@ Fragments in GraphQL are reusable units of a query that can be used to avoid rep
 
 ## Redis:
 
-- Remote Dictionary Server (Redis) is an in-memory database that persists on disk. 
+- Remote Dictionary Server (Redis) is an in-memory database. 
 
 - The data model is key-value.
 
@@ -777,7 +777,7 @@ then be replayed again at server startup, reconstructing the original dataset.
 
 ---
 
-## Memcache:
+## Memcached:
 
 Memcache is a distributed memory caching system. It’s commonly used to speed up dynamic web applications by reducing the load on the database through caching frequently accessed data in memory.
 
@@ -785,7 +785,7 @@ Memcache is a distributed memory caching system. It’s commonly used to speed u
 - Data is stored as key-value pairs.
 - Memcache does not persist data across restarts.
 
-## Working of Memcache:
+## Working of Memcached:
 
 `Client Request:`
 
@@ -805,37 +805,9 @@ Memcache is a distributed memory caching system. It’s commonly used to speed u
 
 ## Example:
 
-## Set:
 
-        mc.set('key', 'value', { expires: 600 }, (err, val) => {
-                if (err) {
-                        console.error('Error setting value:', err);
-                        return;
-                }
-        console.log('Value set successfully!');
-        });
 
-## Get:
-
-        mc.get('key', (err, value) => {
-                if (err) {
-                console.error('Error getting value:', err);
-                return;
-                }
-        console.log('Cached value:', value.toString());
-        });
-
-## Delete:
-
-        mc.delete('key', (err, success) => {
-            if (err) {
-                console.error('Error deleting key:', err);
-                return;
-            }
-        console.log('Key deleted successfully!');
-        });
-
-## Redis VS memcache:
+## Redis VS memcached:
 
 | Feature                        | Redis                                             | Memcache                                        |
 |--------------------------------|---------------------------------------------------|-------------------------------------------------|
@@ -844,3 +816,280 @@ Memcache is a distributed memory caching system. It’s commonly used to speed u
 | **Persistence**                | RDB (Snapshots), AOF (Append-Only File), Both, None | No persistence (some variants may offer persistence) |
 | **Performance**                | Generally high performance; complex operations may be slower | Very high performance; simpler operations are faster |
 | **Atomic Operations**           | Supports atomic operations on various data types | Limited atomic operations                       |
+
+
+---
+
+## Cache eviction policies:
+
+Cache eviction policies determine how Memcached decides which items to remove from memory when it needs to free up space for new data. 
+
+## Least Recently Used (LRU)
+
+- LRU is the default eviction policy in Memcached. 
+- It removes the least recently used items first when space is needed for new data.
+
+## LRU with Expiry:
+
+- This is an enhancement of the basic LRU policy, where Memcached also considers the expiration time of cached items.
+
+## TTL (Time to Live) Based Eviction
+
+- While not an explicit eviction policy, TTL settings allow you to specify how long an item should remain in the cache before it’s automatically evicted.
+
+---
+
+## Sanitization:
+
+- Sanitization is the process of cleaning and modifying user input to ensure that it doesn't contain harmful or unwanted content. 
+- This is crucial for protecting web applications from security vulnerabilities like Cross-Site Scripting (XSS) and SQL Injection. 
+
+## Using validator js:
+
+                const validator = require('validator');
+
+                const userInput = 'example@example.com';
+                const isEmail = validator.isEmail(userInput);
+                const sanitizedInput = validator.escape(userInput);
+
+                console.log(isEmail); 
+                console.log(sanitizedInput); 
+
+
+                const userInput2 = '<heejejk>\'ss'
+                const sanitizedInput2 = validator.escape(userInput2);
+                console.log(sanitizedInput2);
+
+
+---
+## Sanitize input in sequelize:
+
+        username: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true,
+                validate:{
+                len: [3, 30],
+                isAlphanumeric: true 
+                }
+        },
+        email: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true,
+                validate:{
+                isEmail: true
+                }
+        },
+        password: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate:{
+                len: [6, 30]
+                }
+        },
+
+---
+
+## Parameterized Query - Binding Parameters in sequelize:
+
+        const userId = '1 OR 1=1'; 
+        sequelize.query('SELECT * FROM users WHERE id = :id', {
+        replacements: { id: userId },
+        type: Sequelize.QueryTypes.SELECT
+        }).then(results => {
+        console.log(results);
+        });
+
+
+Here the user input is treated as data not as query. hence it searches for record with id 1 OR 1=1 which does not exists.
+This can prevent SQL injection.
+
+---
+
+## Security measures:
+
+1. Validation
+2. Using parameterized Queries to avoid SQL injection
+3. Sanitization - Output encoding
+4. Use HTTPS and obtain TLS/ SSL
+5. Hashing Passwords, MFA
+6. Rate limiting to avoid DDoS attack
+7. Logging
+8. Secure HTTP headers- helmet
+9. CORS 
+
+---
+
+## Docker:
+
+- Docker is a platform that uses containerization to streamline software development. 
+- It packages applications into containers, which are lightweight and include only essential elements. 
+- This ensures applications run consistently across different environments, improving efficiency and portability in software deployment.
+
+## VM vs Containers:
+
+- Containers and virtual machines (VMs) both provide virtualization, but in different ways. 
+- VMs include entire operating systems, making them heavier and slower to start. 
+- Containers, on the other hand, share the host system’s OS kernel and isolate only the application and its dependencies. 
+- This makes containers much lighter, more efficient in resource usage, and faster to launch than VMs. 
+
+
+## Docker architecture:
+
+Docker architecture is designed to make it easy to package, distribute, and run applications in a consistent environment.
+
+## Docker Daemon (dockerd): 
+
+- This is the core component of Docker that runs in the background on a Docker host. 
+- It manages Docker containers, images, networks, and volumes. 
+- It listens for Docker API requests and handles the creation, management, and running of containers.
+
+## Docker Image:
+
+- Docker images are read-only templates that contain the instructions for creating a Docker container. 
+- Images include the application code, libraries, dependencies, and runtime. 
+- Images are built using a Dockerfile, which defines the steps to create the image.
+
+## Docker Container:
+
+- Containers are instances of Docker images. 
+- They are lightweight, standalone, and executable packages that include everything needed to run a piece of software, including the code, runtime, libraries, and system tools.
+
+## Dockerfile:
+
+Dockerfile is a text file that contains a series of instructions on how to build a Docker image. It includes commands to set up the environment, install dependencies, copy files, and configure the image.
+
+                FROM node:18-alpine
+
+                WORKDIR /app
+
+                COPY package*.json ./
+
+                RUN npm install
+
+                COPY . .
+
+                EXPOSE 3000
+
+                CMD ["npm", "start"]
+
+## Docker Compose:
+
+- Docker Compose is a tool for defining and running multi-container Docker applications. 
+- With Docker Compose, you can use a docker-compose.yml file to configure application services, networks, and volumes, and then use a single command (docker-compose up) to start all the services.
+
+
+                version: '3.8'
+
+                services:
+                db:
+                image: mysql:8
+                container_name: mysql_db
+                environment:
+                MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+                MYSQL_DATABASE: ${DB_NAME}
+                MYSQL_PASSWORD: ${DB_PASSWORD}
+                ports:
+                - "3307:3306"  
+                volumes:
+                - db_data:/var/lib/mysql
+
+                app:
+                build:
+                context: .
+                dockerfile: Dockerfile
+                container_name: node_app
+                ports:
+                - "3000:3000"
+                depends_on:
+                - db
+                environment:
+                DB_HOST: ${DB_HOST} 
+                DB_USER: ${DB_USER}
+                DB_PASSWORD: ${DB_PASSWORD}
+                DB_NAME: ${DB_NAME}
+                PORT: ${PORT}
+                SECRET_KEY: ${SECRET_KEY}
+                JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+                USER: ${USER}
+                PASS: ${PASS}
+                HOST: ${HOST}
+                PORT_2: ${PORT_2}
+                volumes:
+                - ./railway:/usr/src/app
+                command: npm start
+
+                volumes:
+                db_data:
+
+### dockerignore file:
+
+        node_modules/
+        backups/
+        Dockerfile
+        .dockerignore
+
+---
+
+## Docker Container:
+
+![alt text](image-15.png)
+
+## Docker Image:
+
+![alt text](image-16.png)
+
+----
+
+## Dockerize:
+
+Dockerizing an application involves creating a Docker image for your application and then running it as a container
+
+### Creat docker file.
+
+### Building Docker Image:
+
+        docker build -t my-node-app .
+
+### Run the docker container:
+
+        docker run -d -p 3000:3000 --name my-node-app-container my-node-app
+
+### Verify running containers:
+
+        docker ps
+
+---
+
+## Docker commands:
+
+### Start and build docker compose:
+
+        docker-compose up --build
+
+### Start containers without re-building:
+
+        docker-compose up
+
+### Stop and remove containers:
+
+        docker-compose down
+
+### List running containers:
+
+        docker-compose ps
+
+### View all docker images:
+
+        docker images
+
+### Pull image from docker hub:
+
+        docker pull image_name:tag
+
+### Push image from docker hub:
+
+        docker push image_name:tag
+
+
