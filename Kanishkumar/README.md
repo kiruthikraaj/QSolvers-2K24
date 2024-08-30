@@ -1,1095 +1,853 @@
-## Milestone - 5
-
-## cURL:
-
-- cURL (Client URL) is a command-line tool used for transferring data to or from a server using various protocols, including HTTP, HTTPS, FTP, and more. 
-
-- It is widely used for making HTTP requests and interacting with APIs.
+# Milestone -6
 
 
-### Features:
+### Memory Management
 
-- `Protocol Support:`
-    Works with many protocols, including HTTP, HTTPS, FTP, FTPS, SCP, and others.
+Memory management refers to the process of allocating, utilizing, and releasing memory resources in a computer system. 
 
-- `Data Transmission:` 
-    Can send data using various HTTP methods like GET, POST, PUT, DELETE, etc.
+### Lifecycle of Memory:
 
-- `Headers and Cookies:` 
-    Supports adding custom headers and handling cookies.
+The memory life cycle follows the following stages:
 
-- `File Transfers:` Can download or upload files.
-
-- `Cross-Platform:`
-     Available on various operating systems, including Linux, macOS, and Windows.
+<p<b>
+Allocates the memory &rarr; Use the allocated memory &rarr; Release the memory
+</b></p>
 
 
-### Syntax:
+`1. Allocates the memory`: 
 
-        curl [options] [URL]
+JavaScript allocates memory to the object created.
 
+`2. Use the allocated memory.`
 
-1. Uses HTTP Method 
+`3. Release the memory when not in use: `
 
-        curl -X [METHOD] [URL]
+Once the allocated memory is released, it is used for other purposes. It is handled by a JavaScript engine.
 
+<br>
 
-2. Send data
+# Memory Allocation
 
-        curl -d [METHOD] [URL]
+## Stack vs. Heap
 
-3. Add Headers 
+- **Stack**:
 
-        curl -H [HEADER] [URL]
+  - Used for static memory allocation (e.g., function call frames, local variables).
+  - Fast and follows a Last-In-First-Out (LIFO) order.
 
-
-4. Send Output to file
-
-Saves the response to a file
-
-        curl -o [filename] [URL]
-
-5. Silent Mode
-
-Supreeses error messages and progress meters
-
-        curl -s [URL]
+- **Heap**:
+  - Used for dynamic memory allocation (e.g., objects and arrays).
+  - More flexible but involves complex memory management.
 
 
-### Get a webpage from a server using port 3000:
+        Why are functions stored in the heap while local variables and parameters are kept on the stack in JavaScript?
 
-        curl -s "http://127.0.0.1:3000/api/trains" | fx
+        - Functions are stored in the heap because they need to be accessible throughout the program, even after they are created. 
+
+        - Local variables and parameters are kept on the stack because they are only needed while the function is running and can be discarded once the function finishes.
+---
+## Garbage collection:
+
+- Garbage collection frees up memory in the Heap used by objects that are no longer referenced from the Stack, either directly or indirectly. 
+- The goal is to create free space for creating new objects. Garbage collection is generational. Objects in the Heap are grouped by age and cleared at different stages.
+
+
+`New Space:`
+
+ Where new allocations happen. Garbage collection is quick. Has a size of between 1 and 8 MBs. Objects in the New Space are called the Young Generation.
+
+`Old Space:`
+ 
+ Where objects that survived the collector in the New Space are promoted to. Objects in the Old Space are called the Old Generation. Allocation is fast, however, garbage collection is expensive and infrequent.
+
+## Role of Garbage Collector
+
+- The garbage collector is responsible for reclaiming memory that is no longer in use. 
+- It identifies objects that are no longer reachable and frees up their memory.
+
+
+        let obj1 = { name: 'Kanish' };
+        let obj2 = { name: 'Kumar' };
+
+        obj1 = null;
+
+<br>
+
+> - In this code snippet, two objects, obj1 and obj2, are created on the heap. 
+> - Initially, both objects are referenced. 
+>
+> However, when obj1 is set to null, it no longer references the object.
+>
+> At this point, the garbage collector identifies that there are no remaining references to > that object, making it eligible for garbage collection.
+> - The garbage collector frees up the memory occupied by the object, making it available for future use.
+
+
+## Reachability of Object
+
+- JavaScript employs a reachability concept. 
+
+>If an object is reachable from the root, it is considered reachable and is not >garbage collected.
+
+- If an object is reachable through any existing reference, it will not be garbage collected.
+
+        let user = {
+        name: “Kanish”             // User has reference to object 
+        };
+
+        user = Null;               // No reference. Hence it is inaccessible
+
+
+## Advantage of Garbage Collection
+
+
+<br >
+
+- One of the advantages of JavaScript’s garbage collection is automatic memory management. 
+
+- Developers do not need to explicitly deallocate memory; the garbage collector handles it for us. 
+
+- This reduces the chances of memory leaks and simplifies memory management.
+
+- Improves performance.
+
+---
+<br >
+
+Garbage Collection in JavaScript works by tracking references to objects in memory and removing objects that are no longer referenced by the application.
+
+### 1. Reference Counting Algorithm
+### 2. Mark Sweep Algorithm
+
+---
+
+
+## 1. Reference Counting Algorithm
+
+- In this method, the program keeps track of the number of references to each object or variable. 
+- When an object or variable is no longer being used, its reference count drops to zero, and enables the garbage collector to safely remove it from memory.
+
+
+| Case | Description                                                       |
+|------|-------------------------------------------------------------------|
+| 1    | Create object; set reference count to 1.                          |
+| 2    | Increment count when referenced by another object.                |
+| 3    | Decrement count when dereferenced.                                |
+| 4    | Collect object when count reaches 0.                              |
+
+
+> ⚠️ If reference count is 0, garbage collector will remove the object or variable.
+
+        let test1 = "Sample text";
+
+        test1 = 2;
+
+        // Reference count of "Sample text" is now 0, and it can be garbage collected. Since test1 is updated and "String text" is no longer referenced.
+
+Another example:
+
+        let Obj = { key : 10 , key1 : 20 };
+        Obj.key = 30;
+
+        // Here key: 10 is no longer referenced, but still the refernece value for Obj is not 0. Hence, it wont get removed by garbage collector.
+<br>
+
+But , 
+
+        let Obj = { key : 10 , key1 : 20 };
+        Obj = 30;
+
+        // This case will remove the Object which is no longer referenced. 
+
+<br >
+
+>*Limitation:*
+>
+> - It cannot detect `cyclic references`, where two or more objects   reference each other in a loop. <br>
+>
+>        function demo(){
+>        let Obj1 = {}
+>        let Obj2 = {}
+>
+>        // circular reference
+>
+>        Obj1.key = Obj2;        
+>        Obj2.key = Obj1;
+>        return "Hello";
+>       } 
+>
+>       demo();
+>
+
+## Advantages Of Reference Counting:
+
+- It can reclaim memory as soon as it becomes unreachable, without waiting for a garbage collection cycle.
+
+- Can be faster than mark-and-sweep for programs that create and destroy numerous small objects frequently. 
+
+## Disadvantages Reference Counting:
+
+- Reference Counting cannot handle cyclic references as it can’t determine whether an object is no longer used, when it is referenced in a loop. 
+
+- Can result in memory leaks if the reference counts are not managed appropriately. 
+
+---
+
+Strong Reference:
+        
+- Strong reference prevent an object from being garbage-collected.
+
+Weak Reference:
+
+- weak reference doesn't prevent an object from being garbage-collected.
+
+
+## 2. Mark and Sweep Algorithm:
+
+-  The mark-and-sweep algorithm works by starting with a set of “roots” (typically the global object). 
+
+- The algorithm then recursively traverses the object graph, marking all objects and variables that are still in use.
+
+- Once all live objects and variables have been marked, the garbage collector then safely removes any objects and variables that have not been marked, as they are no longer required.
+
+- The Reachable objects are marked, Rest are sweeped.
+
+>        function demo(){
+>        let Obj1 = {}
+>        let Obj2 = {}
+>
+>        // circular reference
+>
+>        Obj1.key = Obj2;        
+>        Obj2.key = Obj1;
+>        return "Hello";
+>       } 
+>
+>       demo();
+
+Here, once the function gets executed, the function is not used again. Hence, they are no longer reachable objects. (Not reachable after function execution).
+
+Now, the garbage collector will remove these from memory.
+
+
+Consider the case,
+Here both obj1 and obj2 are reachable even after function execution. Hence they will be marked and not sweeped.
+
+        let globalRef; // Global reference
+
+        function demo() {
+        let obj1 = {};     // Object 1
+        let obj2 = {};     // Object 2
+
+        obj1.ref = obj2;   // Circular reference
+        obj2.ref = obj1;   // Circular reference
+
+        globalRef = obj1;  // Make obj1 reachable globally
+        }
+
+        demo();
+
+        // obj1 and obj2 are reachable via globalRef
+        console.log(globalRef);        
+        console.log(globalRef.ref);   
+
+Hence,
+
+1. Marking: 
+
+Starts from the root (global object), mark all the reachable object as alive.
+
+2. Sweeping: 
+
+The garbage collector traverses the heap and makes note of the memory address of any object that is not marked alive.
+
+
+3. Compacting: 
+
+After sweeping, if required, all the survived objects will be moved to be together.
+
+---
+
+### Best Practices:
+
+ Best practices to optimize JavaScript garbage collection performance, such as 
+
+- Avoiding circular references
+- Minimizing the use of global variables 
+- Using the delete keyword to remove properties from objects. 
+
+`Object Pooling:`
+
+- For frequently created and destroyed objects, consider implementing object pooling. 
+
+- Object pooling reuses existing objects instead of creating new ones, reducing memory allocation and garbage collection overhead.
+
+
+
+## Which algorithm is suitable?
+
+In general, Mark-and-sweep is considered to be a more robust and flexible technique than reference counting.
+
+- `Mark-Sweep Algorithm` is better suited for applications with large object graphs.
+
+- It can handle circular references, but can cause noticeable pauses during garbage collection. 
+
+- `Reference Counting` is faster and more efficient for smaller applications.
+- It cannot handle circular references and this can lead to memory leaks.
+
+
+- **Garbage Collection Triggers**:
+
+  - **Automatic**: Periodically or when memory pressure is detected.
+
+  - **Explicit Cleanup**: Developers can set unused references to `null` or `undefined`.
+
+## Generational Garbage Collection:
+
+- Generational garbage collection is a technique used by many modern JavaScript engines to manage memory more efficiently. 
+
+- The core idea is to divide objects into different generations based on their lifespan and collect garbage more frequently from the younger generation.
+
+`Young Generation:`
+
+ - This includes objects that have been recently created. 
+
+ - The garbage collector assumes that most objects in this generation are short-lived.
+
+
+
+`Old Generation:` 
+
+- This consists of objects that have survived several garbage collection cycles in the young generation. 
+
+- These objects are assumed to be long-lived.
+
+<br>
+
+>`GC Run: `
+>
+>A cycle of the garbage collector identifying and reclaiming memory.
+
+>`Nursery -> Intermediate -> Old Gen`:
+>
+> New Object are allocated memory in nursery gen. and objects that survive one >GC run are copied into the intermediate space of the young generation and >those surviving a second run are moved into the old generation.
+
+---
+
+# Memory Leaks
+
+- A situation where memory is not released properly, causing a program to consume more memory over time and potentially leading to performance degradation or crashes.
+
+## Common Causes of Memory Leaks
+
+1. **Global Variables**
+
+   - Storing data in global variables can lead to memory leaks if the variables are not cleaned up.
+
+   - Assign global variables to `null` when no longer needed.
+
+    ```javascript
+    let globalVar = "20";
+
+    globalVar = null;
+
+
+2. **Remove Timers and Callbacks**
+
+- Timers (setInterval, setTimeout) and callbacks that are not cleared can cause memory leaks, especially in Single Page Applications (SPAs).
+
+        clearInterval(timerId); // clear them
+
+3. **Remove Event Listeners**
+
+-  Event listeners that are not removed can accumulate and cause memory leaks.
+
+        element.removeEventListener('click', onClick);
+
+
+4. **Multiple references**
+
+- If you reference the same object from multiple objects, it can lead to a memory leak if one of the references is garbage collected while the other one is left dangling.
+
+
+5. **Closures**
+
+- Closures memorize their surrounding context. When a closure holds a reference to a large object in heap, it keeps the object in memory as long as the closure is in use.
+
+## Best Practices:
+
+1. Avoid Global vars
+2. Remove Timers and Callbacks
+3. Remove Event listeners, use event delegation
+4. Use WeakRef to avoid multiple references
+5. Proper usage of closures
+6. Use stack and heap memory efficiently
+
+---
+
+### Node js memory leak detectors:
+
+**1. Memwatch**
+
+- memwatch is a Node.js library used for monitoring memory usage and detecting memory leaks in applications. 
+- It provides tools for tracking memory allocation and identifying potential issues related to memory consumption.
+
+
+- `Heap Snapshot Analysis` - Captures snapshots of the memory heap, allowing you to analyze the state of memory at specific points in time.
+- `Leak Detection` - Monitors memory allocation and usage patterns to detect potential memory leaks by identifying objects that are not being properly garbage collected.
+- `Event-Driven Notifications`- Provides events for various memory-related conditions, such as heap growth or garbage collection.
+- `Tracking Allocation Rates` - Measures and reports on the rate of memory allocations, helping to identify abnormal or excessive memory usage.
+
+---
+
+**2. Heapdump**
+
+- heapdump is a Node.js module used for generating and analyzing heap snapshots to monitor and debug memory usage in Node.js applications. 
+
+`Heap Snapshot Creation` - Generates a snapshot of the memory heap, which includes information about objects, their sizes, and references.
+
+`Snapshot Analysis` - Provides tools for analyzing heap snapshots to identify memory usage patterns and potential leaks.
+
+`Programmatic Access` - Allows you to trigger heap snapshots from your code or via command-line arguments.
+
+`Integration with Chrome DevTools` - Heap snapshots generated by heapdump can be analyzed using Chrome DevTools or other tools that support the V8 heap snapshot format.
+
+---
+
+**3. V8 Engine and Chrome dev tools**
+
+The --inspect flag in Node.js allows you to enable the Node.js debugging protocol, which can be used to connect debugging tools like Chrome DevTools or Visual Studio Code to your Node.js application.
+
+        node --inspect app.js
+
+---
+
+## Chrome dev-tools:
+
+- Chrome DevTools is a set of web development tools built directly into the Google Chrome browser. 
+- It provides a range of features for debugging, profiling, and optimizing web applications and websites. 
+
 
 ![alt text](image.png)
-
-### GET with Query Parameters:
-
-        curl "http://example.com?param1=value1&param2=value2"
-
-### POST methd with request body content as JSON type:
-
-        curl -X POST -H "Content-Type: application/json" -d "{\"username\":\"kanish\", \"password\":\"Kanish@123\"}" http://localhost:3000/api/users/login/
 
 
 ![alt text](image-1.png)
 
-### Response as Output file
 
-        curl -o demo.txt http://127.0.0.1:3000/api/trains | fx
+## Object Pooling:
 
-![alt text](image-2.png)
+- Object pooling is a design pattern used to manage and reuse objects efficiently in software development, particularly to optimize performance and reduce resource allocation overhead. 
 
-### Show Header Information (HEAD)
+`Object Pool:`
 
-        curl -I "http://localhost:3000/"
+A collection of reusable objects that are kept in a pool. When an object is needed, it is retrieved from the pool rather than being created anew. After use, the object is returned to the pool for future reuse.
 
-![alt text](image-3.png)
+`Object Lifecycle:`
 
-### To view verbose output:
+- `Creation:` Objects are created and added to the pool when the pool is initialized or when more objects are needed.
 
-What Verbose Output Includes
+- `Checkout:` An object is retrieved from the pool for use.
 
-`Request Headers`: Information about the headers being sent to the server.
+- `Return:` After use, the object is returned to the pool, making it available for reuse.
 
-`Response Headers`: Information about the headers received from the server.
-
-`Request Details:`
-
-Details about the connection and request process, including any redirects.
-
-`Body Data`: The body of the request and response (if applicable).
-
-
-        curl -v "http://localhost:3000/"
-
-![alt text](image-4.png)
-
-### Send Request Timeout:
-
-Sets the maximum time for the request to get completed.
-
-        curl --max-time 10 http://example.com
-
-
-### Adding Header
-
-        curl -H "Authorization: Bearer <token>" http://127.0.0.1:3000/api/users/3 | fx
-
-![alt text](image-5.png)
-
-
-### Follow 3xx Redirections:
-
-Follows any 3xx redirections returned by the server -L (location)
-
-        curl -L http://example.com
-
-### Upload file to server:
-
-Uploads a file to the server using -T <filename>
-
-        curl -T localfile.txt http://example.com/upload
-
-----
-### Basic HTTP authentication:
-
-`-u` or `--user` for basic http authentication with username and password
-
-        curl -u username:password http://example.com
-
-### Set Connection Type:
-
-Sets the connection type as http1.0, http1.1 etc:
-
-        curl --http1.1 http://example.com
-
-### Post request with JSON data
-
-        curl -X POST -H "Content-Type: application/json" -d '{"key":"value"}' http://example.com
-
-
-### PUT request with JSON content type
-
-Update the user data with JSON content type format 
-
-        curl -X PUT -H "Content-Type: application/json" -d '{"password":"pswd@12345"}' http://example.com/update-user/
-
-
-### Multiple URL from single command line
-
-        curl http://url1.example.com http://url2.example.com
-
-
-### Multiple HTTP methods in a single command line
-
- `--next option`: 
- It is basically a separator that separates a bunch of options from the next.
-
-
- `1. HEAD followed by a GET`:
-
-        curl -I http://example.com --next http://example.com
-
-
-`2. To first send a POST and then a GET`:
-
-        curl -X POST -d "param1=value1" http://example.com --next -X GET http://example.com
+- `Destruction:`  Objects that are no longer needed or are beyond their useful life are removed from the pool.
 
 ---
 
-## Graph QL:
+## Monitoring tools:
 
-- GraphQL is a query language for APIs and a runtime for executing queries by providing a complete and understandable description of the data in your API.
-- It allows clients to request exactly the data they need and nothing more.
+- Proper monitoring tools needed to give you historical data a time dimension where you can track and gain real insight into how your app is behaving.
 
-## Why GraphQL over REST?
-
-- REST is not so flexible to cope up with the rapidly changing requirements of the clients that access them. 
-
-- In this case, when the data gets more complex, the routes get longer. 
-
-- Sometimes, it is challenging to fetch the data with a single request. That's why we use GraphQL.
-
-## Features:
-
-- Retrieve many resources from a single request
--  GraphQL is best suited for complex systems because of using a simple query.
--  It facilitates you to deal with many databases efficiently.
--  Data can be fetched using a single API call.
--  You don't face over fetching and under fetching issues in GraphQL.
-
-`Example:`
- 
-        {  
-                employee {  
-                        id
-                        name  
-                }  
-        }  
-
-The above example retrives only the id and name of employees, not more.
-
-### ApolloServer:
-
-- ApolloServer is used to integrate GraphQL with Express.
-- It provides a robust and flexible solution for handling GraphQL queries and mutations. 
-- It abstracts a lot of the complexities involved in setting up a GraphQL server.
+- Sematext Monitoring
+- PM2
+- Clinic.js
+- Express Status Monitor
 
 
-### GraphQL components
+---
 
-- `Schema:` The overall structure combining type definitions and resolvers.
+## Threads:
 
-- `Type Definitions (typeDefs)`: Define the structure of the GraphQL schema.
-- `Queries`: Used to read data from the server.
-- `Mutations`: Used to modify data on the server.
-- `Subscriptions`: Provide real-time updates to clients.
-- `Resolvers`: Functions that implement the logic for fetching or modifying data.
+- A thread in Node.js is a separate execution context in a single process. It is a lightweight, independent unit of processing that can run in parallel with other threads within the same process.
+
+- Node.js uses two kinds of threads: a main thread handled by the event loop and several auxiliary threads in the worker pool. In the context of Node.js, auxiliary thread or thread is interchangeably used for worker threads. 
+
+- In Node.js, the main thread is the initial execution thread that starts when Node.js starts. 
+
+- It is responsible for the execution of JavaScript code and handling incoming requests. A worker thread is a separate execution thread that runs alongside the main thread.
+
+## Worker Threads:
+
+- For CPU-bound tasks or operations that can benefit from parallel execution, Node.js introduced the Worker Threads module. 
+
+- This allows you to create multiple threads within a Node.js application to perform tasks in parallel.
 
 
+## Why Use Threads?
 
-## 1. Typedefs:
+The primary purpose of threads is to enable parallel processing within a single process. This is particularly beneficial for tasks involving waiting, such as:
 
-- TypeDefs (type definitions) are a critical part of defining the structure of your schema. 
-- In typeDefs, you use the GraphQL `Schema Definition Language (SDL)` to define the types, queries, and mutations.
+`I/O operations:`
+
+Reading from a file, sending data over a network, or waiting for user input are all examples of I/O operations. While one thread waits for an I/O operation to complete, other threads can continue executing, preventing the entire process from stalling.
+
+`Long calculations:` 
+
+If a process involves lengthy calculations, other threads can continue working on separate tasks instead of waiting for the calculation to finish.
 
 
-`Types`:
+---
 
-- Types define the shape of your data. 
-- They can be scalar types or custom types.
+## Benefits of Using Threads:
 
-`Scalar Types`: 
+`Improved Performance:` By allowing multiple tasks to run concurrently, threads can significantly enhance the responsiveness and performance of an application.
 
-- Basic data types like String, Int, Float, Boolean, and ID. 
-- They represent the leaves of the query, meaning the actual values returned.
+`Efficient Resource Utilization:` Threads enable better utilization of multiple CPU cores in a system. With multiple threads, the workload gets distributed, leading to faster processing.
 
-`Common Scalars`:
+`Scalability:` Applications that leverage threads can scale more effectively to handle increasing workloads by taking advantage of additional CPU core
 
-- Int: Represents a 32-bit integer.
-- Float: Represents a floating-point number.
-- String: Represents a UTF-8 string.
-- Boolean: Represents true or false.
+---
 
-`Object Types`:
+## Worker threads:
 
-. Object types are used to represent complex data structures and are the primary way to describe the shape of the data in a GraphQL schema.
+Worker threads are a type of thread in Node.js that can be used to perform CPU-bound tasks in parallel. They are created using the `worker_threads` module.
 
-                type User {
-                id: ID!
-                name: String!
-                }
 
-`Query`:
+                const SIZE = 1000000000;
+                const array = Array.from({ length: SIZE }, (_, i) => i + 1);
+                const sum = array.reduce((acc, num) => acc + num, 0);
+                console.log('Total sum:', sum);
 
-- Queries define the read operations that clients can perform. 
-- They specify what data can be fetched.
-                
-                type Query{
-                user(id: ID!): User
-                }
+In practice, handling such a large array in a single-threaded environment like Node.js without parallel processing or optimizations is likely to be impractical.
 
-The above query returns the user with that Id
+`CPU-Bound Tasks:` 
 
-`Mutations`:
+- The task of summing a very large array is CPU-bound, meaning it requires significant processing power. 
+- By using multiple worker threads, you can divide this task into smaller chunks and process them in parallel, leveraging multiple CPU cores.
 
-- Mutations helps to perform write operations
-- Basically does the requests like POST, PUT, DELETE, GET in REST architectures.
+`Efficiency:` 
 
-                type Mutation {
-                createUser(name: String!): User
-                }
+-  While the main thread is busy processing one part of the data, other threads can handle different parts concurrently, reducing the overall time required to complete the computation.
 
-`Non Nullable Type`:
-        
-Ensures the field cannot be null, ends with an !
 
-                field:data_type!
+`Use Worker Threads to sum a large array by splitting it into chunks:`
 
-Example:
+        // worker.js
 
-        type User {
-                id: ID!
-                name: String!
+        const { parentPort } = require('worker_threads');
+        parentPort.on('message', (chunk) => {
+        const sum = chunk.reduce((acc, num) => acc + num, 0);
+        parentPort.postMessage(sum);
+        });
+
+
+        // main thread
+
+        const { Worker } = require('worker_threads');
+        const path = require('path');
+
+        // Constants
+        const SIZE = 1000000000; 
+        const WORKERS = 4; 
+
+        // Function to create a worker
+        function createWorker(chunk) {
+        return new Promise((resolve, reject) => {
+        const worker = new Worker(path.resolve(__dirname, 'worker.js'));
+        worker.postMessage(chunk);
+        worker.on('message', resolve);
+        worker.on('error', reject);
+        });
         }
 
-## 2. Resolvers:
+        function chunkArray(array, size) {
+        const chunks = [];
+        for (let i = 0; i < array.length; i += size) {
+        chunks.push(array.slice(i, i + size));
+        }
+        return chunks;
+        }
 
-- Functions that implement the logic for fetching, writing or modifying data.
+        async function main() {
+        const array = Array.from({ length: SIZE }, (_, i) => i + 1);
+        const chunks = chunkArray(array, SIZE / WORKERS);
 
-        const resolvers = {
-                Query: {
-                        hello: () => 'Hello, World!',
-                        user: (parent,args) => users.find(user => user.id === args.id),
-                },
+        const sums = await Promise.all(chunks.map(createWorker));
+        const totalSum = sums.reduce((acc, sum) => acc + sum, 0);
+        console.log('Total sum:', totalSum);
+        }
 
-                Mutation: {
-                        createUser: (parent,args) => {
-                        const newUser = { id: `${nextId++}`, name: args.name };
-                        users.push(newUser);
-                return newUser;
-                },
-                },
-        };
-
-
-## Example:
-
-                const express = require('express');
-                const { ApolloServer, gql } = require('apollo-server-express');
-
-                const app = express();
-
-                const typeDefs = gql`
-                type Query {
-                hello: String
-                user(id: ID!): User
-                }
-
-                type Mutation {
-                createUser(name: String!): User
-                }
-
-                type User {
-                id: ID!
-                name: String!
-                }
-                `;
-
-                const users = [];
-                let nextId = 1;
-
-                const resolvers = {
-                Query: {
-                hello: () => 'Hello, World!',
-                user: (parent,args) => users.find(user => user.id === args.id),
-                },
-
-                Mutation: {
-                createUser: (parent,args) => {
-                const newUser = { id: `${nextId++}`, name: args.name };
-                users.push(newUser);
-                return newUser;
-                },
-                },
-                };
-
-                const server = new ApolloServer({ typeDefs, resolvers });
-
-                const startServer = async () => {
-                await server.start();
-                server.applyMiddleware({ app });
-
-                app.listen({ port: 4000 }, () =>
-                console.log(`Server running at http://localhost:4000${server.graphqlPath}`)
-                );
-                };
-
-                startServer();
+        main();
 
 
-### Create user:
+Using Worker Threads is beneficial for handling large data sets,
 
-![alt text](image-6.png)
+- Leverage multiple CPU cores for parallel processing.
+- Keep the main thread responsive by offloading intensive computations.
+- Manage memory more effectively by processing data in chunks.
 
-### Get user
 
-![alt text](image-7.png)
-
-## Get user name only
-
-![alt text](image-9.png)
-
-## Mutation to update user:
-
-![alt text](image-10.png)
-
-## Mutation to delete user:
-
-![alt text](image-11.png)
 ---
 
-## Updated Code with MySQL:
+## Clustering:
+
+ - Clustering allows us to create multiple worker processes to handle incoming requests, resulting in improved performance and better utilization of system resources.
+
+ - Clustering in Node.js involves creating multiple worker processes that share the incoming workload. 
+ - Each worker process runs in its own event loop, utilizing the available CPU cores. The master process manages the worker processes, distributes incoming requests, and handles process failures.
+
+ ## Without clustering:
 
         const express = require('express');
-        const { ApolloServer, gql } = require('apollo-server-express');
-        const { Sequelize, DataTypes } = require('sequelize');
-
-        const sequelize = new Sequelize('graphqldemo', 'root', 'Kanish@123', {
-        host: 'localhost',
-        dialect: 'mysql',
-        });
-
-        const User = sequelize.define('User', {
-        name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        },
-        }, {
-        tableName: 'Users',
-        timestamps: false, 
-        });
-
-        const typeDefs = gql`
-        type Query {
-        hello: String
-        user(id: ID!): User
-        users: [User]
-        }
-
-        type Mutation {
-        createUser(name: String!): User
-        updateUser(id: ID!, name: String!): User
-        deleteUser(id: ID!): User
-        }
-
-        type User {
-        id: ID!
-        name: String!
-        }
-        `;
-
-        const resolvers = {
-        Query: {
-        hello: () => 'Hello, World!',
-        user: async (parent, args) => await User.findByPk(args.id),
-        users: async () => await User.findAll(),
-        },
-        Mutation: {
-        createUser: async (parent, args) => {
-        const newUser = await User.create({ name: args.name });
-        return newUser;
-        },
-        updateUser: async (parent, args) => {
-        const user = await User.findByPk(args.id);
-        if (!user) {
-                throw new Error('User not found');
-        }
-        user.name = args.name;
-        await user.save();
-        return user;
-        },
-        deleteUser: async (parent, args) => {
-        const user = await User.findByPk(args.id);
-        if (!user) {
-                throw new Error('User not found');
-        }
-        await user.destroy();
-        return user;
-        },
-        },
-        };
 
         const app = express();
-        const server = new ApolloServer({ typeDefs, resolvers });
 
-        const startServer = async () => {
-        await server.start();
-        server.applyMiddleware({ app });
+        // Configure your Express app
+        // ...
 
-        await sequelize.sync();
-
-        app.listen({ port: 4000 }, () =>
-        console.log(`Server running at http://localhost:4000${server.graphqlPath}`)
-        );
-        };
-
-        startServer();
-
----
-
-## Fragments
-
-Fragments in GraphQL are reusable units of a query that can be used to avoid repeating the same fields in multiple queries.
-
-![alt text](image-12.png)
-
-
-## Advantages:
-
-- Efficient Data Fetching: Fetch exactly the data needed in a single request.
-- Flexible Queries: Clients can specify the shape of the response data.
-- Strong Typing: Schema-based type validation ensures the correctness of queries.
-- Real-time Capabilities: Subscriptions allow real-time data updates.
-
-
----
-
-## Redis:
-
-- Remote Dictionary Server (Redis) is an in-memory database. 
-
-- The data model is key-value.
-
-- Redis is often used as a caching layer to speed up frequently accessed data.
-
-- It supports many different kinds of values are supported: 
-
-- Strings, 
-- Lists, 
-- Sets, 
-- Sorted Sets,
-- Hashes,
-- Streams,
-- HyperLogLogs,
-- Bitmaps.
-
----
-
-## Redis Commands:
-
-## String Commands
-
-- **SET key value**: Sets the value of a key.
-- **GET key**: Retrieves the value of a key.
-- **DEL key**: Deletes a key.
-- **EXISTS key**: Checks if a key exists.
-- **APPEND key value**: Appends a value to the end of a string stored at a key.
-- **INCR key**: Increments the integer value of a key by one.
-- **DECR key**: Decrements the integer value of a key by one.
-- **MSET key1 value1 key2 value2 ...**: Sets multiple keys to multiple values.
-- **MGET key1 key2 ...**: Retrieves the values of multiple keys.
-- **EXPIRE key seconds**: Sets a timeout on a key, after which the key will be deleted.
-
-## List Commands
-
-- **LPUSH key value**: Inserts a value at the head of a list.
-- **RPUSH key value**: Inserts a value at the tail of a list.
-- **LPOP key**: Removes and returns the first element of a list.
-- **RPOP key**: Removes and returns the last element of a list.
-- **LRANGE key start stop**: Retrieves a range of elements from a list.
-- **LLEN key**: Gets the length of a list.
----
-
-
-`In redis cli`
-
-![alt text](image-13.png)
-
-![alt text](image-14.png)
-
-
-`In javascript`
-
-        const Redis = require('ioredis');
-        const redis = new Redis();
-
-        async function manipulateKey() {
-        const key = 'message'; 
-        const initialMessage = 'Hello World';
-
-        await redis.set(key, initialMessage);
-        console.log(`Set '${key}' with the value: '${initialMessage}'`);
-
-        const value = await redis.get(key);
-        console.log(`Retrieved '${key}' with the value: '${value}'`);
-        
-        setTimeout(async () => {
-                const expiredValue = await redis.get(key);
-                console.log(`After 10 seconds, the value of '${key}' is: '${expiredValue}'`);
-                redis.disconnect();
-        }, 11000);
-        }
-
-        manipulateKey().catch(console.error);
-
----
-## String and list commands:
-
-### Key Exists or not?
-
-   const valueExist = await redis.exists(key);
-    if(valueExist === 1){
-        console.log(`Key '${key}' exists`);
-    }
-    else{
-        console.log(`Key '${key}' does not exist`);
-    }
-
-### Increment a value
-
-    const key1 = 23;
-    await redis.set(key1, 23);
-    const incrementAge = await redis.incr(key1);
-    console.log(`Incremeneted value is: ${incrementAge}`);
-
-### Set and get Multiple keys at once using mSet and mGet:
-
-    const var1 = 10, var2 = 20;
-    await redis.mset(var1, 10, var2, 20)
-    console.log(`Set multiple keys: ${var1} and ${var2}`);
-
-    const values = await redis.mget(var1, var2);
-    console.log(`Retrieved values: ${values[0]}, ${values[1]}`);
-
-### Append and return the total length:
-
-    const appendResult = await redis.append(key, '!!!');
-    console.log(`Appended value, new length: ${appendResult}`);
-
----
-
-## Set Commands
-
-- **SADD key member**: Adds a member to a set.
-- **SREM key member**: Removes a member from a set.
-- **SMEMBERS key**: Retrieves all members of a set.
-- **SISMEMBER key member**: Checks if a member is in a set.
-
-        const setKey = 'myset';
-        await redis.sadd(setKey, 'member1');
-        await redis.sadd(setKey, 'member2');
-        await redis.sadd(setKey, 'member2'); // duplicates not added
-        const setMembers = await redis.smembers(setKey);
-        console.log(`Set '${setKey}' members: ${setMembers}`);
-        
-## Hash Commands
-
-- **HSET key field value**: Sets the value of a field in a hash.
-- **HGET key field**: Retrieves the value of a field in a hash.
-- **HGETALL key**: Retrieves all fields and values in a hash.
-- **HDEL key field**: Deletes a field from a hash.
-
-        const hashKey = 'myhash';
-        await redis.hset(hashKey, 'field1', 'value1');
-        await redis.hset(hashKey, 'field2', 'value2');
-        const hashFields = await redis.hgetall(hashKey);
-        console.log(`Hash '${hashKey}' fields: ${JSON.stringify(hashFields)}`);
-
-## Sorted Set Commands
-
-- **ZADD key score member**: Adds a member to a sorted set with a score.
-- **ZREM key member**: Removes a member from a sorted set.
-- **ZRANGE key start stop**: Retrieves members of a sorted set within a range.
-- **ZREVRANGE key start stop**: Retrieves members of a sorted set in reverse order.
-
-        const sortedSetKey = 'mySortedSet';
-
-        await redis.zadd(sortedSetKey, 3, 'member3');
-        await redis.zadd(sortedSetKey, 1, 'member1');
-        await redis.zadd(sortedSetKey, 2, 'member2');
-
-        const sortedSetMembers = await redis.zrange(sortedSetKey, 0, -1, 'WITHSCORES');
-        console.log(`Sorted Set '${sortedSetKey}' members with scores: ${sortedSetMembers}`);
-
----
-
-## Example:
-
-                const Redis = require('ioredis');
-                const redis = new Redis();
-
-                async function manipulateKey() {
-                const key = 'message'; 
-                const initialMessage = 'Hello World';
-
-                // strings
-                await redis.set(key, initialMessage);
-                console.log(`Set '${key}' with the value: '${initialMessage}'`);
-
-                const value = await redis.get(key);
-                console.log(`Retrieved '${key}' with the value: '${value}'`);
-
-                const valueExist = await redis.exists(key);
-                if(valueExist === 1){
-                        console.log(`Key '${key}' exists`);
-                }
-                else{
-                        console.log(`Key '${key}' does not exist`);
-                }
-
-                const key1 = 23;
-                await redis.set(key1, 23);
-                const incrementAge = await redis.incr(key1);
-                console.log(`Incremeneted value is: ${incrementAge}`);
-
-                const var1 = 10, var2 = 20;
-                await redis.mset(var1, 10, var2, 20)
-                console.log(`Set multiple keys: ${var1} and ${var2}`);
-
-                const values = await redis.mget(var1, var2);
-                console.log(`Retrieved values: ${values[0]}, ${values[1]}`);
-
-                const appendResult = await redis.append(key, '!!!');
-                console.log(`Appended value, new length: ${appendResult}`);
-                
-                // list
-                const listkey = "mylist"
-                await redis.rpush(listkey, "GraphQL");
-                await redis.rpush(listkey, "Redis");
-                await redis.rpush(listkey, "Memcache");
-
-                const length = await redis.llen(listkey)
-                console.log(length);
-
-                const listItems = await redis.lrange(listkey, 0, -1);
-                console.log(`List '${listkey}' items: ${listItems}`);
-
-                // set
-                const setKey = 'myset';
-                await redis.sadd(setKey, 'member1');
-                await redis.sadd(setKey, 'member2');
-                await redis.sadd(setKey, 'member2'); 
-                const setMembers = await redis.smembers(setKey);
-                console.log(`Set '${setKey}' members: ${setMembers}`);
-                
-                // hash
-                const hashKey = 'myhash';
-                await redis.hset(hashKey, 'field1', 'value1');
-                await redis.hset(hashKey, 'field2', 'value2');
-                const hashFields = await redis.hgetall(hashKey);
-                console.log(`Hash '${hashKey}' fields: ${JSON.stringify(hashFields)}`);
-                
-                // sorted set
-                const sortedSetKey = 'mySortedSet';
-
-                await redis.zadd(sortedSetKey, 3, 'member3');
-                await redis.zadd(sortedSetKey, 1, 'member1');
-                await redis.zadd(sortedSetKey, 2, 'member2');
-
-                const sortedSetMembers = await redis.zrange(sortedSetKey, 0, -1, 'WITHSCORES');
-                console.log(`Sorted Set '${sortedSetKey}' members with scores: ${sortedSetMembers}`);
-
-                await redis.flushdb();
-                redis.disconnect();
-
-
-                }
-
-                manipulateKey().catch(console.error);
-
-
-## Redis Persistance mechanisms:
-
-- Persistence refers to the process of writing data to durable storage, such as a solid-state disk (SSD). 
-
-### Redis provides a range of persistence options:
-
-- `RDB` — Performs point-in-time snapshots of your dataset at specific intervals
-
-
-        # Save a snapshot if at least 1 key changes within 900 seconds (15 minutes)
-        save 900 1
-        # Save a snapshot if at least 10 keys change within 300 seconds (5 minutes)
-        save 300 10
-
-
-
-- `AOF` — Logs every written operation received by the server. These operations can 
-then be replayed again at server startup, reconstructing the original dataset.
-
-        appendonly yes
-        appendfilename "appendonly.aof"
-
-- `No Persistence` — Disable persistence completely. This is sometimes used when caching
-
-        save ""
-        appendonly no
-
-- `RDB + AOF` — Combine both in the same instance.
-
-        save 900 1
-        save 300 10
-        save 60 10000
-
-        appendonly yes
-        appendfilename "appendonly.aof"
-
----
-
-## Memcached:
-
-Memcache is a distributed memory caching system. It’s commonly used to speed up dynamic web applications by reducing the load on the database through caching frequently accessed data in memory.
-
-- Memcache stores data in RAM, enabling extremely fast data retrieval.
-- Data is stored as key-value pairs.
-- Memcache does not persist data across restarts.
-
-## Working of Memcached:
-
-`Client Request:`
-
-- When a client requests data, the application first checks Memcache.
-
-`Cache Hit:`
-
-- If the data is found in Memcache (cache hit), it is returned immediately.
-
-`Cache Miss:`
-
-- If the data is not found in Memcache (cache miss), the application fetches the data from the database and stores it in Memcache for future requests.
-
-`Expiration:`
-
-- Data can be stored with an expiration time, after which it is automatically removed from the cache.
-
-## Example:
-
-
-
-## Redis VS memcached:
-
-| Feature                        | Redis                                             | Memcache                                        |
-|--------------------------------|---------------------------------------------------|-------------------------------------------------|
-| **Overview**                    | Advanced key-value store with rich data types    | High-performance, distributed memory cache      |
-| **Data Structures**             | Strings, Lists, Sets, Hashes, Sorted Sets, Bitmaps, HyperLogLogs, Geospatial Indexes, Streams | Strings only                                  |
-| **Persistence**                | RDB (Snapshots), AOF (Append-Only File), Both, None | No persistence (some variants may offer persistence) |
-| **Performance**                | Generally high performance; complex operations may be slower | Very high performance; simpler operations are faster |
-| **Atomic Operations**           | Supports atomic operations on various data types | Limited atomic operations                       |
-
-
----
-
-## Cache eviction policies:
-
-Cache eviction policies determine how Memcached decides which items to remove from memory when it needs to free up space for new data. 
-
-## Least Recently Used (LRU)
-
-- LRU is the default eviction policy in Memcached. 
-- It removes the least recently used items first when space is needed for new data.
-
-## LRU with Expiry:
-
-- This is an enhancement of the basic LRU policy, where Memcached also considers the expiration time of cached items.
-
-## TTL (Time to Live) Based Eviction
-
-- While not an explicit eviction policy, TTL settings allow you to specify how long an item should remain in the cache before it’s automatically evicted.
-
----
-
-## Sanitization:
-
-- Sanitization is the process of cleaning and modifying user input to ensure that it doesn't contain harmful or unwanted content. 
-- This is crucial for protecting web applications from security vulnerabilities like Cross-Site Scripting (XSS) and SQL Injection. 
-
-## Using validator js:
-
-                const validator = require('validator');
-
-                const userInput = 'example@example.com';
-                const isEmail = validator.isEmail(userInput);
-                const sanitizedInput = validator.escape(userInput);
-
-                console.log(isEmail); 
-                console.log(sanitizedInput); 
-
-
-                const userInput2 = '<heejejk>\'ss'
-                const sanitizedInput2 = validator.escape(userInput2);
-                console.log(sanitizedInput2);
-
-
----
-## Sanitize input in sequelize:
-
-        username: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: true,
-                validate:{
-                len: [3, 30],
-                isAlphanumeric: true 
-                }
-        },
-        email: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: true,
-                validate:{
-                isEmail: true
-                }
-        },
-        password: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate:{
-                len: [6, 30]
-                }
-        },
-
----
-
-## Parameterized Query - Binding Parameters in sequelize:
-
-        const userId = '1 OR 1=1'; 
-        sequelize.query('SELECT * FROM users WHERE id = :id', {
-        replacements: { id: userId },
-        type: Sequelize.QueryTypes.SELECT
-        }).then(results => {
-        console.log(results);
+        const server = app.listen(3000, () => {
+        console.log('Server is running on port 3000');
         });
 
 
-Here the user input is treated as data not as query. hence it searches for record with id 1 OR 1=1 which does not exists.
-This can prevent SQL injection.
+In this simplified example, there is no clustering, and the application runs on a single process.
+
+## With clustering:
+
+
+        const cluster = require('cluster');
+        const os = require('os');
+        const express = require('express');
+
+        const numCPUs = os.cpus().length;
+
+        if (cluster.isMaster) {
+        console.log(`Master process ${process.pid} is running`);
+
+        for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+        }
+
+        cluster.on('exit', (worker, code, signal) => {
+        console.log(`Worker process ${worker.process.pid} died. Restarting...`);
+        cluster.fork();
+        });
+        } else {
+        const app = express();
+
+        // Configure your Express app
+        // ...
+
+        const server = app.listen(3000, () => {
+        console.log(`Worker process ${process.pid} is listening on port 3000`);
+        });
+        }
+
+
+cluster: Module for creating child processes (workers) to take advantage of multi-core systems.
+
+`Master Process:`
+
+Forks worker processes equal to the number of CPU cores.
+Monitors worker processes and restarts them if they crash.
+
+`Worker Processes:`
+
+Each worker process runs its own instance of the Express server.
+Each server listens on the same port (3000), but because of the clustering, requests will be distributed among the worker processes.
+
 
 ---
 
-## Security measures:
 
-1. Validation
-2. Using parameterized Queries to avoid SQL injection
-3. Sanitization - Output encoding
-4. Use HTTPS and obtain TLS/ SSL
-5. Hashing Passwords, MFA
-6. Rate limiting to avoid DDoS attack
-7. Logging
-8. Secure HTTP headers- helmet
-9. CORS 
+| **Feature**                   | **Worker Threads**                                    | **Cluster**                                           |
+|-------------------------------|--------------------------------------------------------|-------------------------------------------------------|
+| **Purpose**                   | Offload CPU-intensive tasks from the main thread      | Scale applications across multiple CPU cores         |
+| **Architecture**              | Multi-threaded within a single process                | Multi-process with separate memory spaces            |
+| **Memory Model**              | Shared memory space with the main thread              | Separate memory space for each process               |
+| **Communication**             | Message passing using `postMessage` and `on('message')` | Inter-process communication (IPC)                    |
+| **Overhead**                  | Lower overhead; lightweight compared to processes     | Higher overhead due to process-based IPC             |
+
 
 ---
 
-## Docker:
+## Service web workers:
 
-- Docker is a platform that uses containerization to streamline software development. 
-- It packages applications into containers, which are lightweight and include only essential elements. 
-- This ensures applications run consistently across different environments, improving efficiency and portability in software deployment.
+- Service Workers are a special type of Web Worker that run in the background of a web browser, separate from the web page, and provide powerful capabilities to enhance web applications.
 
-## VM vs Containers:
+`Caching and offline support`:
 
-- Containers and virtual machines (VMs) both provide virtualization, but in different ways. 
-- VMs include entire operating systems, making them heavier and slower to start. 
-- Containers, on the other hand, share the host system’s OS kernel and isolate only the application and its dependencies. 
-- This makes containers much lighter, more efficient in resource usage, and faster to launch than VMs. 
+- Service Workers can intercept network requests and cache responses. 
+-  This enables web applications to function offline or in low-network conditions by serving cached content when the network is unavailable.
 
+`Background support`:
 
-## Docker architecture:
+- They can handle background synchronization tasks, allowing web applications to sync data with a server even when the user is offline and reconnects later.
 
-Docker architecture is designed to make it easy to package, distribute, and run applications in a consistent environment.
+`Service Workers`:
 
-## Docker Daemon (dockerd): 
+- This can receive and handle push notifications from a server, allowing web applications to send updates or alerts to users even when the app is not actively open.
 
-- This is the core component of Docker that runs in the background on a Docker host. 
-- It manages Docker containers, images, networks, and volumes. 
-- It listens for Docker API requests and handles the creation, management, and running of containers.
+`Lifecycle Stages of Service web workers`:
 
-## Docker Image:
+`- Registration`
 
-- Docker images are read-only templates that contain the instructions for creating a Docker container. 
-- Images include the application code, libraries, dependencies, and runtime. 
-- Images are built using a Dockerfile, which defines the steps to create the image.
+ A Service Worker is registered using JavaScript in the main thread, typically within a web page. The registration process involves specifying the script file for the Service Worker.
 
-## Docker Container:
+`- Installation`
 
-- Containers are instances of Docker images. 
-- They are lightweight, standalone, and executable packages that include everything needed to run a piece of software, including the code, runtime, libraries, and system tools.
+Once registered, the browser will install the Service Worker. During the installation phase, you typically cache necessary assets for offline use.
 
-## Dockerfile:
+`- Activation`
 
-Dockerfile is a text file that contains a series of instructions on how to build a Docker image. It includes commands to set up the environment, install dependencies, copy files, and configure the image.
+ After installation, the Service Worker is activated. This phase involves cleaning up old caches and preparing the Service Worker to handle fetch events.
 
-                FROM node:18-alpine
+`- Fetching`
 
-                WORKDIR /app
+After activation, the Service Worker listens to fetch events and can respond with cached assets or fetch from the network.
 
-                COPY package*.json ./
+`- Termination`
 
-                RUN npm install
-
-                COPY . .
-
-                EXPOSE 3000
-
-                CMD ["npm", "start"]
-
-## Docker Compose:
-
-- Docker Compose is a tool for defining and running multi-container Docker applications. 
-- With Docker Compose, you can use a docker-compose.yml file to configure application services, networks, and volumes, and then use a single command (docker-compose up) to start all the services.
-
-
-                version: '3.8'
-
-                services:
-                db:
-                image: mysql:8
-                container_name: mysql_db
-                environment:
-                MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-                MYSQL_DATABASE: ${DB_NAME}
-                MYSQL_PASSWORD: ${DB_PASSWORD}
-                ports:
-                - "3307:3306"  
-                volumes:
-                - db_data:/var/lib/mysql
-
-                app:
-                build:
-                context: .
-                dockerfile: Dockerfile
-                container_name: node_app
-                ports:
-                - "3000:3000"
-                depends_on:
-                - db
-                environment:
-                DB_HOST: ${DB_HOST} 
-                DB_USER: ${DB_USER}
-                DB_PASSWORD: ${DB_PASSWORD}
-                DB_NAME: ${DB_NAME}
-                PORT: ${PORT}
-                SECRET_KEY: ${SECRET_KEY}
-                JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
-                USER: ${USER}
-                PASS: ${PASS}
-                HOST: ${HOST}
-                PORT_2: ${PORT_2}
-                volumes:
-                - ./railway:/usr/src/app
-                command: npm start
-
-                volumes:
-                db_data:
-
-### dockerignore file:
-
-        node_modules/
-        backups/
-        Dockerfile
-        .dockerignore
+Service Workers can be terminated by the browser when not in use and restarted as needed. 
 
 ---
 
-## Docker Container:
+## Streams:
 
-![alt text](image-15.png)
+- Streams are a powerful abstraction used to handle data that is read or written in chunks over time, rather than all at once.
 
-## Docker Image:
+- Makes it efficient for both memory and performance.
 
-![alt text](image-16.png)
+## Types of Streams in Node.js:
 
-----
+There are namely four types of streams in Node.js.
 
-## Dockerize:
+- `Writable:` We can write data to these streams.
 
-Dockerizing an application involves creating a Docker image for your application and then running it as a container
+- `Readable:` We can read data from these streams.
 
-### Creat docker file.
+- `Duplex:` Streams that are both, Writable as well as Readable.
 
-### Building Docker Image:
-
-        docker build -t my-node-app .
-
-### Run the docker container:
-
-        docker run -d -p 3000:3000 --name my-node-app-container my-node-app
-
-### Verify running containers:
-
-        docker ps
+- `Transform:` Streams that can modify or transform the data as it is written and read.
 
 ---
 
-## Docker commands:
 
-### Start and build docker compose:
+## Readable streams:
 
-        docker-compose up --build
+From stream module, we can use readable to create a readable stream
 
-### Start containers without re-building:
+        const { Readable } = require('stream');
 
-        docker-compose up
+        const readable = new Readable({
+        read(size) {
+        this.push('Hello, ');
+        this.push('world!');
+        this.push(null); 
+        }
+        });
 
-### Stop and remove containers:
+        readable.on('data', chunk => {
+        console.log(chunk.toString()); 
+        });
 
-        docker-compose down
+`The readable.destroy()`
 
-### List running containers:
+- This method is an inbuilt application programming interface of Stream module which is used to destroy the stream.
 
-        docker-compose ps
+`pause():` Temporarily stops the flow of data from the readable stream. When the stream is paused, it will not emit any data events until it is resumed.
 
-### View all docker images:
+`resume():`
 
-        docker images
+This resumes the execution flow
 
-### Pull image from docker hub:
+## Writable stream:
 
-        docker pull image_name:tag
+From stream module, we can use writable to create a writable stream
 
-### Push image from docker hub:
+        const { Writable } = require('stream');
 
-        docker push image_name:tag
+        const writable = new Writable({
+        write(chunk, encoding, callback) {
+        console.log(chunk.toString()); 
+        callback();
+        }
+        });
 
+        writable.write('Hello, ');
+        writable.write('world!');
+        writable.end();
+
+
+`writable.destroy`:
+
+- The writable.destroy() method is an inbuilt application programming interface of Stream module which is used to destroy the created stream and you cannot call the write() method to write data again after you have already destroyed the created stream.
+
+`writable.end`:
+
+- The writable.end() method is an inbuilt application programming interface of - Stream module so that no more data can be written to the Writable anymore. 
+
+## Pipe:
+
+- The pipe method in Node.js is used to connect a readable stream to a writable stream. 
+- It automatically handles the flow of data from the readable stream to the writable stream.
+
+        const { Readable, Writable } = require('stream');
+
+        const readable = new Readable({
+        read(size) {
+        this.push('Hello, ');
+        this.push('world!');
+        this.push(null);
+        }
+        });
+
+        const writable = new Writable({
+        write(chunk, encoding, callback) {
+        console.log(chunk.toString()); 
+        callback();
+        }
+        });
+
+        // Pipe the readable stream to the writable stream
+        readable.pipe(writable);
+
+## Duplex streams:
+
+- This `combines both reading and writing into a single stream instance.` By creating a custom duplex stream, you handle both input and output within the same object, allowing for more complex interactions where you both produce and consume data.
+
+        const { Duplex } = require("stream");
+
+        const duplexStream = new Duplex({
+        read() {
+        this.push("Hello World!");
+        this.push(null);
+        },
+        write(chunk, encoding, next) {
+        console.log(chunk.toString());
+        next();
+        },
+        });
+
+        duplexStream.pipe(process.stdout);
+
+        duplexStream.write("Hello");
+
+
+## Transform stream:
+
+- Transform stream is a type of duplex stream that can modify or transform data as it is read from a readable stream and then written to a writable stream.
+
+        const { Transform } = require('stream');
+
+        const transform = new Transform({
+        transform(chunk, encoding, callback) {
+        this.push(chunk.toString().toUpperCase());
+        callback();
+        }
+        });
+
+        process.stdin.pipe(transform).pipe(process.stdout);
+
+
+---
 
